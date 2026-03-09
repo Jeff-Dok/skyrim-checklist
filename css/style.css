@@ -710,10 +710,11 @@ body::before {
   background: none;
   border: none;
   color: var(--gold-3);
-  font-size: 15px;
+  font-size: 20px;
   cursor: pointer;
   padding: 4px 8px 4px 2px;
   line-height: 1;
+  margin-left: auto;
   transition: color .15s, transform .15s;
 }
 .info-btn:hover { color: var(--gold-2); transform: scale(1.15); }
@@ -857,7 +858,7 @@ body::before {
  */
 .daedric-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 0 12px;
   padding: 8px 10px 16px;
   align-items: start;
@@ -1094,6 +1095,9 @@ body::before {
 
   /* Daedric : 4 colonnes */
   .daedric-grid { grid-template-columns: repeat(4, 1fr); }
+
+  /* Bouton info : taille réduite sur desktop (20px suffisant partout) */
+  .info-btn { font-size: 15px; }
 
   /* Enchanting : 6 colonnes */
   .enchant-grid { grid-template-columns: repeat(6, 1fr); }

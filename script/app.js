@@ -661,18 +661,16 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       const groupItems = groups[group];
       const words = groupItems.map(item => {
         const done = isChecked(item.id);
-        return `<li class="shout-word${done ? ' done' : ''}" id="item-${item.id}">
+        const dragon = DRAGON_SCRIPT_ENC[item.name] || item.name;
+        return `<li class="item${done ? ' done' : ''}" id="item-${item.id}">
           <label class="item-label">
             <span class="cb-wrap">
               <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
               <span class="cb-box"></span>
             </span>
-            <div class="word-body">
-              <span class="word-name">${escHtml(item.name)}</span>
-              <span class="word-dragon">${escHtml(DRAGON_SCRIPT_ENC[item.name] || item.name)}</span>
-              <span class="word-en">${escHtml(item.word_en || '')}</span>
-            </div>
+            <span class="item-name">${escHtml(item.name)}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
+            <span class="item-sub"><span class="word-dragon">${escHtml(dragon)}</span>&nbsp;<span class="word-en">${escHtml(item.word_en || '')}</span></span>
           </label>
         </li>`;
       }).join('');

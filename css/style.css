@@ -886,43 +886,13 @@ body::before {
   margin: 0;
   padding: 4px 14px 14px;
 }
-.shout-word {
-  border-radius: 6px;
-}
-.shout-word:hover { background: var(--surface2); }
-.shout-word.done  { opacity: 0.5; }
-.shout-word .item-label { gap: 2ch; }
-.word-body {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2ch;
-  min-width: 0;
-  flex: 1;
-}
-/* Mot latin du cri — FuturaCondensed, or vif */
-.word-name {
-  font-family: 'FuturaCondensed', 'Futura', sans-serif;
-  font-size: 20px;
-  color: var(--gold-2);
-  letter-spacing: 0.06em;
-  flex-shrink: 0;
-}
-/* Traduction anglaise entre parenthèses */
-.word-en {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  color: #a08040;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
+/* Traduction anglaise entre parenthèses (dans item-sub) */
 .word-en::before { content: '('; }
 .word-en::after  { content: ')'; }
-/* Mot en alphabet Dragon — DragonscriptRegular, dégradé doré lumineux */
+/* Mot en alphabet Dragon — DragonscriptRegular, dégradé doré lumineux (dans item-sub) */
 .word-dragon {
   font-family: 'DragonscriptRegular', serif;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1;
   background: linear-gradient(180deg, #e0c060 0%, var(--gold-2) 50%, var(--gold-3) 100%);
   -webkit-background-clip: text;
@@ -1043,12 +1013,7 @@ body::before {
   .alchemy-grid        { grid-template-columns: repeat(3, 1fr); }
   .alchemy-img         { width: 50px; height: 50px; }
 
-  /* Shouts : tailles de police tablette/desktop */
-  .word-name           { font-size: 26px; }
-  .word-en             { font-size: 15px; }
-  .word-dragon         { font-size: 26px; }
-
-  /* Modal : padding et tailles plein format */
+/* Modal : padding et tailles plein format */
   .info-modal          { padding: 36px 42px; }
   .info-modal-title    { font-size: 30px; }
   .info-val            { font-size: 17px; }

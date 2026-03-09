@@ -913,28 +913,33 @@ body::before {
 }
 .item .spell-icon { margin-right: 2px; }
 
-/* Header d'école de magie : [icône] NOM [icône] */
+/* Header d'école de magie : [icône] NOM [icône] — grid 3 colonnes fixes */
+.group-header:has(.spell-school-header) {
+  background: #000;
+  border-radius: 12px;
+  padding: 6px 10px;
+  display: block;
+}
+.group-header:has(.spell-school-header):hover { background: #000; }
 .spell-school-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
   width: 100%;
-  padding: 2px 0;
 }
 .spell-school-name {
   font-family: 'FuturaCondensed', 'Futura', sans-serif;
   font-size: 22px;
   letter-spacing: 0.1em;
+  text-align: center;
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 .spell-school-icon {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 

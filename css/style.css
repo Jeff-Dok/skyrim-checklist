@@ -436,6 +436,7 @@ body::before {
 /* Groupe dont le header est un act-section-header (ex: Dragon Shouts) */
 .group-header:has(.act-section-header) { padding: 0; background: none; }
 .group-header:has(.act-section-header):hover { background: none; }
+.group-header:has(.act-section-header) .act-section-header { width: 100%; }
 
 /* Wrapper relatif pour positionner le texte % par-dessus l'image knotwork */
 .group-knotwork-wrap {

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d0d0f" />
+    <title>Skyrim Checklist</title>
+    <meta
+      name="description"
+      content="Checklist complète pour Skyrim : quêtes, cris de dragon, sorts, enchantements, succès et plus. Progression sauvegardée localement."
+    />
+
+    <!--
+      Preload du logo — LCP critique, fetchpriority high pour le découvrir
+      avant que le parser atteigne le <img> dans le body.
+    -->
+    <link rel="preload" href="assets/logos/logo_title.webp" as="image" fetchpriority="high" />
+
+    <!--
+      Google Fonts — DM Mono + Syne
+      Chargement asynchrone (non-bloquant) via preload + onload swap :
+        1. preload  → télécharge la CSS sans bloquer le rendu
+        2. onload   → applique rel="stylesheet" quand prêt
+        3. <noscript> → fallback si JS désactivé
+      preconnect : warm-up DNS + TLS pour réduire la latence
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="app">
+
+      <!--
+        ══════════════════════════════════════════════════════
+        HEADER — Logo · Titre · Pourcentage global · Progress
+        ══════════════════════════════════════════════════════
+        Rôle   : banner (landmark unique, navigation globale)
+        Contenu: logo Skyrim, titre "Checklist", barre de
+                 progression, zone de recherche, onglets catégories
+      -->
+      <header class="topbar" role="banner">
+
+        <!-- Ligne 1 : logo | titre centré | % completion + badge stockage -->
+        <div class="topbar-head">
+          <div class="topbar-left">
+            <!--
+              logo_title.webp — 512×224 px, WebP
+              fetchpriority="high" : hint au navigateur que c'est l'élément LCP
+              width/height : aspect ratio connu → pas de layout shift (CLS = 0)
+            -->
+            <img
+              class="logo-title"
+              src="assets/logos/logo_title.webp"
+              alt="Skyrim"
+              width="512"
+              height="224"
+              fetchpriority="high"
+            />
+          </div>
+
+          <div class="topbar-center">
+            <!-- h1 sémantique : titre principal de la page -->
+            <h1 class="checklist-title">Checklist</h1>
+          </div>
+
+          <div class="topbar-right">
+            <!-- Pourcentage de completion global, mis à jour par renderStats() -->
+            <div class="topbar-right-pct">
+              <span class="complete-label">Complete @</span>
+              <span
+                class="complete-pct"
+                id="globalPct"
+                aria-live="polite"
+                aria-atomic="true"
+              >0%</span>
+            </div>
+
+            <!--
+              Indicateur de statut localStorage
+              data-state = "saved" | "saving" | "error"
+              role="status" + aria-live : annonce les changements aux lecteurs d'écran
+            -->
+            <div
+              class="storage-badge"
+              id="storageBadge"
+              role="status"
+              aria-live="polite"
+            >
+              <span class="dot" aria-hidden="true"></span>
+              <span class="storage-label">localStorage</span>
+            </div>
+          </div>
+        </div>
+
+        <!--
+          Barre de progression globale
+          role="progressbar" + aria-valuenow mis à jour par renderStats()
+        -->
+        <div
+          class="global-progress"
+          id="globalProgress"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-label="Progression globale"
+        >
+          <div class="global-progress-fill" id="globalFill"></div>
+        </div>
+
+        <!-- Ligne 3 : champ de recherche + onglets de navigation -->
+        <div class="tabs-row">
+          <!--
+            Recherche globale : filtre tous les items de toutes les catégories
+            Géré par onSearch() dans app.js via événement "input"
+          -->
+          <input
+            class="search-input"
+            id="searchInput"
+            type="search"
+            placeholder="Search…"
+            autocomplete="off"
+            aria-label="Rechercher dans toutes les catégories"
+          />
+
+          <!--
+            nav landmark : liste des onglets de catégories
+            Peuplé dynamiquement par renderTabs() dans app.js
+            Chaque bouton a data-cat + id="badge-{cat}" pour renderTabBadges()
+          -->
+          <nav
+            class="tabs-wrap"
+            id="tabs"
+            aria-label="Catégories de la checklist"
+          ></nav>
+        </div>
+
+      </header>
+
+      <!--
+        ══════════════════════════════════════════════════════
+        MAIN — Zone de contenu défilable
+        ══════════════════════════════════════════════════════
+        Peuplé entièrement par renderList() dans app.js.
+        Affiche soit la catégorie active, soit les résultats de recherche.
+      -->
+      <main class="content">
+        <div class="list-scroll">
+          <div id="itemList"></div>
+        </div>
+      </main>
+
+    </div><!-- /.app -->
+
+    <!--
+      ══════════════════════════════════════════════════════
+      MODAL — Fiche détaillée d'un item
+      ══════════════════════════════════════════════════════
+      role="dialog" + aria-modal : isole le focus pour les lecteurs d'écran
+      aria-labelledby → id="infoModalTitle" injecté par openInfoModal()
+      aria-label      → nom statique fallback (l'id n'existe pas au chargement
+                        initial, injecté dynamiquement à l'ouverture)
+      Fermeture : clic sur l'overlay | bouton ✕ | touche Échap (app.js)
+    -->
+    <div
+      id="infoModal"
+      class="info-modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Fiche de détail"
+      aria-labelledby="infoModalTitle"
+      onclick="closeInfoModal()"
+    >
+      <div class="info-modal" onclick="event.stopPropagation()">
+        <button
+          class="info-modal-close"
+          onclick="closeInfoModal()"
+          aria-label="Fermer la fiche"
+        >✕</button>
+        <!-- Contenu injecté par openInfoModal() : h2#infoModalTitle + .info-modal-rows -->
+        <div id="infoModalContent"></div>
+      </div>
+    </div>
+
+    <!--
+      Scripts chargés en defer :
+        - data.js  → définit CHECKLIST_DATA (doit être chargé en premier)
+        - app.js   → logique principale, appelle init() au démarrage
+      defer garantit l'exécution après le parsing HTML, dans l'ordre de déclaration.
+    -->
+    <script src="script/data.js" defer></script>
+    <script src="script/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,1011 @@
+/*
+ * style.css — Skyrim Checklist
+ * ──────────────────────────────────────────────────────────────
+ * Thème sombre inspiré de Skyrim : fond noir, accents dorés,
+ * typographies FuturaCondensed (titres) + DM Mono (labels) + Syne (corps).
+ *
+ * Sections :
+ *   1. Reset & polices locales
+ *   2. Variables CSS (:root)
+ *   3. Base (body, grain overlay)
+ *   4. Layout (app, topbar, content)
+ *   5. Header — logo, titre, completion %
+ *   6. Progress bar globale
+ *   7. Onglets (tabs-row, tab-btn)
+ *   8. Zone de contenu + défilement
+ *   9. Recherche (search-input, search-cat-label)
+ *  10. Groupes (group, group-header, knotwork)
+ *  11. Grilles de sections (acts-grid, story-radiant)
+ *  12. Headers de colonnes/sections (act-col-header, etc.) — PARTAGÉ
+ *  13. Items (item, item-label, checkbox, item-name)
+ *  14. Storage badge
+ *  15. Modal d'information
+ *  16. Rendus spéciaux : Daedric · Dragon Shouts · Spells · Enchanting · Alchemy
+ *  17. État vide (empty)
+ *  18. Responsive (max-width 600px)
+ */
+
+
+/* ══════════════════════════════════════════════════════════════
+   1. RESET & POLICES LOCALES
+   ══════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/*
+ * FuturaCondensed — utilisée pour tous les titres, labels majuscules,
+ * boutons d'onglets, headers de colonnes. Fallback : Futura, sans-serif.
+ */
+@font-face {
+  font-family: 'FuturaCondensed';
+  src: url('../assets/fonts/Futura Condensed.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap; /* évite FOIT (flash de texte invisible) */
+}
+
+/*
+ * DragonscriptRegular — police de l'alphabet Dovazhul (Dragon Language).
+ * Utilisée uniquement pour les mots de Dragon Shouts (section Dragon Shouts).
+ * Encodage personnalisé via DRAGON_SCRIPT_ENC dans app.js.
+ */
+@font-face {
+  font-family: 'DragonscriptRegular';
+  src: url('../assets/fonts/Dragon_script.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   2. VARIABLES CSS
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Palette de surface (fond sombre) ── */
+  --bg:        #0d0d0f;  /* fond de page */
+  --surface:   #141417;  /* topbar, modal */
+  --surface2:  #1a1a1e;  /* hover, input */
+  --border:    #2a2a30;  /* bordures subtiles */
+  --border2:   #3a3a44;  /* bordures actives */
+
+  /* ── Accents violets (non-utilisés visuellement pour l'instant) ── */
+  --accent:    #7c6aff;
+  --accent2:   #e06aff;
+
+  /* ── Typographie ── */
+  --text:      #e8e6f0;  /* texte principal */
+  --muted:     #5a5870;  /* texte secondaire, labels discrets */
+  --muted2:    #7a7890;
+  --done-text: #44424f;  /* texte d'un item coché */
+  --danger:    #ff5c6a;  /* erreur storage */
+
+  /* ── Rayon de bordure ── */
+  --radius:    10px;
+
+  /* ── Palette dorée — 4 tons utilisés dans tous les dégradés ──
+       gold-1: bronze chaud     gold-2: or brillant principal
+       gold-3: or moyen         gold-4: or profond / ombré
+  */
+  --gold-1: #a8885a;
+  --gold-2: #c9a55a;
+  --gold-3: #9a7830;
+  --gold-4: #5c420a;
+
+  /*
+   * Dégradés dorés partagés
+   * --gold-gradient   : vertical (180deg) — textes, boutons actifs, fonds
+   * --gold-line       : horizontal large  — lignes décoratives section-header
+   * --gold-line-short : horizontal court  — lignes décoratives col-header
+   */
+  --gold-gradient:    linear-gradient(180deg, #a8885a 0%, #c9a55a 40%, #9a7830 70%, #5c420a 100%);
+  --gold-line:        linear-gradient(90deg, transparent, #9a7830 30%, #c9a55a 50%, #9a7830 70%, transparent);
+  --gold-line-short:  linear-gradient(90deg, transparent, #9a7830, transparent);
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   3. BASE
+   ══════════════════════════════════════════════════════════════ */
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * Overlay de grain — texture SVG fractalNoise en position fixe,
+ * pointer-events:none pour ne pas intercepter les clics.
+ * opacity 0.04 : subtil, juste assez pour casser le fond plat.
+ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   4. LAYOUT PRINCIPAL
+   ══════════════════════════════════════════════════════════════ */
+
+/* .app — wrapper unique, column flex, hauteur 100vh, no overflow */
+.app {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   5. HEADER (topbar)
+   ══════════════════════════════════════════════════════════════ */
+
+/*
+ * Topbar fixe en haut, flex-shrink:0 pour ne pas réduire.
+ * Contient topbar-head + global-progress + tabs-row.
+ */
+.topbar {
+  flex-shrink: 0;
+  padding: 20px 28px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* Ligne 1 : logo gauche | titre centré (absolu) | stats droite */
+.topbar-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.topbar-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.topbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Logo Skyrim — hauteur fluide entre 56px (mobile) et 80px (desktop) */
+.logo-title {
+  height: clamp(56px, 6vw, 80px);
+  width: auto;
+  display: block;
+}
+
+/* Titre "Checklist" — FuturaCondensed, dégradé doré, h1 sémantique */
+.checklist-title {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+/* Zone droite : % completion + badge stockage */
+.topbar-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+.topbar-right-pct {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+/* Labels "Complete @" et pourcentage — FuturaCondensed, dégradé doré */
+.complete-label,
+.complete-pct {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.complete-label { font-size: clamp(20px, 2.2vw, 30px); }
+.complete-pct   { font-size: clamp(24px, 2.8vw, 38px); }
+
+
+/* ══════════════════════════════════════════════════════════════
+   6. BARRE DE PROGRESSION GLOBALE
+   ══════════════════════════════════════════════════════════════ */
+
+/* Piste (fond) — 2px, séparation visuelle avant les onglets */
+.global-progress {
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+/* Remplissage — largeur en % via inline style, transition fluide */
+.global-progress-fill {
+  height: 100%;
+  background: var(--gold-gradient);
+  transition: width .4s ease;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   7. ONGLETS (tabs-row, tabs-wrap, tab-btn)
+   ══════════════════════════════════════════════════════════════ */
+
+/*
+ * tabs-row — grille 2 colonnes : [220px recherche] [reste : nav tabs]
+ * padding: 0 28px 10px aligne horizontalement avec topbar-head
+ */
+.tabs-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 0 28px 10px;
+}
+
+/* tabs-wrap (nav) — flex horizontal défilable, sans scrollbar visible */
+.tabs-wrap {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: center;
+  align-items: center;
+}
+.tabs-wrap::-webkit-scrollbar { display: none; }
+
+/* Bouton d'onglet — FuturaCondensed, uppercase, fond surface */
+.tab-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  transition: color .15s, background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--text);
+  background: var(--surface2);
+  border-color: var(--border2);
+}
+/* Onglet actif — dégradé doré plein, texte sombre */
+.tab-btn.active {
+  background: var(--gold-gradient);
+  border-color: transparent;
+  color: #1a1208;
+}
+
+/*
+ * Badge done/total sur chaque onglet
+ * Peuplé par renderTabBadges() via id="badge-{cat}"
+ * Couleur #9090a8 → ratio contraste ~5.7:1 sur fond --surface (WCAG AA ✓)
+ */
+.tab-badge {
+  font-size: 10px;
+  letter-spacing: 0;
+  color: #9090a8;
+  font-family: 'DM Mono', monospace;
+  text-transform: none;
+}
+.tab-btn.active .tab-badge { color: #7a5820; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   8. ZONE DE CONTENU + DÉFILEMENT
+   ══════════════════════════════════════════════════════════════ */
+
+/* .content — flex:1 pour remplir l'espace restant sous le topbar */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Zone défilable principale — scrollbar fine, padding latéral 28px */
+.list-scroll {
+  flex: 1;
+  overflow-y: scroll;
+  padding: 0 28px 40px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.list-scroll::-webkit-scrollbar { width: 4px; }
+.list-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   9. RECHERCHE
+   ══════════════════════════════════════════════════════════════ */
+
+/* Input de recherche globale — DM Mono, fond surface2 */
+.search-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  padding: 9px 14px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.search-input::placeholder { color: #7a5e25; }
+.search-input:focus {
+  border-color: var(--gold-2);
+  box-shadow: 0 0 0 2px rgba(169,136,90,.35), 0 0 8px rgba(201,165,90,.15);
+}
+
+/*
+ * Résultats de recherche — wrapper + groupe d'items
+ * Rendu simple : label de groupe (style act-section-header) + liste plate
+ * Largeur limitée à 20vw pour un affichage compact en colonne
+ */
+.search-results-wrap {
+  width: 25vw;
+  min-width: 260px;
+  margin: 0 auto;
+}
+.search-group { margin-bottom: 4px; }
+
+/* Label de catégorie dans les résultats de recherche globale */
+.search-cat-label {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 16px 0 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.search-cat-label:first-child { padding-top: 0; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   10. GROUPES (group, group-header, knotwork)
+   ══════════════════════════════════════════════════════════════ */
+
+/* Conteneur d'un groupe — margin-bottom pour espacement vertical */
+.group { margin-bottom: 4px; }
+
+/* En-tête de groupe — cliquable, highlight au hover */
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background .15s;
+  user-select: none;
+}
+.group-header:hover { background: var(--surface2); }
+
+/* Variante avec knotwork PNG/WebP — fond noir, display block, no hover tint */
+.group-header:has(.group-knotwork-wrap) {
+  background: #000;
+  border-radius: 12px;
+  padding: 10px;
+  display: block;
+  position: relative;
+}
+.group-header:has(.group-knotwork-wrap):hover { background: #000; }
+
+/* Wrapper relatif pour positionner le texte % par-dessus l'image knotwork */
+.group-knotwork-wrap {
+  position: relative;
+}
+/* Variante sans image — centrage flex du texte doré */
+.group-knotwork-wrap.no-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+/* Texte "Groupe — X%" centré par-dessus le knotwork */
+.group-knotwork-pct {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: clamp(20px, 2.5vw, 34px);
+  letter-spacing: 0.08em;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  pointer-events: none;
+}
+/* Sans image : positionnement statique au lieu d'absolu */
+.group-knotwork-wrap.no-img .group-knotwork-pct {
+  position: relative;
+  left: unset;
+  top: unset;
+  transform: none;
+}
+
+/*
+ * Image knotwork — 1600×115px source (WebP), affichée à max-height 70px.
+ * width:100% + object-fit:contain → respecte le ratio, remplit la largeur.
+ */
+.group-knotwork {
+  width: 100%;
+  height: auto;
+  max-height: 70px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Liste d'items du groupe — masquée quand .collapsed */
+.group-items {
+  list-style: none;
+  padding: 0 0 4px 12px;
+}
+.group.collapsed .group-items { display: none; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   11. GRILLES DE SECTIONS (acts-grid, story-radiant)
+   ══════════════════════════════════════════════════════════════ */
+
+/*
+ * story-radiant-wrap — layout story + radiant côte à côte
+ * Story : 25% de largeur (liste plate des items de l'arc narratif)
+ * Radiant : 75% restants (grille des actes/colonnes)
+ */
+.story-radiant-wrap {
+  display: flex;
+  gap: 16px;
+  align-items: start;
+  padding: 4px 10px 10px;
+}
+.story-section { flex: 0 0 25%; }
+.story-section .act-section-header,
+.radiant-section .act-section-header {
+  padding-left: 0;
+  padding-right: 0;
+}
+.radiant-section {
+  flex: 0 0 75%;
+  min-width: 0;
+}
+.radiant-section .acts-grid { padding: 0; }
+
+/* acts-grid — grille 3 colonnes par défaut (surcharge inline possible) */
+.acts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 12px;
+  padding: 8px 10px 10px;
+  align-items: start;
+}
+.act-col .group-items { padding: 0; }
+
+/* Séparateur d'acte dans les listes plates (mode collapsed-fallback) */
+.act-divider {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.act-divider::before,
+.act-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   12. HEADERS DE COLONNES / SECTIONS — STYLES PARTAGÉS
+   ══════════════════════════════════════════════════════════════
+
+   Quatre éléments partagent la même structure visuelle :
+     • .act-col-header     — en-tête d'une colonne d'acte (quêtes)
+     • .act-section-header — en-tête d'une section plate (Story, Innkeepers…)
+     • .daedric-prince     — en-tête d'une carte Daedric
+     • .search-group-label — en-tête de groupe dans les résultats de recherche
+   Différence : padding légèrement différent, ligne décorative différente.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Propriétés communes aux quatre types de header */
+.act-col-header,
+.act-section-header,
+.daedric-prince,
+.search-group-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  /* Dégradé doré sur le texte */
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Padding spécifique par type */
+.act-col-header,
+.daedric-prince      { padding: 14px 4px 6px; }
+.act-section-header  { padding: 14px 10px 6px; }
+.search-group-label  { padding: 10px 10px 4px; font-size: 18px; }
+
+/*
+ * Lignes décoratives ::before / ::after
+ * Les pseudo-éléments héritent de -webkit-text-fill-color transparent,
+ * il faut reset avec initial pour que background: ... soit visible.
+ */
+.act-col-header::before,
+.act-col-header::after,
+.daedric-prince::before,
+.daedric-prince::after,
+.search-group-label::before,
+.search-group-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-line-short); /* ligne courte */
+  -webkit-text-fill-color: initial;
+}
+.act-section-header::before,
+.act-section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-line); /* ligne large avec point lumineux central */
+  -webkit-text-fill-color: initial;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   13. ITEMS (item, item-label, checkbox, item-name, info-btn)
+   ══════════════════════════════════════════════════════════════ */
+
+/* Ligne d'item — hover léger, fondu si coché */
+.item {
+  border-radius: 8px;
+  transition: background .15s;
+}
+.item:hover { background: var(--surface2); }
+.item.done  { opacity: .5; }
+
+/* Label cliquable — flex horizontal, gap 10px */
+.item-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/*
+ * Checkbox personnalisée :
+ *   .cb-wrap   — position relative pour overlay .cb-box
+ *   input[type=checkbox] — masqué (display:none)
+ *   .cb-box    — carré 16×16 px, bordure muted, fond doré si checked
+ *   .cb-box::after — coche (checkmark) animée au checked
+ */
+.cb-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.cb-wrap input[type=checkbox] { display: none; }
+.cb-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--muted);
+  border-radius: 4px;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.cb-wrap input:checked + .cb-box {
+  background: linear-gradient(135deg, var(--gold-1), var(--gold-2), var(--gold-3));
+  border-color: transparent;
+}
+/* Coche (checkmark) — apparaît via scale au checked */
+.cb-box::after {
+  content: '';
+  width: 4px;
+  height: 7px;
+  border: 1.5px solid transparent;
+  border-right: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: rotate(45deg) scale(0);
+  transition: transform .12s ease;
+  margin-top: -2px;
+}
+.cb-wrap input:checked + .cb-box::after { transform: rotate(45deg) scale(1); }
+
+/* Nom de l'item — barré et atténué si coché */
+.item-name {
+  font-size: 16px;
+  word-break: break-word;
+  transition: color .2s;
+}
+.item.done .item-name {
+  color: var(--done-text);
+  text-decoration: line-through;
+}
+
+/* Sous-texte compact (description tronquée, niveau…) */
+.item-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Bouton d'info ⓘ — ouvre le modal de détail */
+.info-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--gold-3);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px 8px 4px 2px;
+  line-height: 1;
+  transition: color .15s, transform .15s;
+}
+.info-btn:hover { color: var(--gold-2); transform: scale(1.15); }
+
+
+/* ══════════════════════════════════════════════════════════════
+   14. STORAGE BADGE
+   ══════════════════════════════════════════════════════════════ */
+
+/*
+ * Indicateur de statut du localStorage :
+ *   data-state="saved"  → dot vert lumineux
+ *   data-state="saving" → dot jaune pulsant (animation 0.6s)
+ *   data-state="error"  → dot rouge
+ * Géré par setBadge() dans app.js.
+ */
+/*
+ * #9090a8 → ratio contraste ~5.7:1 sur fond --surface (WCAG AA ✓)
+ * (--muted #5a5870 ne passait pas à 2.7:1)
+ */
+.storage-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #9090a8;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background .3s, box-shadow .3s;
+}
+.storage-badge[data-state="saved"]  .dot { background: #44ff99; box-shadow: 0 0 6px #44ff99; }
+.storage-badge[data-state="saving"] .dot { background: #ffd84d; box-shadow: 0 0 6px #ffd84d; animation: pulse-dot .6s ease-in-out infinite alternate; }
+.storage-badge[data-state="error"]  .dot { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+
+@keyframes pulse-dot {
+  from { opacity: 1; }
+  to   { opacity: 0.3; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   15. MODAL D'INFORMATION
+   ══════════════════════════════════════════════════════════════ */
+
+/*
+ * Overlay : fixed fullscreen, fond semi-transparent.
+ * Par défaut opacity:0 + pointer-events:none (caché).
+ * Classe .open ajoutée par openInfoModal() → visible + interactif.
+ */
+.info-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.info-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Boîte modale — max 640px, bordure dorée, animation translateY */
+.info-modal {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--gold-3);
+  border-radius: 12px;
+  padding: 36px 42px;
+  width: min(640px, 92vw);
+  box-shadow: 0 0 40px rgba(0,0,0,.6), 0 0 0 1px rgba(201,165,90,.1);
+  transform: translateY(12px);
+  transition: transform .2s;
+}
+.info-modal-overlay.open .info-modal { transform: translateY(0); }
+
+/* Bouton fermer ✕ — coin supérieur droit */
+.info-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color .15s;
+}
+.info-modal-close:hover { color: var(--text); }
+
+/* Titre de la fiche — h2 avec id="infoModalTitle" pour aria-labelledby */
+.info-modal-title {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 30px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 24px;
+}
+
+/* Rangées d'informations — label + valeur empilés verticalement */
+.info-modal-rows { display: flex; flex-direction: column; gap: 16px; }
+.info-row        { display: flex; flex-direction: column; gap: 4px; }
+.info-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold-3);
+}
+.info-val {
+  font-size: 17px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   16. RENDUS SPÉCIAUX
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 16a. Daedric Card Grid ── */
+/*
+ * 4 colonnes, une par prince Daedrique.
+ * Chaque carte : header prince + liste d'une quête.
+ * Géré par QUEST_CARD_GROUPS dans app.js.
+ */
+.daedric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 12px;
+  padding: 8px 10px 16px;
+  align-items: start;
+}
+.daedric-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  cursor: pointer;
+  transition: opacity .2s;
+  padding-bottom: 10px;
+}
+.daedric-card.done { opacity: 0.4; }
+/* .daedric-prince — styles partagés dans section 12, padding override ci-dessus */
+
+/* ── 16b. Dragon Shouts ── */
+/*
+ * Grille 3 colonnes (27 cris × 3 mots = 81 items).
+ * Chaque cellule : checkbox + mot latin (FuturaCondensed) + DragonScript + traduction.
+ */
+.shout-words-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px 14px 14px;
+}
+.shout-word {
+  padding: 7px 10px;
+  border-radius: 6px;
+}
+.shout-word:hover { background: var(--surface2); }
+.shout-word.done  { opacity: 0.5; }
+.shout-word .item-label { gap: 2ch; }
+.word-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2ch;
+  min-width: 0;
+}
+/* Mot latin du cri — FuturaCondensed, or vif */
+.word-name {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 26px;
+  color: var(--gold-2);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+/* Traduction anglaise entre parenthèses */
+.word-en {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  color: #a08040;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.word-en::before { content: '('; }
+.word-en::after  { content: ')'; }
+/* Mot en alphabet Dragon — DragonscriptRegular, dégradé doré lumineux */
+.word-dragon {
+  font-family: 'DragonscriptRegular', serif;
+  font-size: 26px;
+  line-height: 1;
+  background: linear-gradient(180deg, #e0c060 0%, var(--gold-2) 50%, var(--gold-3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── 16c. Spells ── */
+/*
+ * Icône de sort (28×28 px, circulaire).
+ * Posée avant la checkbox dans renderItemsHtml (isSpells branch).
+ */
+.spell-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.item .spell-icon { margin-right: 2px; }
+
+/* ── 16d. Enchanting Effects ── */
+/*
+ * 6 colonnes compactes pour les 53 effets d'enchantement
+ * (18 armes + 35 armures).
+ */
+.enchant-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px 8px;
+  list-style: none;
+  padding: 4px 12px 8px;
+}
+.enchant-grid .item .item-label { gap: 6px; }
+
+/* ── 16e. Alchemy Ingredients ── */
+/*
+ * 5 colonnes, icônes WebP 56×56 px, 183 ingrédients alphabétiques.
+ * 2 sections : Ingredients (actif) + Potions (placeholder "Data coming soon").
+ */
+.alchemy-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px 12px;
+  list-style: none;
+  padding: 8px 12px 12px;
+}
+.alchemy-grid .item-label { gap: 8px; align-items: center; }
+/* Icône de l'ingrédient — 56×56 px, object-fit contain (respect de la transparence) */
+.alchemy-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.alchemy-grid .item-name { font-size: 17px; }
+/* Placeholder de la section Potions */
+.alchemy-coming-soon {
+  color: var(--gold-2);
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  padding: 16px;
+  opacity: 0.5;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   17. ÉTAT VIDE
+   ══════════════════════════════════════════════════════════════ */
+
+/* Affiché quand une catégorie est vide ou aucun résultat de recherche */
+.empty {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+}
+.empty-icon {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: .3;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   18. RESPONSIVE — max-width 600px (mobile)
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  /* Réduction des paddings latéraux */
+  .topbar      { padding: 14px 16px 0; }
+  .tabs-row    { padding: 0 16px 10px; }
+  .list-scroll { padding: 0 16px 40px; }
+  /* Sous-texte masqué sur mobile (gain d'espace) */
+  .item-sub    { display: none; }
+}

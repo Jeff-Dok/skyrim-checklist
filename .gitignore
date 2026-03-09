@@ -1,0 +1,48 @@
+# ── Guides PDF (trop volumineux pour Git) ──────────────────────
+Skyrim_Guide.pdf
+Skyrim_Guide.txt
+Guide/
+Sections/
+
+# ── Assets sources (originals avant conversion WebP) ───────────
+original/
+
+# ── Dossier d'analyse temporaire ───────────────────────────────
+lookAt/
+
+# ── Rapports Lighthouse ─────────────────────────────────────────
+localhost_5500-*.json
+localhost_5500-*.html
+
+# ── Données source (intermédiaires, non nécessaires en prod) ────
+checklist_data.json
+*.xlsx
+
+# ── Scripts Python (outils de dev locaux) ───────────────────────
+*.py
+*.env
+*.env.*
+
+# ── Notes de développement internes ─────────────────────────────
+CLAUDE.md
+RESUME.txt
+
+# ── Dossier interne Claude Code ──────────────────────────────────
+.claude/
+
+# ── Assets d'idées/exploration (non utilisés en prod) ────────────
+assets/ideas/
+
+# ── Knotworks originaux PNG (les WebP suffisent) ─────────────────
+assets/knotworks/*.png
+
+# ── Logos non utilisés ───────────────────────────────────────────
+assets/logos/logo_bg.webp
+assets/logos/logo_title.png
+assets/logos/creation_club*.png
+
+# ── OS / IDE ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/

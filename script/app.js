@@ -757,7 +757,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       const spellCols   = collapsed ? '' : levelGroups.map(lvl => {
         const lvlItems = groupItems.filter(i => i.level === lvl);
         return `<div class="act-col">
-          <div class="act-col-header"><span>— ${escHtml(lvl)} —</span></div>
+          <div class="act-col-header"><span>${escHtml(lvl)}</span></div>
           <ul class="group-items">${lvlItems.map(renderSpellLi).join('')}</ul>
         </div>`;
       }).join('');
@@ -792,20 +792,20 @@ function renderItemsHtml(items, cat, forceExpand = false) {
           item.id >= act.firstId && (!nextAct || item.id < nextAct.firstId)
         );
         return `<div class="act-col">
-          <div class="act-col-header"><span>— ${escHtml(act.label)} —</span></div>
+          <div class="act-col-header"><span>${escHtml(act.label)}</span></div>
           <ul class="group-items">${actItems.map(renderItemLi).join('')}</ul>
         </div>`;
       }).join('');
 
       const radiantSection = `<div class="radiant-section">
-        ${meta.gridLabel ? `<div class="act-section-header"><span>— ${escHtml(meta.gridLabel)} —</span></div>` : ''}
+        ${meta.gridLabel ? `<div class="act-section-header"><span>${escHtml(meta.gridLabel)}</span></div>` : ''}
         <div class="acts-grid">${actCols}</div>
       </div>`;
 
       if (preActItems.length && meta.preLabel) {
         /* Layout story + radiant côte à côte (25% / 75%) */
         const storySection = `<div class="story-section">
-          <div class="act-section-header"><span>— ${escHtml(meta.preLabel)} —</span></div>
+          <div class="act-section-header"><span>${escHtml(meta.preLabel)}</span></div>
           <ul class="group-items">${preActItems.map(renderItemLi).join('')}</ul>
         </div>`;
         itemsContent = `<div class="story-radiant-wrap">${storySection}${radiantSection}</div>`;
@@ -821,7 +821,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       const actMap   = Object.fromEntries(acts.map(a => [a.firstId, a.label]));
       const flatHtml = collapsed ? '' : groupItems.map(item => {
         const actLabel = actMap[item.id]
-          ? `<li class="act-divider"><span>— ${actMap[item.id]} —</span></li>`
+          ? `<li class="act-divider"><span>${actMap[item.id]}</span></li>`
           : '';
         return actLabel + renderItemLi(item);
       }).join('');

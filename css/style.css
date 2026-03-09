@@ -892,12 +892,10 @@ body::before {
 /* Mot en alphabet Dragon — DragonscriptRegular, dégradé doré lumineux (dans item-sub) */
 .word-dragon {
   font-family: 'DragonscriptRegular', serif;
-  font-size: 14px;
+  font-size: 20px;
   line-height: 1;
-  background: linear-gradient(180deg, #e0c060 0%, var(--gold-2) 50%, var(--gold-3) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text);
+  margin-left: 2ch;
 }
 
 /* ── 16c. Spells ── */

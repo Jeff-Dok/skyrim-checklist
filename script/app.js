@@ -695,10 +695,10 @@ function renderItemsHtml(items, cat, forceExpand = false) {
 
     /* ── Dragon Shouts : grille 3 colonnes avec DragonScript ── */
     if (isShouts) {
-      itemsContent = collapsed ? '' : `<div class="shout-words-grid">
+      itemsContent = collapsed ? '' : `<ul class="shout-list">
         ${groupItems.map(item => {
           const done = isChecked(item.id);
-          return `<div class="shout-word${done ? ' done' : ''}" id="item-${item.id}">
+          return `<li class="shout-word${done ? ' done' : ''}" id="item-${item.id}">
             <label class="item-label">
               <span class="cb-wrap">
                 <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
@@ -711,9 +711,9 @@ function renderItemsHtml(items, cat, forceExpand = false) {
               </div>
               <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
             </label>
-          </div>`;
+          </li>`;
         }).join('')}
-      </div>`;
+      </ul>`;
 
     /* ── Enchanting Effects : grille 6 colonnes compacte ── */
     } else if (isEnchanting) {

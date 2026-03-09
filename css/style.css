@@ -885,12 +885,10 @@ body::before {
  * Grille 3 colonnes (27 cris × 3 mots = 81 items).
  * Chaque cellule : checkbox + mot latin (FuturaCondensed) + DragonScript + traduction.
  */
-.shout-words-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 4px;
-  gap: 6px;
-  padding: 8px 14px 14px;
+.shout-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 14px 14px;
 }
 .shout-word {
   border-radius: 6px;
@@ -1049,8 +1047,7 @@ body::before {
   .alchemy-grid        { grid-template-columns: repeat(3, 1fr); }
   .alchemy-img         { width: 50px; height: 50px; }
 
-  /* Shouts : 3 colonnes, tailles de police desktop */
-  .shout-words-grid    { grid-template-columns: repeat(3, 1fr); }
+  /* Shouts : tailles de police tablette/desktop */
   .word-name           { font-size: 26px; }
   .word-en             { font-size: 15px; }
   .word-dragon         { font-size: 26px; }

@@ -1052,6 +1052,11 @@ body::before {
   .info-modal          { padding: 36px 42px; }
   .info-modal-title    { font-size: 30px; }
   .info-val            { font-size: 17px; }
+
+  /* Quest layout : story (25%) + radiant (75%) côte à côte dès 600px */
+  .story-radiant-wrap  { flex-direction: row; gap: 16px; padding: 4px 10px 10px; }
+  .story-section       { flex: 0 0 25%; width: auto; }
+  .radiant-section     { flex: 0 0 75%; width: auto; }
 }
 
 /* ── Desktop (≥ 900px) ── */
@@ -1080,15 +1085,6 @@ body::before {
     width: 25vw;
     min-width: 260px;
   }
-
-  /* Quest layout : story (25%) + radiant (75%) côte à côte */
-  .story-radiant-wrap {
-    flex-direction: row;
-    gap: 16px;
-    padding: 4px 10px 10px;
-  }
-  .story-section  { flex: 0 0 25%; width: auto; }
-  .radiant-section { flex: 0 0 75%; width: auto; }
 
   /* Acts : 3 colonnes */
   .acts-grid { grid-template-columns: repeat(3, 1fr); gap: 0 12px; }

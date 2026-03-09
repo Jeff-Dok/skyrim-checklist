@@ -445,8 +445,9 @@ body::before {
   padding: 10px 0;
 }
 
-/* Texte "Groupe — X%" centré par-dessus le knotwork */
+/* Texte "Groupe — X%" centré par-dessus le knotwork — masqué mobile, visible desktop+ */
 .group-knotwork-pct {
+  display: none;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -1096,4 +1097,7 @@ body::before {
   /* Alchemy : 5 colonnes, icônes 56px */
   .alchemy-grid { grid-template-columns: repeat(5, 1fr); }
   .alchemy-img  { width: 56px; height: 56px; }
+
+  /* Knotwork % — visible desktop+ */
+  .group-knotwork-pct { display: block; }
 }

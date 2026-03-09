@@ -842,7 +842,9 @@ function renderItemsHtml(items, cat, forceExpand = false) {
         : `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
-      : isShouts || isSpells || isEnchanting || isAlchemy
+      : isShouts
+        ? `<div class="act-section-header"><span>${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span></div>`
+      : isSpells || isEnchanting || isAlchemy
         ? `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`

@@ -433,6 +433,10 @@ body::before {
 }
 .group-header:has(.group-knotwork-wrap):hover { background: #000; }
 
+/* Groupe dont le header est un act-section-header (ex: Dragon Shouts) */
+.group-header:has(.act-section-header) { padding: 0; background: none; }
+.group-header:has(.act-section-header):hover { background: none; }
+
 /* Wrapper relatif pour positionner le texte % par-dessus l'image knotwork */
 .group-knotwork-wrap {
   position: relative;
@@ -883,6 +887,7 @@ body::before {
 .shout-words-grid {
   display: grid;
   grid-template-columns: 1fr;
+  gap: 4px;
   gap: 6px;
   padding: 8px 14px 14px;
 }
@@ -899,6 +904,7 @@ body::before {
   align-items: center;
   gap: 2ch;
   min-width: 0;
+  flex: 1;
 }
 /* Mot latin du cri — FuturaCondensed, or vif */
 .word-name {

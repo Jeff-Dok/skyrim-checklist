@@ -998,14 +998,81 @@ body::before {
 
 
 /* ══════════════════════════════════════════════════════════════
-   18. RESPONSIVE — max-width 600px (mobile)
+   18. RESPONSIVE — mobile
    ══════════════════════════════════════════════════════════════ */
 
+/* ── Tablette (≤ 900px) — ajustements légers ── */
+@media (max-width: 900px) {
+  .enchant-grid        { grid-template-columns: repeat(4, 1fr); }
+  .alchemy-grid        { grid-template-columns: repeat(4, 1fr); }
+  .daedric-grid        { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Mobile (≤ 600px) — refonte complète ── */
 @media (max-width: 600px) {
-  /* Réduction des paddings latéraux */
-  .topbar      { padding: 14px 16px 0; }
-  .tabs-row    { padding: 0 16px 10px; }
-  .list-scroll { padding: 0 16px 40px; }
+
+  /* — Topbar — */
+  .topbar { padding: 12px 14px 0; }
+
+  /* Logo plus petit pour libérer de l'espace */
+  .logo-title { height: 44px; }
+
+  /* "Complete @" masqué, seul le % reste (évite le chevauchement avec le titre) */
+  .complete-label { display: none; }
+
+  /* "localStorage" masqué, seul le point coloré reste */
+  .storage-label  { display: none; }
+
+  /* — Tabs row : colonne (recherche full-width, puis onglets) — */
+  .tabs-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 0 14px 10px;
+  }
+
+  /* — Zone de contenu — */
+  .list-scroll { padding: 0 10px 40px; }
+
   /* Sous-texte masqué sur mobile (gain d'espace) */
-  .item-sub    { display: none; }
+  .item-sub { display: none; }
+
+  /* — Résultats de recherche — pleine largeur sur mobile — */
+  .search-results-wrap {
+    width: 100%;
+    min-width: unset;
+  }
+
+  /* — Quest layout : story + radiant empilés verticalement — */
+  .story-radiant-wrap {
+    flex-direction: column;
+    gap: 0;
+    padding: 4px 4px 10px;
+  }
+  .story-section,
+  .radiant-section { flex: 0 0 100%; width: 100%; }
+  .radiant-section .acts-grid { padding: 0; }
+
+  /* — Acts grid : 2 colonnes au lieu de 3 — */
+  .acts-grid { grid-template-columns: repeat(2, 1fr); gap: 0 6px; }
+
+  /* — Daedric : 2 colonnes — */
+  .daedric-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* — Dragon Shouts : 1 colonne (3 mots d'un cri s'empilent) — */
+  .shout-words-grid { grid-template-columns: 1fr; gap: 2px; }
+  .word-name  { font-size: 20px; }
+  .word-en    { font-size: 13px; }
+  .word-dragon { font-size: 20px; }
+
+  /* — Enchanting : 2 colonnes — */
+  .enchant-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* — Alchemy : 2 colonnes, icônes légèrement réduites — */
+  .alchemy-grid { grid-template-columns: repeat(2, 1fr); }
+  .alchemy-img  { width: 44px; height: 44px; }
+
+  /* — Modal : padding réduit sur petits écrans — */
+  .info-modal { padding: 28px 20px; }
+  .info-modal-title { font-size: 22px; }
+  .info-val { font-size: 15px; }
 }

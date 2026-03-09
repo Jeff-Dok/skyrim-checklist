@@ -913,6 +913,31 @@ body::before {
 }
 .item .spell-icon { margin-right: 2px; }
 
+/* Header d'école de magie : [icône] NOM [icône] */
+.spell-school-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 2px 0;
+}
+.spell-school-header .group-knotwork-pct {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.spell-school-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
 /* ── 16d. Enchanting Effects ── */
 /*
  * 6 colonnes compactes pour les 53 effets d'enchantement

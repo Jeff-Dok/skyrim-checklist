@@ -285,6 +285,15 @@ let collapsedGroups = {};          // { [catKey]: true } — groupes repliés (s
 
 /**
  * Table d'encodage DragonscriptRegular : { [mot latin]: chaîne encodée }.
+/** Icône d'école de magie (assets/images/schools/) pour le header de groupe Spells. */
+const SPELL_SCHOOL_IMG = {
+  'Alteration':  'alteration.webp',
+  'Conjuration': 'conjuration.webp',
+  'Destruction': 'destruction.webp',
+  'Illusion':    'illusion.webp',
+  'Restoration': 'restoration.webp',
+};
+
  * La police DragonscriptRegular (Dragon_script.ttf) réinterprète certains
  * glyphes ASCII pour afficher l'alphabet Dovazhul (Dragon Language).
  * Ex: 'Fus' → 'FUS' sera rendu en caractères dragon par la police.
@@ -845,6 +854,12 @@ function renderItemsHtml(items, cat, forceExpand = false) {
         : `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
+      : isSpells && SPELL_SCHOOL_IMG[group]
+        ? (() => { const si = SPELL_SCHOOL_IMG[group]; return `<div class="spell-school-header">
+             <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
+             <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
+             <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
+           </div>`; })()
       : isSpells || isEnchanting || isAlchemy
         ? `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>

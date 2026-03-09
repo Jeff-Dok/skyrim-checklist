@@ -283,8 +283,6 @@ let searchQuery  = '';             // requête de recherche globale courante
 let checked      = {};             // { [id]: true } — items cochés (persisté)
 let collapsedGroups = {};          // { [catKey]: true } — groupes repliés (session)
 
-/**
- * Table d'encodage DragonscriptRegular : { [mot latin]: chaîne encodée }.
 /** Icône d'école de magie (assets/images/schools/) pour le header de groupe Spells. */
 const SPELL_SCHOOL_IMG = {
   'Alteration':  'alteration.webp',
@@ -294,6 +292,8 @@ const SPELL_SCHOOL_IMG = {
   'Restoration': 'restoration.webp',
 };
 
+/**
+ * Table d'encodage DragonscriptRegular : { [mot latin]: chaîne encodée }.
  * La police DragonscriptRegular (Dragon_script.ttf) réinterprète certains
  * glyphes ASCII pour afficher l'alphabet Dovazhul (Dragon Language).
  * Ex: 'Fus' → 'FUS' sera rendu en caractères dragon par la police.

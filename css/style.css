@@ -445,9 +445,8 @@ body::before {
   padding: 10px 0;
 }
 
-/* Texte "Groupe — X%" centré par-dessus le knotwork — masqué mobile, visible desktop+ */
+/* Texte "Groupe — X%" centré par-dessus le knotwork */
 .group-knotwork-pct {
-  display: none;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -461,6 +460,9 @@ body::before {
   background-clip: text;
   pointer-events: none;
 }
+/* Partie "— X%" — masquée sur mobile, visible desktop+ */
+.knotwork-pct-value { display: none; }
+
 /* Sans image : positionnement statique au lieu d'absolu */
 .group-knotwork-wrap.no-img .group-knotwork-pct {
   position: relative;
@@ -1099,5 +1101,5 @@ body::before {
   .alchemy-img  { width: 56px; height: 56px; }
 
   /* Knotwork % — visible desktop+ */
-  .group-knotwork-pct { display: block; }
+  .knotwork-pct-value { display: inline; }
 }

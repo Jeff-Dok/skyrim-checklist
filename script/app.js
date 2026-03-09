@@ -639,7 +639,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       <div class="group${ingCollapsed ? ' collapsed' : ''}">
         <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Ingredients')">
           <div class="group-knotwork-wrap no-img">
-            <span class="group-knotwork-pct">Ingredients&nbsp;&nbsp;—&nbsp;&nbsp;${ingPct}%</span>
+            <span class="group-knotwork-pct">Ingredients<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${ingPct}%</span></span>
           </div>
         </div>
         ${ingCollapsed ? '' : ingGrid}
@@ -647,7 +647,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       <div class="group${potCollapsed ? ' collapsed' : ''}">
         <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Potions')">
           <div class="group-knotwork-wrap no-img">
-            <span class="group-knotwork-pct">Potions&nbsp;&nbsp;—&nbsp;&nbsp;${potPct}%</span>
+            <span class="group-knotwork-pct">Potions<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${potPct}%</span></span>
           </div>
         </div>
         ${potCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
@@ -837,14 +837,14 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       ? img
         ? `<div class="group-knotwork-wrap">
              <img class="group-knotwork" src="assets/knotworks/${img}" alt="${escHtml(group)}" width="1030" height="74" loading="lazy" />
-             <span class="group-knotwork-pct">${escHtml(groupLabel)}&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span>
+             <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
         : `<div class="group-knotwork-wrap no-img">
-             <span class="group-knotwork-pct">${escHtml(groupLabel)}&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span>
+             <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
       : isShouts || isSpells || isEnchanting || isAlchemy
         ? `<div class="group-knotwork-wrap no-img">
-             <span class="group-knotwork-pct">${escHtml(group)}&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span>
+             <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
         : `<span class="group-name">${escHtml(group)}</span>`;
 

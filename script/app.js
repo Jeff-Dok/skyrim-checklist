@@ -36,7 +36,7 @@ const STORAGE_KEY = 'skyrim_checklist_v1';
 const QUEST_GROUPS = [
   { name: 'Main Quest',               img: 'main_quest.webp' },
   { name: 'Companions',               img: 'companions_quest.webp' },
-  { name: 'College of Winterhold',    img: 'college_quest.webp' },
+  { name: 'College of Winterhold',    img: 'college_quest.webp', label: 'Coll. of Winterhold' },
   { name: "Thieves Guild",            img: 'thieves_quest.webp' },
   { name: 'Dark Brotherhood',         img: 'brotherhood_quest.webp' },
   { name: 'Civil War',                img: 'civilwar_quest.webp' },

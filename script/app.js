@@ -669,8 +669,9 @@ function renderItemsHtml(items, cat, forceExpand = false) {
               <span class="cb-box"></span>
             </span>
             <span class="item-name">${escHtml(item.name)}</span>
+            <span class="word-dragon">${escHtml(dragon)}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
-            <span class="item-sub"><span class="word-dragon">${escHtml(dragon)}</span>&nbsp;<span class="word-en">${escHtml(item.word_en || '')}</span></span>
+            <span class="item-sub"><span class="word-en">${escHtml(item.word_en || '')}</span></span>
           </label>
         </li>`;
       }).join('');

@@ -895,7 +895,8 @@ body::before {
   font-size: 20px;
   line-height: 1;
   color: var(--text);
-  margin-left: 2ch;
+  flex: 1;
+  text-align: center;
 }
 
 /* ── 16c. Spells ── */

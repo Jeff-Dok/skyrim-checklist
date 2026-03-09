@@ -520,10 +520,10 @@ body::before {
 }
 .radiant-section .acts-grid { padding: 0; }
 
-/* acts-grid — 2 colonnes mobile, 3 colonnes desktop+ */
+/* acts-grid — 1 colonne mobile, 2 colonnes tablette, 3 colonnes desktop */
 .acts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 0 12px;
   padding: 8px 10px 10px;
   align-items: start;
@@ -1052,6 +1052,9 @@ body::before {
   .info-modal          { padding: 36px 42px; }
   .info-modal-title    { font-size: 30px; }
   .info-val            { font-size: 17px; }
+
+  /* Acts : 2 colonnes dès tablette */
+  .acts-grid { grid-template-columns: repeat(2, 1fr); }
 
   /* Quest layout : story (25%) + radiant (75%) côte à côte dès 600px */
   .story-radiant-wrap  { flex-direction: row; gap: 16px; padding: 4px 10px 10px; }

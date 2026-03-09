@@ -941,7 +941,7 @@ body::before {
   width: 48px;
   height: 48px;
   object-fit: contain;
-  filter: brightness(3) saturate(1.2);
+  filter: brightness(6) saturate(1.4);
 }
 
 /* ── 16d. Enchanting Effects ── */

@@ -1022,6 +1022,9 @@ body::before {
   .complete-label { display: inline; }
   .storage-label  { display: inline; }
 
+  /* Knotwork % — visible tablette+ */
+  .knotwork-pct-value { display: inline; }
+
   /* Tabs row : recherche + onglets côte à côte */
   .tabs-row {
     grid-template-columns: 180px 1fr;
@@ -1100,6 +1103,4 @@ body::before {
   .alchemy-grid { grid-template-columns: repeat(5, 1fr); }
   .alchemy-img  { width: 56px; height: 56px; }
 
-  /* Knotwork % — visible desktop+ */
-  .knotwork-pct-value { display: inline; }
 }

@@ -857,7 +857,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       : isSpells && SPELL_SCHOOL_IMG[group]
         ? (() => { const si = SPELL_SCHOOL_IMG[group]; return `<div class="spell-school-header">
              <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
-             <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
+             <span class="spell-school-name">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
              <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
            </div>`; })()
       : isSpells || isEnchanting || isAlchemy

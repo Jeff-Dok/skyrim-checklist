@@ -155,7 +155,7 @@ body::before {
  */
 .topbar {
   flex-shrink: 0;
-  padding: 20px 28px 0;
+  padding: 12px 14px 0;
   border-bottom: 1px solid var(--border);
   background: var(--surface);
 }
@@ -179,9 +179,9 @@ body::before {
   transform: translateX(-50%);
 }
 
-/* Logo Skyrim — hauteur fluide entre 56px (mobile) et 80px (desktop) */
+/* Logo Skyrim — 44px sur mobile, agrandi sur desktop via min-width */
 .logo-title {
-  height: clamp(56px, 6vw, 80px);
+  height: 44px;
   width: auto;
   display: block;
 }
@@ -214,6 +214,11 @@ body::before {
   align-items: baseline;
   gap: 8px;
 }
+
+/* "Complete @" masqué sur mobile, visible tablette+ */
+.complete-label { display: none; }
+/* "localStorage" masqué sur mobile, visible tablette+ */
+.storage-label  { display: none; }
 
 /* Labels "Complete @" et pourcentage — FuturaCondensed, dégradé doré */
 .complete-label,
@@ -260,10 +265,10 @@ body::before {
  */
 .tabs-row {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: 12px;
-  padding: 0 28px 10px;
+  gap: 8px;
+  padding: 0 14px 10px;
 }
 
 /* tabs-wrap (nav) — flex horizontal défilable, sans scrollbar visible */
@@ -337,11 +342,11 @@ body::before {
   padding: 0;
 }
 
-/* Zone défilable principale — scrollbar fine, padding latéral 28px */
+/* Zone défilable principale — scrollbar fine, padding latéral réduit mobile */
 .list-scroll {
   flex: 1;
   overflow-y: scroll;
-  padding: 0 28px 40px;
+  padding: 0 10px 40px;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
@@ -494,26 +499,28 @@ body::before {
  */
 .story-radiant-wrap {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 0;
   align-items: start;
-  padding: 4px 10px 10px;
+  padding: 4px 4px 10px;
 }
-.story-section { flex: 0 0 25%; }
+.story-section { flex: 0 0 100%; width: 100%; }
 .story-section .act-section-header,
 .radiant-section .act-section-header {
   padding-left: 0;
   padding-right: 0;
 }
 .radiant-section {
-  flex: 0 0 75%;
+  flex: 0 0 100%;
+  width: 100%;
   min-width: 0;
 }
 .radiant-section .acts-grid { padding: 0; }
 
-/* acts-grid — grille 3 colonnes par défaut (surcharge inline possible) */
+/* acts-grid — 2 colonnes mobile, 3 colonnes desktop+ */
 .acts-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0 12px;
   padding: 8px 10px 10px;
   align-items: start;
@@ -680,8 +687,9 @@ body::before {
   text-decoration: line-through;
 }
 
-/* Sous-texte compact (description tronquée, niveau…) */
+/* Sous-texte compact — masqué sur mobile, visible desktop+ */
 .item-sub {
+  display: none;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   color: var(--muted);
@@ -781,7 +789,7 @@ body::before {
   background: var(--surface);
   border: 1px solid var(--gold-3);
   border-radius: 12px;
-  padding: 36px 42px;
+  padding: 28px 20px;
   width: min(640px, 92vw);
   box-shadow: 0 0 40px rgba(0,0,0,.6), 0 0 0 1px rgba(201,165,90,.1);
   transform: translateY(12px);
@@ -807,7 +815,7 @@ body::before {
 /* Titre de la fiche — h2 avec id="infoModalTitle" pour aria-labelledby */
 .info-modal-title {
   font-family: 'FuturaCondensed', 'Futura', sans-serif;
-  font-size: 30px;
+  font-size: 22px;
   letter-spacing: .08em;
   text-transform: uppercase;
   background: var(--gold-gradient);
@@ -828,7 +836,7 @@ body::before {
   color: var(--gold-3);
 }
 .info-val {
-  font-size: 17px;
+  font-size: 15px;
   color: var(--text);
   line-height: 1.5;
 }
@@ -846,7 +854,7 @@ body::before {
  */
 .daedric-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0 12px;
   padding: 8px 10px 16px;
   align-items: start;
@@ -870,7 +878,7 @@ body::before {
  */
 .shout-words-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 6px;
   padding: 8px 14px 14px;
 }
@@ -891,7 +899,7 @@ body::before {
 /* Mot latin du cri — FuturaCondensed, or vif */
 .word-name {
   font-family: 'FuturaCondensed', 'Futura', sans-serif;
-  font-size: 26px;
+  font-size: 20px;
   color: var(--gold-2);
   letter-spacing: 0.06em;
   flex-shrink: 0;
@@ -899,7 +907,7 @@ body::before {
 /* Traduction anglaise entre parenthèses */
 .word-en {
   font-family: 'DM Mono', monospace;
-  font-size: 15px;
+  font-size: 13px;
   color: #a08040;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -910,7 +918,7 @@ body::before {
 /* Mot en alphabet Dragon — DragonscriptRegular, dégradé doré lumineux */
 .word-dragon {
   font-family: 'DragonscriptRegular', serif;
-  font-size: 26px;
+  font-size: 20px;
   line-height: 1;
   background: linear-gradient(180deg, #e0c060 0%, var(--gold-2) 50%, var(--gold-3) 100%);
   -webkit-background-clip: text;
@@ -939,7 +947,7 @@ body::before {
  */
 .enchant-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px 8px;
   list-style: none;
   padding: 4px 12px 8px;
@@ -953,16 +961,16 @@ body::before {
  */
 .alchemy-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 4px 12px;
   list-style: none;
   padding: 8px 12px 12px;
 }
 .alchemy-grid .item-label { gap: 8px; align-items: center; }
-/* Icône de l'ingrédient — 56×56 px, object-fit contain (respect de la transparence) */
+/* Icône de l'ingrédient — 44px mobile, 56px desktop+ */
 .alchemy-img {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -998,81 +1006,94 @@ body::before {
 
 
 /* ══════════════════════════════════════════════════════════════
-   18. RESPONSIVE — mobile
+   18. RESPONSIVE — mobile first (min-width)
+   Base = mobile. Overrides progressifs : 600px tablette, 900px desktop.
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Tablette (≤ 900px) — ajustements légers ── */
-@media (max-width: 900px) {
-  .enchant-grid        { grid-template-columns: repeat(4, 1fr); }
-  .alchemy-grid        { grid-template-columns: repeat(4, 1fr); }
-  .daedric-grid        { grid-template-columns: repeat(2, 1fr); }
+/* ── Tablette (≥ 600px) ── */
+@media (min-width: 600px) {
+  /* Topbar : plus d'espace */
+  .topbar { padding: 16px 20px 0; }
+
+  /* "Complete @" et "localStorage" réapparaissent */
+  .complete-label { display: inline; }
+  .storage-label  { display: inline; }
+
+  /* Tabs row : recherche + onglets côte à côte */
+  .tabs-row {
+    grid-template-columns: 180px 1fr;
+    gap: 10px;
+    padding: 0 20px 10px;
+  }
+
+  /* Zone de contenu : plus de padding */
+  .list-scroll { padding: 0 20px 40px; }
+
+  /* Enchanting : 4 colonnes */
+  .enchant-grid { grid-template-columns: repeat(4, 1fr); }
+
+  /* Alchemy : 3 colonnes */
+  .alchemy-grid        { grid-template-columns: repeat(3, 1fr); }
+  .alchemy-img         { width: 50px; height: 50px; }
+
+  /* Shouts : 3 colonnes, tailles de police desktop */
+  .shout-words-grid    { grid-template-columns: repeat(3, 1fr); }
+  .word-name           { font-size: 26px; }
+  .word-en             { font-size: 15px; }
+  .word-dragon         { font-size: 26px; }
+
+  /* Modal : padding et tailles plein format */
+  .info-modal          { padding: 36px 42px; }
+  .info-modal-title    { font-size: 30px; }
+  .info-val            { font-size: 17px; }
 }
 
-/* ── Mobile (≤ 600px) — refonte complète ── */
-@media (max-width: 600px) {
+/* ── Desktop (≥ 900px) ── */
+@media (min-width: 900px) {
+  /* Topbar : padding plein format */
+  .topbar { padding: 20px 28px 0; }
 
-  /* — Topbar — */
-  .topbar { padding: 12px 14px 0; }
+  /* Logo plein format */
+  .logo-title { height: clamp(56px, 6vw, 80px); }
 
-  /* Logo plus petit pour libérer de l'espace */
-  .logo-title { height: 44px; }
-
-  /* "Complete @" masqué, seul le % reste (évite le chevauchement avec le titre) */
-  .complete-label { display: none; }
-
-  /* "localStorage" masqué, seul le point coloré reste */
-  .storage-label  { display: none; }
-
-  /* — Tabs row : colonne (recherche full-width, puis onglets) — */
+  /* Tabs row : largeur recherche fixe 220px */
   .tabs-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 0 14px 10px;
+    grid-template-columns: 220px 1fr;
+    gap: 12px;
+    padding: 0 28px 10px;
   }
 
-  /* — Zone de contenu — */
-  .list-scroll { padding: 0 10px 40px; }
+  /* Zone de contenu : padding max */
+  .list-scroll { padding: 0 28px 40px; }
 
-  /* Sous-texte masqué sur mobile (gain d'espace) */
-  .item-sub { display: none; }
+  /* Sous-texte visible */
+  .item-sub { display: inline; }
 
-  /* — Résultats de recherche — pleine largeur sur mobile — */
+  /* Résultats de recherche : largeur limitée */
   .search-results-wrap {
-    width: 100%;
-    min-width: unset;
+    width: 25vw;
+    min-width: 260px;
   }
 
-  /* — Quest layout : story + radiant empilés verticalement — */
+  /* Quest layout : story (25%) + radiant (75%) côte à côte */
   .story-radiant-wrap {
-    flex-direction: column;
-    gap: 0;
-    padding: 4px 4px 10px;
+    flex-direction: row;
+    gap: 16px;
+    padding: 4px 10px 10px;
   }
-  .story-section,
-  .radiant-section { flex: 0 0 100%; width: 100%; }
-  .radiant-section .acts-grid { padding: 0; }
+  .story-section  { flex: 0 0 25%; width: auto; }
+  .radiant-section { flex: 0 0 75%; width: auto; }
 
-  /* — Acts grid : 2 colonnes au lieu de 3 — */
-  .acts-grid { grid-template-columns: repeat(2, 1fr); gap: 0 6px; }
+  /* Acts : 3 colonnes */
+  .acts-grid { grid-template-columns: repeat(3, 1fr); gap: 0 12px; }
 
-  /* — Daedric : 2 colonnes — */
-  .daedric-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Daedric : 4 colonnes */
+  .daedric-grid { grid-template-columns: repeat(4, 1fr); }
 
-  /* — Dragon Shouts : 1 colonne (3 mots d'un cri s'empilent) — */
-  .shout-words-grid { grid-template-columns: 1fr; gap: 2px; }
-  .word-name  { font-size: 20px; }
-  .word-en    { font-size: 13px; }
-  .word-dragon { font-size: 20px; }
+  /* Enchanting : 6 colonnes */
+  .enchant-grid { grid-template-columns: repeat(6, 1fr); }
 
-  /* — Enchanting : 2 colonnes — */
-  .enchant-grid { grid-template-columns: repeat(2, 1fr); }
-
-  /* — Alchemy : 2 colonnes, icônes légèrement réduites — */
-  .alchemy-grid { grid-template-columns: repeat(2, 1fr); }
-  .alchemy-img  { width: 44px; height: 44px; }
-
-  /* — Modal : padding réduit sur petits écrans — */
-  .info-modal { padding: 28px 20px; }
-  .info-modal-title { font-size: 22px; }
-  .info-val { font-size: 15px; }
+  /* Alchemy : 5 colonnes, icônes 56px */
+  .alchemy-grid { grid-template-columns: repeat(5, 1fr); }
+  .alchemy-img  { width: 56px; height: 56px; }
 }

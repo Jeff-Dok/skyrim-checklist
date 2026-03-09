@@ -655,6 +655,32 @@ function renderItemsHtml(items, cat, forceExpand = false) {
     `;
   }
 
+  /* ── Dragon Shouts : rendu plat — headers statiques + mots en liste ── */
+  if (isShouts) {
+    return dataOrder.map(group => {
+      const groupItems = groups[group];
+      const words = groupItems.map(item => {
+        const done = isChecked(item.id);
+        return `<li class="shout-word${done ? ' done' : ''}" id="item-${item.id}">
+          <label class="item-label">
+            <span class="cb-wrap">
+              <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
+              <span class="cb-box"></span>
+            </span>
+            <div class="word-body">
+              <span class="word-name">${escHtml(item.name)}</span>
+              <span class="word-dragon">${escHtml(DRAGON_SCRIPT_ENC[item.name] || item.name)}</span>
+              <span class="word-en">${escHtml(item.word_en || '')}</span>
+            </div>
+            <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
+          </label>
+        </li>`;
+      }).join('');
+      return `<div class="act-section-header"><span>${escHtml(group)}</span></div>
+        <ul class="shout-list">${words}</ul>`;
+    }).join('');
+  }
+
   /* Ordre des groupes : canonique (QUEST_GROUP_ORDER) pour les quêtes, sinon ordre des données */
   const groupOrder = isQuests
     ? QUEST_GROUP_ORDER.filter(g => groups[g])
@@ -693,30 +719,8 @@ function renderItemsHtml(items, cat, forceExpand = false) {
 
     let itemsContent;
 
-    /* ── Dragon Shouts : grille 3 colonnes avec DragonScript ── */
-    if (isShouts) {
-      itemsContent = collapsed ? '' : `<ul class="shout-list">
-        ${groupItems.map(item => {
-          const done = isChecked(item.id);
-          return `<li class="shout-word${done ? ' done' : ''}" id="item-${item.id}">
-            <label class="item-label">
-              <span class="cb-wrap">
-                <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
-                <span class="cb-box"></span>
-              </span>
-              <div class="word-body">
-                <span class="word-name">${escHtml(item.name)}</span>
-                <span class="word-dragon">${escHtml(DRAGON_SCRIPT_ENC[item.name] || item.name)}</span>
-                <span class="word-en">${escHtml(item.word_en || '')}</span>
-              </div>
-              <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
-            </label>
-          </li>`;
-        }).join('')}
-      </ul>`;
-
     /* ── Enchanting Effects : grille 6 colonnes compacte ── */
-    } else if (isEnchanting) {
+    if (isEnchanting) {
       const enchHtml = collapsed ? '' : groupItems.map(item => {
         const done = isChecked(item.id);
         return `<li class="item${done ? ' done' : ''}" id="item-${item.id}">
@@ -842,8 +846,6 @@ function renderItemsHtml(items, cat, forceExpand = false) {
         : `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
-      : isShouts
-        ? `<div class="act-section-header"><span>${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span></div>`
       : isSpells || isEnchanting || isAlchemy
         ? `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>

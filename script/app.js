@@ -28,7 +28,7 @@ const STORAGE_KEY = 'skyrim_checklist_v1';
 /**
  * Définition de chaque groupe de quêtes :
  *   name  — clé dans CHECKLIST_DATA['Quests']
- *   img   — nom du fichier WebP dans assets/knotworks/ (null = pas d'image)
+ *   img   — nom du fichier WebP dans assets/images/knotworks/ (null = pas d'image)
  *   label — (optionnel) libellé court affiché sur le knotwork
  *
  * L'ordre de ce tableau détermine l'ordre d'affichage des groupes.
@@ -285,11 +285,11 @@ let collapsedGroups = {};          // { [catKey]: true } — groupes repliés (s
 
 /** Icône d'école de magie (assets/images/schools/) pour le header de groupe Spells. */
 const SPELL_SCHOOL_IMG = {
-  'Alteration':  'alteration.webp',
-  'Conjuration': 'conjuration.webp',
-  'Destruction': 'destruction.webp',
-  'Illusion':    'illusion.webp',
-  'Restoration': 'restoration.webp',
+  'Alteration':  'alteration_2.webp',
+  'Conjuration': 'conjuration_2.webp',
+  'Destruction': 'destruction_2.webp',
+  'Illusion':    'illusion_2.webp',
+  'Restoration': 'restoration_2.webp',
 };
 
 /**
@@ -643,23 +643,49 @@ function renderItemsHtml(items, cat, forceExpand = false) {
     const ingGrid      = ingredients.length ? `<ul class="alchemy-grid">${ingredients.map(renderIngLi).join('')}</ul>` : '';
     const ingCollapsed = !!collapsedGroups[cat + '::Ingredients'];
     const potCollapsed = !!collapsedGroups[cat + '::Potions'];
+    const poisCollapsed  = !!collapsedGroups[cat + '::Poisons'];
+    const recCollapsed   = !!collapsedGroups[cat + '::Recipes'];
 
     return `
       <div class="group${ingCollapsed ? ' collapsed' : ''}">
         <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Ingredients')">
-          <div class="group-knotwork-wrap no-img">
-            <span class="group-knotwork-pct">Ingredients<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${ingPct}%</span></span>
+          <div class="spell-school-header">
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
+            <span class="spell-school-name">Ingredients<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${ingPct}%</span></span>
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
           </div>
         </div>
         ${ingCollapsed ? '' : ingGrid}
       </div>
       <div class="group${potCollapsed ? ' collapsed' : ''}">
         <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Potions')">
-          <div class="group-knotwork-wrap no-img">
-            <span class="group-knotwork-pct">Potions<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${potPct}%</span></span>
+          <div class="spell-school-header">
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
+            <span class="spell-school-name">Potions<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${potPct}%</span></span>
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
           </div>
         </div>
         ${potCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
+      </div>
+      <div class="group${poisCollapsed ? ' collapsed' : ''}">
+        <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Poisons')">
+          <div class="spell-school-header">
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
+            <span class="spell-school-name">Poisons</span>
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
+          </div>
+        </div>
+        ${poisCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
+      </div>
+      <div class="group${recCollapsed ? ' collapsed' : ''}">
+        <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Recipes')">
+          <div class="spell-school-header">
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
+            <span class="spell-school-name">Recipes</span>
+            <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
+          </div>
+        </div>
+        ${recCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
       </div>
     `;
   }
@@ -750,7 +776,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       const renderSpellLi = item => {
         const done = isChecked(item.id);
         const icon = item.img
-          ? `<img class="spell-icon" src="assets/images/spells/SR-icon-spell-${escHtml(item.img)}.webp" alt="" loading="lazy">`
+          ? `<img class="spell-icon" src="assets/images/spells/${escHtml(item.img)}.webp" alt="" loading="lazy">`
           : '<span class="spell-icon"></span>';
         return `<li class="item${done ? ' done' : ''}" id="item-${item.id}">
           <label class="item-label">
@@ -848,18 +874,24 @@ function renderItemsHtml(items, cat, forceExpand = false) {
     const knotwork = isQuests
       ? img
         ? `<div class="group-knotwork-wrap">
-             <img class="group-knotwork" src="assets/knotworks/${img}" alt="${escHtml(group)}" width="1030" height="74" loading="lazy" />
+             <img class="group-knotwork" src="assets/images/knotworks/${img}" alt="${escHtml(group)}" width="1030" height="74" loading="lazy" />
              <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
         : `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(groupLabel)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
            </div>`
       : isSpells && SPELL_SCHOOL_IMG[group]
-        ? (() => { const si = SPELL_SCHOOL_IMG[group]; return `<div class="spell-school-header">
+        ? (() => { const si = SPELL_SCHOOL_IMG[group]; return `<div class="spell-school-header spell-school-${escHtml(group.toLowerCase())}">
              <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
              <span class="spell-school-name">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
              <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
            </div>`; })()
+      : isEnchanting && (group === 'Weapon Enchantments' || group === 'Armor Enchantments')
+        ? `<div class="spell-school-header">
+             <img class="spell-school-icon" src="assets/images/craftings/enchanting.webp" alt="" width="36" height="36">
+             <span class="spell-school-name">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
+             <img class="spell-school-icon" src="assets/images/craftings/enchanting.webp" alt="" width="36" height="36">
+           </div>`
       : isSpells || isEnchanting || isAlchemy
         ? `<div class="group-knotwork-wrap no-img">
              <span class="group-knotwork-pct">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
@@ -912,7 +944,7 @@ function renderSearchResults(items, cat) {
         ? `<img class="alchemy-img" src="assets/images/ingredients/${escHtml(item.img)}" alt="" loading="lazy" onerror="this.style.display='none'">`
         : '';
       const spellIcon = isSpells && item.img
-        ? `<img class="spell-icon" src="assets/images/spells/SR-icon-spell-${escHtml(item.img)}.webp" alt="" loading="lazy">`
+        ? `<img class="spell-icon" src="assets/images/spells/${escHtml(item.img)}.webp" alt="" loading="lazy">`
         : '';
       return `<li class="item${done ? ' done' : ''}" id="item-${item.id}">
         <label class="item-label">
@@ -1111,6 +1143,8 @@ function init() {
   /* Sections Alchemy repliées par défaut (utilisent section au lieu de group) */
   collapsedGroups[groupKey('Alchemy Ingredients', 'Ingredients')] = true;
   collapsedGroups[groupKey('Alchemy Ingredients', 'Potions')]     = true;
+  collapsedGroups[groupKey('Alchemy Ingredients', 'Poisons')]     = true;
+  collapsedGroups[groupKey('Alchemy Ingredients', 'Recipes')]     = true;
 
   renderTabs();
   renderStats();

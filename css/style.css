@@ -944,6 +944,13 @@ body::before {
   object-fit: contain;
   filter: brightness(6) saturate(1.4);
 }
+.spell-school-alteration { gap: 15px; }
+.spell-school-illusion    { gap: 27px; }
+.spell-school-destruction .spell-school-icon { filter: brightness(2) sepia(1) hue-rotate(340deg) saturate(6); }
+.spell-school-conjuration .spell-school-icon  { filter: brightness(2) sepia(1) hue-rotate(205deg) saturate(5); }
+.spell-school-alteration .spell-school-icon   { filter: brightness(2) sepia(1) hue-rotate(50deg)  saturate(4); }
+.spell-school-restoration .spell-school-icon  { filter: brightness(4) sepia(1) hue-rotate(30deg)  saturate(1.5); }
+.spell-school-illusion .spell-school-icon     { filter: brightness(2) sepia(1) hue-rotate(270deg) saturate(4); }
 
 /* ── 16d. Enchanting Effects ── */
 /*
@@ -952,7 +959,7 @@ body::before {
  */
 .enchant-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 2px 8px;
   list-style: none;
   padding: 4px 12px 8px;
@@ -966,7 +973,7 @@ body::before {
  */
 .alchemy-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 4px 12px;
   list-style: none;
   padding: 8px 12px 12px;
@@ -978,6 +985,7 @@ body::before {
   height: 44px;
   object-fit: contain;
   flex-shrink: 0;
+  margin: 0 5px;
 }
 .alchemy-grid .item-name { font-size: 17px; }
 /* Placeholder de la section Potions */
@@ -1037,11 +1045,11 @@ body::before {
   /* Zone de contenu : plus de padding */
   .list-scroll { padding: 0 20px 40px; }
 
-  /* Enchanting : 4 colonnes */
-  .enchant-grid { grid-template-columns: repeat(4, 1fr); }
+  /* Enchanting : 1 colonne */
+  .enchant-grid { grid-template-columns: 1fr; }
 
-  /* Alchemy : 3 colonnes */
-  .alchemy-grid        { grid-template-columns: repeat(3, 1fr); }
+  /* Alchemy : 1 colonne */
+  .alchemy-grid        { grid-template-columns: 1fr; }
   .alchemy-img         { width: 50px; height: 50px; }
 
 /* Modal : padding et tailles plein format */
@@ -1094,11 +1102,11 @@ body::before {
   /* Bouton info : taille réduite sur desktop (20px suffisant partout) */
   .info-btn { font-size: 15px; }
 
-  /* Enchanting : 6 colonnes */
-  .enchant-grid { grid-template-columns: repeat(6, 1fr); }
+  /* Enchanting : 1 colonne */
+  .enchant-grid { grid-template-columns: 1fr; }
 
-  /* Alchemy : 5 colonnes, icônes 56px */
-  .alchemy-grid { grid-template-columns: repeat(5, 1fr); }
+  /* Alchemy : 1 colonne */
+  .alchemy-grid { grid-template-columns: 1fr; }
   .alchemy-img  { width: 56px; height: 56px; }
 
 }

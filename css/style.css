@@ -1068,6 +1068,26 @@ body::before {
    17. PROFILS — Bouton topbar (skyrim.html) + Page d'accueil (index.html)
    ══════════════════════════════════════════════════════════════ */
 
+/* ── Bouton langue FR / EN ── */
+.lang-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 100;
+  background: transparent;
+  border: 1px solid var(--gold-3);
+  border-radius: 8px;
+  color: var(--gold-2);
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  padding: 7px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s;
+}
+.lang-btn:hover { background: rgba(201, 165, 90, 0.12); }
+
 /* ── Bouton "personnage actif" dans la topbar de skyrim.html ── */
 .character-btn {
   display: inline-block;

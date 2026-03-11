@@ -28,6 +28,9 @@
 
   <body>
 
+    <!-- Bouton langue — fixé en haut à droite -->
+    <button class="lang-btn" onclick="toggleLang()"></button>
+
     <main class="welcome-page">
 
       <div class="welcome-inner">
@@ -45,8 +48,8 @@
           <p class="welcome-checklist-label">Checklist</p>
         </div>
 
-        <!-- Titre section -->
-        <h1 class="welcome-title">Select a Character</h1>
+        <!-- Titre section — injecté par JS (i18n) -->
+        <h1 class="welcome-title" id="welcomeTitle"></h1>
 
         <!-- Ligne décorative -->
         <div class="welcome-divider"></div>
@@ -56,19 +59,19 @@
 
         <!-- Formulaire nouveau personnage -->
         <div class="welcome-new-wrap">
-          <p class="welcome-new-label">New Character</p>
+          <p class="welcome-new-label" id="newCharLabel"></p>
           <div class="welcome-divider"></div>
           <div class="welcome-new-form">
             <input
               type="text"
               id="profileNameInput"
               class="welcome-name-input"
-              placeholder="Character name…"
+              placeholder=""
               maxlength="30"
               autocomplete="off"
               aria-label="New character name"
             />
-            <button class="welcome-btn-create" id="btnCreate">Create</button>
+            <button class="welcome-btn-create" id="btnCreate"></button>
           </div>
         </div>
 
@@ -76,6 +79,7 @@
 
     </main>
 
+    <script src="script/i18n.js"></script>
     <script src="script/profiles.js"></script>
     <script>
       /* ── Utilitaires ── */
@@ -87,6 +91,15 @@
           .replace(/"/g, '&quot;');
       }
 
+      /* ── Applique les traductions aux éléments statiques ── */
+      function applyI18n() {
+        document.getElementById('welcomeTitle').textContent    = t('selectTitle');
+        document.getElementById('newCharLabel').textContent    = t('newCharacter');
+        document.getElementById('profileNameInput').placeholder = t('placeholder');
+        document.getElementById('btnCreate').textContent       = t('btnCreate');
+        document.querySelector('.lang-btn').textContent        = t('langBtn');
+      }
+
       /* ── Redirection vers la checklist ── */
       function playProfile(id) {
         localStorage.setItem(ACTIVE_PROFILE_KEY, id);
@@ -95,7 +108,7 @@
 
       /* ── Suppression d'un profil ── */
       function confirmDeleteProfile(id, name) {
-        if (!confirm(`Delete character "${name}"?\nThis action cannot be undone.`)) return;
+        if (!confirm(t('deleteConfirm')(name))) return;
         deleteProfile(id);
         renderProfiles();
       }
@@ -104,23 +117,24 @@
       function renderProfiles() {
         const profiles = getProfiles();
         const list = document.getElementById('profileList');
+        const locale = getLang() === 'fr' ? 'fr-CA' : 'en-CA';
 
         if (profiles.length === 0) {
-          list.innerHTML = '<p class="welcome-empty">No characters yet — create one below.</p>';
+          list.innerHTML = `<p class="welcome-empty">${t('emptyProfiles')}</p>`;
           return;
         }
 
         list.innerHTML = profiles.map(p => {
-          const pct = getProfilePct(p.id);
-          const date = new Date(p.createdAt).toLocaleDateString('en-CA');
+          const pct  = getProfilePct(p.id);
+          const date = new Date(p.createdAt).toLocaleDateString(locale);
           return `
 <div class="welcome-profile-card" role="listitem">
   <div class="welcome-card-info">
     <span class="welcome-card-name">${escHtml(p.name)}</span>
-    <span class="welcome-card-meta">${pct} · created ${date}</span>
+    <span class="welcome-card-meta">${pct} · ${t('metaCreated')} ${date}</span>
   </div>
   <div class="welcome-card-actions">
-    <button class="welcome-btn-play" onclick="playProfile('${p.id}')">&#9654; Play</button>
+    <button class="welcome-btn-play" onclick="playProfile('${p.id}')">${t('btnPlay')}</button>
     <button class="welcome-btn-delete" onclick="confirmDeleteProfile('${p.id}', '${escHtml(p.name).replace(/'/g, '&#39;')}')" aria-label="Delete ${escHtml(p.name)}">✕</button>
   </div>
 </div>`;
@@ -138,6 +152,7 @@
 
       /* ── Init ── */
       migrateV1IfNeeded();
+      applyI18n();
       renderProfiles();
 
       document.getElementById('btnCreate').addEventListener('click', handleCreate);

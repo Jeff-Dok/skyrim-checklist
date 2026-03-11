@@ -58,6 +58,8 @@
           </div>
 
           <div class="topbar-right">
+            <!-- Bouton langue FR/EN -->
+            <button class="lang-btn" id="langBtn" onclick="toggleLang()"></button>
             <!--
               Bouton personnage actif — à gauche du compteur %.
               Le nom est injecté par updateCharacterBtn() dans app.js.
@@ -165,8 +167,10 @@
         - app.js      → logique principale
       defer garantit l'exécution après parsing HTML, dans l'ordre déclaré.
     -->
+    <script src="script/i18n.js" defer></script>
     <script src="script/profiles.js" defer></script>
     <script src="script/data.js" defer></script>
+    <script src="script/data_fr.js" defer></script>
     <script src="script/app.js" defer></script>
   </body>
 </html>

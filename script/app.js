@@ -388,15 +388,29 @@ function setBadge(state) {
   if (!badge) return;
   badge.dataset.state = state;
   const label = badge.querySelector('.storage-label');
-  if (state === 'saving') label.textContent = 'saving…';
-  else if (state === 'error') label.textContent = 'save failed';
-  else label.textContent = 'saved';
+  if (state === 'saving') label.textContent = t('saving');
+  else if (state === 'error') label.textContent = t('saveFailed');
+  else label.textContent = t('saved');
 }
 
 
 /* ════════════════════════════════════════════════════════════════
    PROFIL ACTIF — Lecture + bouton topbar
    ════════════════════════════════════════════════════════════════ */
+
+/**
+ * Retourne le nom d'un item dans la langue active.
+ * Utilise DATA_FR_NAMES (data_fr.js) si la langue est FR et qu'une traduction existe.
+ * @param {{ id: number, name: string }} item
+ * @returns {string}
+ */
+function itemName(item) {
+  if (typeof getLang === 'function' && getLang() === 'fr') {
+    const fr = typeof DATA_FR_NAMES !== 'undefined' && DATA_FR_NAMES[item.id];
+    if (fr) return fr;
+  }
+  return item.name;
+}
 
 /** Met à jour le bouton de personnage dans la topbar avec le nom du profil actif. */
 function updateCharacterBtn() {
@@ -665,7 +679,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <span class="cb-box"></span>
           </span>
           ${imgTag}
-          <span class="item-name">${escHtml(item.name)}</span>
+          <span class="item-name">${escHtml(itemName(item))}</span>
           <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
         </label>
       </li>`;
@@ -684,7 +698,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <span class="cb-box"></span>
           </span>
           ${imgTag}
-          <span class="item-name">${escHtml(item.name)}</span>
+          <span class="item-name">${escHtml(itemName(item))}</span>
           <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
         </label>
       </li>`;
@@ -794,7 +808,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
               <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
               <span class="cb-box"></span>
             </span>
-            <span class="item-name">${escHtml(item.name)}</span>
+            <span class="item-name">${escHtml(itemName(item))}</span>
             <span class="word-dragon">${escHtml(dragon)}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
             <span class="item-sub"><span class="word-en">${escHtml(item.word_en || '')}</span></span>
@@ -828,7 +842,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
             <span class="cb-box"></span>
           </span>
-          <span class="item-name">${escHtml(item.name)}</span>
+          <span class="item-name">${escHtml(itemName(item))}</span>
           ${infoBtn}
           ${sub ? `<span class="item-sub">${sub}</span>` : ''}
         </label>
@@ -854,7 +868,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
               <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
               <span class="cb-box"></span>
             </span>
-            <span class="item-name">${escHtml(item.name)}</span>
+            <span class="item-name">${escHtml(itemName(item))}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
           </label>
         </li>`;
@@ -876,7 +890,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
               <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
               <span class="cb-box"></span>
             </span>
-            <span class="item-name">${escHtml(item.name)}</span>
+            <span class="item-name">${escHtml(itemName(item))}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
           </label>
         </li>`;
@@ -904,7 +918,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
                 <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
                 <span class="cb-box"></span>
               </span>
-              <span class="item-name">${escHtml(item.name)}</span>
+              <span class="item-name">${escHtml(itemName(item))}</span>
               <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
             </label>
           </div>`;
@@ -1045,7 +1059,7 @@ function renderSearchResults(items, cat) {
             <span class="cb-box"></span>
           </span>
           ${imgTag}
-          <span class="item-name">${escHtml(item.name)}</span>
+          <span class="item-name">${escHtml(itemName(item))}</span>
           ${infoBtn}
         </label>
       </li>`;
@@ -1078,13 +1092,13 @@ function renderList() {
       html += renderSearchResults(filtered, cat);
     });
     container.innerHTML = totalFound === 0
-      ? `<div class="empty"><span class="empty-icon">✦</span>Aucun résultat pour "${escHtml(q)}".</div>`
+      ? `<div class="empty"><span class="empty-icon">✦</span>${escHtml(t('emptySearch')(q))}</div>`
       : `<div class="search-results-wrap">${html}</div>`;
   } else {
     /* Affichage normal : catégorie active uniquement */
     const items = CHECKLIST_DATA[currentCat] || [];
     container.innerHTML = items.length === 0
-      ? `<div class="empty"><span class="empty-icon">✦</span>Aucun élément.</div>`
+      ? `<div class="empty"><span class="empty-icon">✦</span>${escHtml(t('emptyCategory'))}</div>`
       : renderItemsHtml(items, currentCat);
   }
 }
@@ -1150,49 +1164,49 @@ function openInfoModal(id) {
 
   /* ── Alchemy Ingredients ── */
   if (isAlchemyItem) {
-    if (item.section) rows.push(makeInfoRow('Group',        item.section));
-    if (item.origin)  rows.push(makeInfoRow('Origin',       item.origin));
-    if (item.effects) rows.push(makeInfoRow('Effects',      item.effects.map(e => escHtml(e)).join('<br>'), true));
-    if (item.source)  rows.push(makeInfoRow('How to Obtain',item.source));
-    rows.push(makeInfoRow('Garden', item.garden ? 'Yes' : 'No'));
+    if (item.section) rows.push(makeInfoRow(t('modalGroup'),   item.section));
+    if (item.origin)  rows.push(makeInfoRow(t('modalOrigin'),  item.origin));
+    if (item.effects) rows.push(makeInfoRow(t('modalEffects'), item.effects.map(e => escHtml(e)).join('<br>'), true));
+    if (item.source)  rows.push(makeInfoRow(t('modalObtain'),  item.source));
+    rows.push(makeInfoRow(t('modalGarden'), item.garden ? t('modalYes') : t('modalNo')));
   }
 
   /* ── Potions / Poisons ── */
   if (isPotionItem) {
-    rows.push(makeInfoRow('Category', item.section));
-    if (item.group)  rows.push(makeInfoRow('Group',  item.group));
-    if (item.type)   rows.push(makeInfoRow('Type',   item.type));
-    if (item.level != null) rows.push(makeInfoRow('Level Required', String(item.level)));
-    if (item.desc)   rows.push(makeInfoRow('Effect', item.desc));
-    if (item.source) rows.push(makeInfoRow('Source', item.source));
+    rows.push(makeInfoRow(t('modalCategory'), item.section));
+    if (item.group)  rows.push(makeInfoRow(t('modalGroup'),  item.group));
+    if (item.type)   rows.push(makeInfoRow(t('modalType'),   item.type));
+    if (item.level != null) rows.push(makeInfoRow(t('modalLevel'), String(item.level)));
+    if (item.desc)   rows.push(makeInfoRow(t('modalEffect'), item.desc));
+    if (item.source) rows.push(makeInfoRow(t('modalSource'), item.source));
   }
 
   /* ── Champ group (libellé contextuel selon le type) ── */
   if (!isShoutItem && !isSpellItem && !isEnchantItem && !isAlchemyItem && !isPotionItem && item.group)
-    rows.push(makeInfoRow('Quest Group', item.group));
-  if (isShoutItem  && item.group) rows.push(makeInfoRow('Shout',    item.group));
-  if (isSpellItem  && item.group) rows.push(makeInfoRow('School',   item.group));
-  if (isEnchantItem && item.group) rows.push(makeInfoRow('Category', item.group));
+    rows.push(makeInfoRow(t('modalGroup'),    item.group));
+  if (isShoutItem   && item.group) rows.push(makeInfoRow(t('modalShout'),    item.group));
+  if (isSpellItem   && item.group) rows.push(makeInfoRow(t('modalSchool'),   item.group));
+  if (isEnchantItem && item.group) rows.push(makeInfoRow(t('modalCategory'), item.group));
 
   /* ── Champs spécifiques (quêtes, sorts, shouts, enchantements) ── */
   if (!isPotionItem) {
-    if (item.school)  rows.push(makeInfoRow('School',            item.school));
-    if (item.slots)   rows.push(makeInfoRow('Applicable Slots',  item.slots));
-    if (item.word_en) rows.push(makeInfoRow('Translation',       item.word_en));
-    if (isSpellItem && item.level) rows.push(makeInfoRow('Level', item.level));
-    if (item.dlc)     rows.push(makeInfoRow('DLC',               item.dlc));
-    if (item.city)    rows.push(makeInfoRow('City',              item.city));
-    if (item.prince)  rows.push(makeInfoRow('Daedric Prince',    item.prince));
-    if (!isSpellItem && item.level) rows.push(makeInfoRow('Level Required', String(item.level)));
-    if (item.desc)    rows.push(makeInfoRow('Description',       item.desc));
-    if (item.location) rows.push(makeInfoRow('Word Wall Location', item.location));
-    if (item.giver)   rows.push(makeInfoRow('Quest Giver',       item.giver));
-    if (item.reward)  rows.push(makeInfoRow('Rewards',           item.reward));
+    if (item.school)  rows.push(makeInfoRow(t('modalSchool'),       item.school));
+    if (item.slots)   rows.push(makeInfoRow(t('modalSlots'),        item.slots));
+    if (item.word_en) rows.push(makeInfoRow(t('modalTranslation'),  item.word_en));
+    if (isSpellItem && item.level) rows.push(makeInfoRow(t('modalSpellLevel'), item.level));
+    if (item.dlc)     rows.push(makeInfoRow(t('modalDLC'),          item.dlc));
+    if (item.city)    rows.push(makeInfoRow(t('modalCity'),         item.city));
+    if (item.prince)  rows.push(makeInfoRow(t('modalPrince'),       item.prince));
+    if (!isSpellItem && item.level) rows.push(makeInfoRow(t('modalLevel'), String(item.level)));
+    if (item.desc)    rows.push(makeInfoRow(t('modalDesc'),         item.desc));
+    if (item.location) rows.push(makeInfoRow(t('modalLocation'),    item.location));
+    if (item.giver)   rows.push(makeInfoRow(t('modalGiver'),        item.giver));
+    if (item.reward)  rows.push(makeInfoRow(t('modalRewards'),      item.reward));
   }
 
   /* Injection dans le DOM — h2#infoModalTitle pour aria-labelledby */
   document.getElementById('infoModalContent').innerHTML = `
-    <h2 class="info-modal-title" id="infoModalTitle">${escHtml(item.name)}</h2>
+    <h2 class="info-modal-title" id="infoModalTitle">${escHtml(itemName(item))}</h2>
     <div class="info-modal-rows">${rows.join('')}</div>
   `;
   document.getElementById('infoModal').classList.add('open');
@@ -1285,6 +1299,14 @@ function init() {
   renderList();
   setBadge('saved');
   updateCharacterBtn();
+
+  /* Strings i18n — topbar statique */
+  const si = document.getElementById('searchInput');
+  if (si) si.placeholder = t('searchPlaceholder');
+  const cl = document.querySelector('.complete-label');
+  if (cl) cl.textContent = t('completeLabel');
+  const lb = document.getElementById('langBtn');
+  if (lb) lb.textContent = t('langBtn');
 
   /* Recherche globale */
   document.getElementById('searchInput').addEventListener('input', e => onSearch(e.target.value));

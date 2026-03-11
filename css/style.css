@@ -1244,18 +1244,15 @@ body::before {
 .welcome-btn-play:hover { background: rgba(201, 165, 90, 0.12); }
 .welcome-btn-delete {
   background: transparent;
-  border: 1px solid var(--border2);
+  border: 1px solid var(--danger);
   border-radius: 7px;
-  color: var(--muted);
+  color: var(--danger);
   font-size: 14px;
   padding: 6px 10px;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: background 0.15s;
 }
-.welcome-btn-delete:hover {
-  border-color: var(--danger);
-  color: var(--danger);
-}
+.welcome-btn-delete:hover { background: rgba(255, 92, 106, 0.12); }
 
 /* Section nouveau personnage */
 .welcome-new-wrap {
@@ -1273,6 +1270,8 @@ body::before {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-align: center;
+  width: 100%;
   margin-bottom: 12px;
 }
 .welcome-new-form {
@@ -1282,7 +1281,7 @@ body::before {
 .welcome-name-input {
   flex: 1;
   background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--gold-3);
   border-radius: var(--radius);
   color: var(--gold-2);
   font-family: 'DM Mono', monospace;

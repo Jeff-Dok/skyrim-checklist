@@ -2,8 +2,6 @@
 
 ## Groupes de quêtes manquants (données à ajouter dans data.js)
 
-Ces groupes ont un knotwork prêt mais 0 données :
-
 - [X] **Bards College** — quêtes de la guilde des bardes
 - [X] **Side Quests** — quêtes secondaires
 - [X] **Miscellaneous** — quêtes misc (IDs 226–326, tous les holds complétés)
@@ -11,7 +9,9 @@ Ces groupes ont un knotwork prêt mais 0 données :
 - [X] **Dawnguard** — DLC Dawnguard (quêtes principales + secondaires) — 49 items, IDs 437–485
 - [X] **Dragonborn** — DLC Dragonborn (quêtes principales + secondaires) — 56 items, IDs 486–541
 - [~] **Fishing** — DLC Fishing (22 quêtes, IDs 552–573) — données ajoutées, 9 quêtes CC restantes à classer
-- [X] **Creation Club** — 84 quêtes (IDs 574–657, 22 sections reclassées) : Armor Quests / Weapon Quests / Major Questlines (Ghosts, S&S, The Cause, Bittercup, Divine Crusader, Gray Cowl, Forgotten Seasons) / Homes (7 colonnes) / Companions (Pets, Horses, Followers) / Misc (Farming, Crafting, Spells)
+- [X] **Creation Club** — 84 quêtes (IDs 574–657, 22 sections reclassées)
+
+---
 
 ## Enrichissement des descriptions (guide Prima)
 
@@ -21,61 +21,128 @@ Ces groupes ont un knotwork prêt mais 0 données :
 - [X] Thieves Guild — toutes enrichies
 - [X] Dark Brotherhood — toutes enrichies
 - [X] Civil War — toutes enrichies
-- [X] Daedric (15 quêtes) — toutes enrichies + corrections (level 163, group/giver 182)
+- [X] Daedric (15 quêtes) — toutes enrichies
 - [X] Bards College (4 quêtes) — toutes enrichies
 - [X] Divine Quests (6 quêtes) — toutes enrichies
-- [X] The Greybeards / The Blades — enrichies + correction Meditations on Words of Power
-- [X] Side Quests (20 quêtes + 5 ajouts : IDs 547–551) — toutes enrichies
-- [X] Dungeon Quests (23 quêtes) — toutes enrichies + corrections (Wilhelm, Otar, Selveni)
-- [X] Dawnguard (main quests 437–450) — toutes enrichies + correction critique ID 441
-- [X] Dragonborn (main quests 486–492) — toutes enrichies + correction ID 489 (4 stones, pas 6)
-- [X] Miscellaneous Objectives (226–326) — descriptions déjà spécifiques, OK
-- [X] Favors (327–436) — descriptions simples/radiant, OK tel quel
-- [X] Dawnguard faction/vampire/side quests (IDs 451–485) — radiant, OK
-- [X] Dragonborn side quests (IDs 493–541) — toutes vérifiées, OK
+- [X] The Greybeards / The Blades — enrichies
+- [X] Side Quests (20 quêtes + 5 ajouts IDs 547–551) — toutes enrichies
+- [X] Dungeon Quests (23 quêtes) — toutes enrichies
+- [X] Dawnguard — toutes enrichies
+- [X] Dragonborn — toutes enrichies
+- [X] Miscellaneous Objectives, Favors, radiant quests — OK tel quel
+
+---
 
 ## Knotworks manquants (img: null dans QUEST_GROUPS)
 
-Ces 4 groupes n'ont pas encore de knotwork PNG :
-- [ ] **Divine Quests** — à créer : `divine_quest.png`
-- [ ] **The Greybeards** — à créer : `greybeards_quest.png`
-- [ ] **The Blades** — à créer : `blades_quest.png`
-- [ ] **Dungeon Quests** — à créer : `dungeon_quest.png`
+Ces 4 groupes n'ont pas encore de banner WebP (1030×74px) :
+- [ ] **Divine Quests** → `divine_quest.webp`
+- [ ] **The Greybeards** → `greybeards_quest.webp`
+- [ ] **The Blades** → `blades_quest.webp`
+- [ ] **Dungeon Quests** → `dungeon_quest.webp`
 
-Pistes pour la prochaine session :
-- Style existant : fond sombre, motif entrelacé (knotwork) doré/cuivré, texte en haut
-- Option 1 : générer via IA (Midjourney / DALL-E) avec prompt style "Nordic knotwork banner"
-- Option 2 : modifier un knotwork existant (recadrage, recoloriage, ajout de symbole)
-- Option 3 : créer un SVG ou HTML5 Canvas simplifié qui s'auto-génère côté code
-- Référence visuelle : les PNGs existants font tous ~800×200px environ (à vérifier)
+Pistes : Midjourney / DALL-E avec prompt "Nordic knotwork banner 1030x74" ou recadrage d'un existant.
 
-## Catégories vides (données + rendu à implémenter)
+---
 
-- [X] **Dragon Shouts** — 81 mots (27 cris × 3 mots, IDs 658–738) — grille 3 colonnes, police DragonScript, DLC badges
-- [X] **Spells** — 170 sorts (IDs 739–908) : base + Dawnguard + Dragonborn + 53 CC — colonnes par niveau (Novice→Master), icônes WebP 64px
-- [X] **Enchanting Effects** — 53 effets (IDs 909–961) : 18 armes + 35 armures, grille 6 colonnes, school + slots dans modal
-- [X] **Alchemy Ingredients** — 183 ingrédients (IDs 962–1144) en ordre alphabétique, grille 5 colonnes, icônes WebP 64px, modal anglais (Group/Origin/Effects/How to Obtain/Garden)
-- [ ] **Books** — Skill Books (~90 livres, 1 par skill par niveau)
-- [ ] **Perks** — perks spéciaux (scope à définir)
-- [ ] **Collectible** — scope à définir (cartes ? listes par type ?)
+## Catégorie Alchemy — sections à compléter
+
+La catégorie Alchemy Ingredients est rendue (1 colonne, 4 sections collapsibles).
+
+### Potions ✅ COMPLÉTÉ
+- [X] 212 items codés (IDs 1145–1356), groupes Health/Magicka/Stamina/Skill
+- [X] Types dans Skill : 19 Fortify + Invisibility + Regen + Resist + Waterbreathing + Thieves Guild + DLC/Special
+- [ ] **Vérifier les images** — certains `img` peuvent ne pas avoir de fichier correspondant (`onerror` fallback actif)
+
+### Poisons ✅ COMPLÉTÉ
+- [X] 79 items codés (IDs 1357–1435), groupes Damage/Crowd Control/Weakness/Lingering/Special
+- [X] Types collapsibles comme Potions
+- [ ] **Vérifier les images** — SlowMagicka*/SlowStamina* au lieu de LingeringMagicka*/LingeringStamina*
+
+### Recipes
+- [ ] Scope à définir — recettes d'alchimie ? combinaisons ingrédients → effet ?
+
+---
+
+## Scrolls (nouvelle catégorie potentielle)
+
+- [ ] **Données préparées** — `Sections/potions_poisons_beverages.txt` section SCROLLS
+  - 56 scrolls complets avec ID, effet, valeur, location (UESP + Prima)
+  - Organisés par école : Alteration, Conjuration, Destruction, Illusion, Restoration + Quest/Special
+- [ ] **Décision** : inclure dans Alchemy ? créer catégorie séparée ? ignorer ?
+- [ ] **Rendu** à définir si retenu
+
+---
+
+## Spiders (données CC disponibles)
+
+- [ ] **Données préparées** — `Sections/potions_poisons_beverages.txt` section SPIDERS
+  - 15 spiders CC avec effets et descriptions (Prima guide)
+- [ ] **Décision** : inclure dans quelle catégorie ?
+
+---
+
+## Scripts utilitaires (agents Python — mis à jour cette session)
+
+Tous dans `C:\Users\jnfra\.claude\agents\` :
+
+- [X] `analyze_image.py` — analyse 1 image via Claude API → `.txt`
+- [X] `batch_analyze.py` — analyse tous PNG/JPG/WEBP d'un dossier
+- [X] `download_uesp_images.py` — télécharge icônes UESP depuis URL(s)
+  - Patterns : `SR-icon-*.png/jpg` et `SR-item-*.png/jpg`
+  - Routing auto : `UESP/icon/` ou `UESP/item/` selon le nom
+  - Multi-URL supporté : `python script.py url1 url2 url3`
+  - Dest par défaut : `C:\Users\jnfra\OneDrive\Pictures\UESP`
+- [X] `process_ingredient_images.py` — convertit PNG/JPG → WebP 64px
+  - Retire tout ce qui est avant le dernier `-` du nom
+  - Retire les apostrophes du nom
+  - Reproduit la structure source dans `UESP/webp/icon/` ou `UESP/webp/item/`
+- [X] `build_sections.py` — fusionne pages PDF du guide Prima
+  - Usage : `python build_sections.py "Nom" page_debut [page_fin]`
+  - Output : `skyrim_project/Sections/Nom.pdf`
+
+---
+
+## Catégories à implémenter (données + rendu)
+
+- [X] **Dragon Shouts** — 81 mots (IDs 658–738)
+- [X] **Spells** — 170 sorts (IDs 739–908)
+- [X] **Enchanting Effects** — 53 effets (IDs 909–961)
+- [X] **Alchemy Ingredients** — 183 ingrédients (IDs 962–1144) — section Ingredients complète
+- [X] **Alchemy Potions** — 212 items codés (IDs 1145–1356) : Health/Magicka/Stamina/Skill (tous Fortify, Regen, Resist, Invisibility, Waterbreathing, Thieves Guild, DLC, Special)
+- [X] **Alchemy Poisons** — 79 items codés (IDs 1357–1435) : Damage/Crowd Control/Weakness/Lingering/Special
+- [ ] **Alchemy Recipes** — scope à définir
+- [ ] **Books** — Skill Books (~90 livres, 1 par compétence par niveau)
+  - Données à récupérer (UESP : Skyrim:Skill Books)
+  - Rendu : liste par compétence, avec nom du livre + skill boosté
+- [ ] **Perks** — perks notables ou rares (scope à définir)
+- [ ] **Collectible** — scope à définir (cartes au trésor ? Stones of Barenziah ? Flûtes de barde ?)
 - [ ] **Unique Gear** — armes/armures uniques
-- [ ] **Locations** — lieux à découvrir
-- [ ] **Merchants** — marchands particuliers
-- [ ] **Recruitable Followers** — compagnons recrutables
-- [ ] **Achievements** — succès Steam/PlayStation (icones deja presentes dans assets/icons/achievements/)
+  - Données partiellement préparées (URLs UESP téléchargées cette session)
+  - Images `SR-item-*.png` dans `UESP/item/` → à convertir en WebP
+  - Rendu potentiel : grille avec image de l'objet
+- [ ] **Locations** — lieux à découvrir (Donjons, Villes, Camps, etc.)
+- [ ] **Merchants** — marchands spécialisés avec inventaire notable
+- [ ] **Recruitable Followers** — compagnons recrutables avec conditions
+- [ ] **Achievements** — succès Steam/PlayStation
+  - Icônes déjà présentes : `assets/icons/achievements/` (non trackées)
+  - Rendu : grille avec icône par succès
+
+---
 
 ## Fonctionnalités UI
 
-- [ ] Rendu **Achievements** — grille avec icone par succès
-- [X] Rendu **Dragon Shouts** — grille 3 colonnes, police DragonScript, info modal avec translation/DLC/location
-- [ ] Rendu **Collectible** — mise en page à définir
-- [ ] Rendu **Unique Gear** — potentiellement grille avec image de l'objet
 - [ ] **Export / Import** — sauvegarder/restaurer la progression en JSON
-- [ ] **Reset** — bouton de remise à zéro avec confirmation
+- [ ] **Reset** — bouton remise à zéro avec confirmation modale
+- [ ] **Rendu Achievements** — grille icône + nom + description
+- [ ] **Rendu Collectible** — mise en page à définir selon scope
+- [ ] **Rendu Unique Gear** — grille avec image WebP de l'objet
+
+---
 
 ## Qualité & polish
 
-- [ ] Favicon (absent des assets)
-- [ ] Responsive mobile — tester et améliorer
-- [ ] Vérifier que `extract.py` couvre toutes les catégories du `.xlsx`
-- [ ] Compléter `Skyrim Checklist — Master.xlsx` avec les données manquantes
+- [ ] **Favicon** — absent des assets, à créer (logo_title ou icône Skyrim)
+- [ ] **Responsive mobile** — tester sur mobile réel / DevTools 375px
+- [ ] **Vérifier `extract.py`** — couvre-t-il toutes les catégories du `.xlsx` ?
+- [ ] **Compléter le `.xlsx`** avec les données des nouvelles catégories

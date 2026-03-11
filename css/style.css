@@ -997,6 +997,72 @@ body::before {
   opacity: 0.5;
 }
 
+/* ── Potions section ── */
+/* Icône item potion — mobile : 44px, desktop : 56px */
+.potion-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin: 0 5px;
+}
+.potion-grid .item-name { font-size: 17px; }
+
+/* Sous-header Health / Magicka / Stamina / Skill */
+.potion-subgroup { margin-bottom: 2px; }
+.potion-subgroup:first-child { margin-top: 8px; }
+.potion-subgroup-header {
+  background: #000;
+  border-radius: 10px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+.potion-subgroup-header:hover { opacity: 0.85; }
+.potion-sub-name {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sous-sous-header Fortify type (dans Skill) — collapsible */
+.potion-type-block { margin-top: 6px; }
+.potion-type-header {
+  padding: 4px 12px 2px;
+  color: var(--gold-2);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  border-left: 2px solid var(--gold-2);
+  margin: 0 12px 2px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.potion-type-header:hover { opacity: 0.9; }
+.potion-type-chevron {
+  font-size: 9px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+@media (min-width: 900px) {
+  .potion-img { width: 56px; height: 56px; }
+  .potion-sub-name { font-size: 20px; }
+}
+
 
 /* ══════════════════════════════════════════════════════════════
    17. ÉTAT VIDE

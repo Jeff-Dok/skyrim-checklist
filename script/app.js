@@ -284,6 +284,19 @@ let checked      = {};             // { [id]: true } — items cochés (persist�
 let collapsedGroups = {};          // { [catKey]: true } — groupes repliés (session)
 
 /** Icône d'école de magie (assets/images/schools/) pour le header de groupe Spells. */
+/** Icône de section potions (assets/images/potions/) par header. */
+const POTION_SECTION_IMG = {
+  'Health':  'HealingMinor.webp',
+  'Magicka': 'MagickaMinor.webp',
+  'Stamina': 'StaminaMinor.webp',
+  'Skill':   'Skill.webp',
+};
+
+/** Ordre d'affichage des sous-groupes de la section Potions. */
+const POTION_SECTIONS = ['Health', 'Magicka', 'Stamina', 'Skill'];
+/** Ordre d'affichage des sous-groupes de la section Poisons. */
+const POISON_SECTIONS = ['Damage', 'Crowd Control', 'Weakness', 'Lingering', 'Special'];
+
 const SPELL_SCHOOL_IMG = {
   'Alteration':  'alteration_2.webp',
   'Conjuration': 'conjuration_2.webp',
@@ -640,6 +653,66 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       </li>`;
     };
 
+    /** Génère le HTML d'un item potion (icône + checkbox + nom + ⓘ). */
+    const renderPotionLi = item => {
+      const done = isChecked(item.id);
+      const imgTag = item.img
+        ? `<img class="potion-img" src="assets/images/potions/${escHtml(item.img)}.webp" alt="" loading="lazy" onerror="this.style.display='none'">`
+        : '';
+      return `<li class="item${done ? ' done' : ''}" id="item-${item.id}">
+        <label class="item-label">
+          <span class="cb-wrap">
+            <input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})" />
+            <span class="cb-box"></span>
+          </span>
+          ${imgTag}
+          <span class="item-name">${escHtml(item.name)}</span>
+          <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
+        </label>
+      </li>`;
+    };
+
+    /**
+     * Rendu des sous-sections d'une section Alchemy (Potions ou Poisons).
+     * @param {Array}  items      — items de la section
+     * @param {Array}  sections   — POTION_SECTIONS ou POISON_SECTIONS
+     * @param {string} parentKey  — 'Potions' ou 'Poisons'
+     */
+    const renderAlchemySubsections = (items, sections, parentKey) => sections.map(grp => {
+      const grpItems = items.filter(i => i.group === grp);
+      if (!grpItems.length) return '';
+      const subKey      = parentKey + '::' + grp;
+      const grpCollapsed = !!collapsedGroups[groupKey(cat, subKey)];
+
+      let content;
+      const hasTypes = grpItems.some(i => i.type);
+      if (hasTypes) {
+        /* Sous-groupes par type (Fortify X, Damage Health, etc.) — collapsibles */
+        const types = [...new Set(grpItems.map(i => i.type).filter(Boolean))];
+        content = types.map(type => {
+          const typeItems   = grpItems.filter(i => i.type === type);
+          const typeKey     = subKey + '::' + type;
+          const typeCollapsed = !!collapsedGroups[groupKey(cat, typeKey)];
+          return `<div class="potion-type-block${typeCollapsed ? ' collapsed' : ''}">
+            <div class="potion-type-header" onclick="toggleGroup('${escJs(cat)}','${escJs(typeKey)}')">
+              <span class="potion-type-name">${escHtml(type)}</span>
+              <span class="potion-type-chevron">${typeCollapsed ? '▶' : '▼'}</span>
+            </div>
+            ${typeCollapsed ? '' : `<ul class="alchemy-grid potion-grid">${typeItems.map(renderPotionLi).join('')}</ul>`}
+          </div>`;
+        }).join('');
+      } else {
+        content = `<ul class="alchemy-grid potion-grid">${grpItems.map(renderPotionLi).join('')}</ul>`;
+      }
+
+      return `<div class="potion-subgroup${grpCollapsed ? ' collapsed' : ''}">
+        <div class="potion-subgroup-header" onclick="toggleGroup('${escJs(cat)}','${escJs(subKey)}')">
+          <span class="potion-sub-name">${escHtml(grp)}</span>
+        </div>
+        ${grpCollapsed ? '' : content}
+      </div>`;
+    }).join('');
+
     const ingGrid      = ingredients.length ? `<ul class="alchemy-grid">${ingredients.map(renderIngLi).join('')}</ul>` : '';
     const ingCollapsed = !!collapsedGroups[cat + '::Ingredients'];
     const potCollapsed = !!collapsedGroups[cat + '::Potions'];
@@ -665,7 +738,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
           </div>
         </div>
-        ${potCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
+        ${potCollapsed ? '' : (potions.length ? renderAlchemySubsections(potions, POTION_SECTIONS, 'Potions') : '<p class="alchemy-coming-soon">Data coming soon</p>')}
       </div>
       <div class="group${poisCollapsed ? ' collapsed' : ''}">
         <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Poisons')">
@@ -675,7 +748,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <img class="spell-school-icon alchemy-section-icon" src="assets/images/craftings/alchemy.webp" alt="" width="36" height="36">
           </div>
         </div>
-        ${poisCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
+        ${poisCollapsed ? '' : (poisons.length ? renderAlchemySubsections(poisons, POISON_SECTIONS, 'Poisons') : '<p class="alchemy-coming-soon">Data coming soon</p>')}
       </div>
       <div class="group${recCollapsed ? ' collapsed' : ''}">
         <div class="group-header" onclick="toggleGroup('${escJs(cat)}','Recipes')">
@@ -1053,10 +1126,11 @@ function openInfoModal(id) {
   const isSpellItem   = SPELL_LEVELS.has(item.level);
   const isEnchantItem = !!item.slots;
   const isAlchemyItem = Array.isArray(item.effects);
+  const isPotionItem  = item.section === 'Potions' || item.section === 'Poisons';
 
   const rows = [];
 
-  /* ── Alchemy ── */
+  /* ── Alchemy Ingredients ── */
   if (isAlchemyItem) {
     if (item.section) rows.push(makeInfoRow('Group',        item.section));
     if (item.origin)  rows.push(makeInfoRow('Origin',       item.origin));
@@ -1065,26 +1139,38 @@ function openInfoModal(id) {
     rows.push(makeInfoRow('Garden', item.garden ? 'Yes' : 'No'));
   }
 
+  /* ── Potions / Poisons ── */
+  if (isPotionItem) {
+    rows.push(makeInfoRow('Category', item.section));
+    if (item.group)  rows.push(makeInfoRow('Group',  item.group));
+    if (item.type)   rows.push(makeInfoRow('Type',   item.type));
+    if (item.level != null) rows.push(makeInfoRow('Level Required', String(item.level)));
+    if (item.desc)   rows.push(makeInfoRow('Effect', item.desc));
+    if (item.source) rows.push(makeInfoRow('Source', item.source));
+  }
+
   /* ── Champ group (libellé contextuel selon le type) ── */
-  if (!isShoutItem && !isSpellItem && !isEnchantItem && !isAlchemyItem && item.group)
+  if (!isShoutItem && !isSpellItem && !isEnchantItem && !isAlchemyItem && !isPotionItem && item.group)
     rows.push(makeInfoRow('Quest Group', item.group));
   if (isShoutItem  && item.group) rows.push(makeInfoRow('Shout',    item.group));
   if (isSpellItem  && item.group) rows.push(makeInfoRow('School',   item.group));
   if (isEnchantItem && item.group) rows.push(makeInfoRow('Category', item.group));
 
-  /* ── Champs spécifiques ── */
-  if (item.school)  rows.push(makeInfoRow('School',            item.school));
-  if (item.slots)   rows.push(makeInfoRow('Applicable Slots',  item.slots));
-  if (item.word_en) rows.push(makeInfoRow('Translation',       item.word_en));
-  if (isSpellItem && item.level) rows.push(makeInfoRow('Level', item.level));
-  if (item.dlc)     rows.push(makeInfoRow('DLC',               item.dlc));
-  if (item.city)    rows.push(makeInfoRow('City',              item.city));
-  if (item.prince)  rows.push(makeInfoRow('Daedric Prince',    item.prince));
-  if (!isSpellItem && item.level) rows.push(makeInfoRow('Level Required', String(item.level)));
-  if (item.desc)    rows.push(makeInfoRow('Description',       item.desc));
-  if (item.location) rows.push(makeInfoRow('Word Wall Location', item.location));
-  if (item.giver)   rows.push(makeInfoRow('Quest Giver',       item.giver));
-  if (item.reward)  rows.push(makeInfoRow('Rewards',           item.reward));
+  /* ── Champs spécifiques (quêtes, sorts, shouts, enchantements) ── */
+  if (!isPotionItem) {
+    if (item.school)  rows.push(makeInfoRow('School',            item.school));
+    if (item.slots)   rows.push(makeInfoRow('Applicable Slots',  item.slots));
+    if (item.word_en) rows.push(makeInfoRow('Translation',       item.word_en));
+    if (isSpellItem && item.level) rows.push(makeInfoRow('Level', item.level));
+    if (item.dlc)     rows.push(makeInfoRow('DLC',               item.dlc));
+    if (item.city)    rows.push(makeInfoRow('City',              item.city));
+    if (item.prince)  rows.push(makeInfoRow('Daedric Prince',    item.prince));
+    if (!isSpellItem && item.level) rows.push(makeInfoRow('Level Required', String(item.level)));
+    if (item.desc)    rows.push(makeInfoRow('Description',       item.desc));
+    if (item.location) rows.push(makeInfoRow('Word Wall Location', item.location));
+    if (item.giver)   rows.push(makeInfoRow('Quest Giver',       item.giver));
+    if (item.reward)  rows.push(makeInfoRow('Rewards',           item.reward));
+  }
 
   /* Injection dans le DOM — h2#infoModalTitle pour aria-labelledby */
   document.getElementById('infoModalContent').innerHTML = `
@@ -1145,6 +1231,18 @@ function init() {
   collapsedGroups[groupKey('Alchemy Ingredients', 'Potions')]     = true;
   collapsedGroups[groupKey('Alchemy Ingredients', 'Poisons')]     = true;
   collapsedGroups[groupKey('Alchemy Ingredients', 'Recipes')]     = true;
+  POTION_SECTIONS.forEach(grp => {
+    collapsedGroups[groupKey('Alchemy Ingredients', 'Potions::' + grp)] = true;
+  });
+  POISON_SECTIONS.forEach(grp => {
+    collapsedGroups[groupKey('Alchemy Ingredients', 'Poisons::' + grp)] = true;
+  });
+  /* Replier dynamiquement tous les sous-sous-groupes de type (Potions/Poisons) */
+  (CHECKLIST_DATA['Alchemy Ingredients'] || []).forEach(i => {
+    if ((i.section === 'Potions' || i.section === 'Poisons') && i.type && i.group) {
+      collapsedGroups[groupKey('Alchemy Ingredients', i.section + '::' + i.group + '::' + i.type)] = true;
+    }
+  });
 
   renderTabs();
   renderStats();

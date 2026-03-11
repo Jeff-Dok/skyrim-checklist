@@ -177,10 +177,6 @@ body::before {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  white-space: nowrap;
 }
 
 /* Logo Skyrim — 44px sur mobile, agrandi sur desktop via min-width */

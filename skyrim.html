@@ -58,8 +58,6 @@
           </div>
 
           <div class="topbar-right">
-            <!-- Bouton langue FR/EN -->
-            <button class="lang-btn" id="langBtn" onclick="toggleLang()"></button>
             <!--
               Bouton personnage actif — à gauche du compteur %.
               Le nom est injecté par updateCharacterBtn() dans app.js.
@@ -105,14 +103,17 @@
         </div>
 
         <div class="tabs-row">
-          <input
-            class="search-input"
-            id="searchInput"
-            type="search"
-            placeholder="Search…"
-            autocomplete="off"
-            aria-label="Rechercher dans toutes les catégories"
-          />
+          <div class="search-lang-wrap">
+            <button class="lang-btn" id="langBtn" onclick="toggleLang()"></button>
+            <input
+              class="search-input"
+              id="searchInput"
+              type="search"
+              placeholder="Search…"
+              autocomplete="off"
+              aria-label="Rechercher dans toutes les catégories"
+            />
+          </div>
           <nav
             class="tabs-wrap"
             id="tabs"

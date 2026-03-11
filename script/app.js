@@ -37,32 +37,35 @@
  * L'ordre de ce tableau détermine l'ordre d'affichage des groupes.
  */
 const QUEST_GROUPS = [
-  { name: 'Main Quest',               img: 'main_quest.webp' },
-  { name: 'Companions',               img: 'companions_quest.webp' },
-  { name: 'College of Winterhold',    img: 'college_quest.webp', label: 'Coll. of Winterhold' },
-  { name: "Thieves Guild",            img: 'thieves_quest.webp' },
-  { name: 'Dark Brotherhood',         img: 'brotherhood_quest.webp' },
-  { name: 'Civil War',                img: 'civilwar_quest.webp' },
-  { name: 'Daedric',                  img: 'daedric_quest.webp' },
-  { name: 'Bards College',            img: 'bard_quest.webp' },
-  { name: 'Divine Quests',            img: 'creationclub_quest.webp' },
-  { name: 'The Greybeards',           img: 'creationclub_quest.webp' },
-  { name: 'The Blades',               img: 'creationclub_quest.webp' },
-  { name: 'Side Quests',              img: 'side_quest.webp' },
-  { name: 'Dungeon Quests',           img: 'creationclub_quest.webp' },
-  { name: 'Miscellaneous Objectives', img: 'miscellaneous_objectives.webp', label: 'Miscellaneous Obj.' },
-  { name: 'Favors',                   img: 'favor_objectives.webp' },
-  { name: 'Dawnguard',                img: 'dawnguard_quest.webp' },
-  { name: 'Dragonborn',               img: 'dragonborn_quest.webp' },
-  { name: 'Fishing',                  img: 'fishing_quest.webp' },
-  { name: 'Creation Club',            img: 'creationclub_quest.webp' },
+  { name: 'Main Quest',               img: 'main_quest.webp',               labelFr: 'Quête Principale' },
+  { name: 'Companions',               img: 'companions_quest.webp',          labelFr: 'Compagnons' },
+  { name: 'College of Winterhold',    img: 'college_quest.webp',    label: 'Coll. of Winterhold',   labelFr: 'Acad. de Fortdhiver' },
+  { name: "Thieves Guild",            img: 'thieves_quest.webp',             labelFr: 'Guilde des Voleurs' },
+  { name: 'Dark Brotherhood',         img: 'brotherhood_quest.webp',         labelFr: 'Confrérie Noire' },
+  { name: 'Civil War',                img: 'civilwar_quest.webp',            labelFr: 'Guerre Civile' },
+  { name: 'Daedric',                  img: 'daedric_quest.webp',             labelFr: 'Daedrique' },
+  { name: 'Bards College',            img: 'bard_quest.webp',                labelFr: 'Acad. des Bardes' },
+  { name: 'Divine Quests',            img: 'creationclub_quest.webp',        labelFr: 'Quêtes Divines' },
+  { name: 'The Greybeards',           img: 'creationclub_quest.webp',        labelFr: 'Les Grises-Barbes' },
+  { name: 'The Blades',               img: 'creationclub_quest.webp',        labelFr: 'Les Lames' },
+  { name: 'Side Quests',              img: 'side_quest.webp',                labelFr: 'Quêtes Secondaires' },
+  { name: 'Dungeon Quests',           img: 'creationclub_quest.webp',        labelFr: 'Quêtes de Donjon' },
+  { name: 'Miscellaneous Objectives', img: 'miscellaneous_objectives.webp', label: 'Miscellaneous Obj.', labelFr: 'Objectifs Divers' },
+  { name: 'Favors',                   img: 'favor_objectives.webp',          labelFr: 'Faveurs' },
+  { name: 'Dawnguard',                img: 'dawnguard_quest.webp',           labelFr: 'Dawnguard' },
+  { name: 'Dragonborn',               img: 'dragonborn_quest.webp',          labelFr: 'Dragonborn' },
+  { name: 'Fishing',                  img: 'fishing_quest.webp',             labelFr: 'Pêche' },
+  { name: 'Creation Club',            img: 'creationclub_quest.webp',        labelFr: 'Creation Club' },
 ];
 
 /** Lookup rapide : { [groupName]: imgFilename } — dérivé de QUEST_GROUPS. */
 const QUEST_GROUP_MAP = Object.fromEntries(QUEST_GROUPS.map(g => [g.name, g.img]));
 
-/** Lookup des labels courts : { [groupName]: label } — groupes avec label défini seulement. */
+/** Lookup des labels courts EN : { [groupName]: label } — groupes avec label défini seulement. */
 const QUEST_GROUP_LABEL_MAP = Object.fromEntries(QUEST_GROUPS.filter(g => g.label).map(g => [g.name, g.label]));
+
+/** Lookup des labels FR : { [groupName]: labelFr } — tous les groupes. */
+const QUEST_GROUP_FR_MAP = Object.fromEntries(QUEST_GROUPS.filter(g => g.labelFr).map(g => [g.name, g.labelFr]));
 
 /** Ordre de rendu des groupes de quêtes — dérivé de QUEST_GROUPS. */
 const QUEST_GROUP_ORDER = QUEST_GROUPS.map(g => g.name);
@@ -262,19 +265,19 @@ CHECKLIST_DATA['Collectible']  = CHECKLIST_DATA['Collectible']  || [];
  * @type {Object.<string, {label: string}>}
  */
 const CATEGORY_META = {
-  'Quests':                { label: 'Quests' },
-  'Dragon Shouts':         { label: 'Shouts' },
-  'Spells':                { label: 'Spells' },
-  'Enchanting Effects':    { label: 'Enchanting' },
-  'Alchemy Ingredients':   { label: 'Alchemy' },
-  'Books':                 { label: 'Skill Book' },
-  'Perks':                 { label: 'Special Perks' },
-  'Collectible':           { label: 'Collectible' },
-  'Unique Gear':           { label: 'Unique Gear' },
-  'Locations':             { label: 'Locations' },
-  'Merchants':             { label: 'Merchants' },
-  'Recruitable Followers': { label: 'Followers' },
-  'Achievements':          { label: 'Achievements' },
+  'Quests':                { label: 'Quests',        labelFr: 'Quêtes' },
+  'Dragon Shouts':         { label: 'Shouts',        labelFr: 'Cris' },
+  'Spells':                { label: 'Spells',        labelFr: 'Sorts' },
+  'Enchanting Effects':    { label: 'Enchantments',  labelFr: 'Enchantements' },
+  'Alchemy Ingredients':   { label: 'Alchemy',       labelFr: 'Alchimie' },
+  'Books':                 { label: 'Books',         labelFr: 'Livres' },
+  'Perks':                 { label: 'Perks',         labelFr: 'Atouts' },
+  'Collectible':           { label: 'Collectibles',  labelFr: 'Collections' },
+  'Unique Gear':           { label: 'Unique Gears',  labelFr: 'Artéfacts' },
+  'Locations':             { label: 'Locations',     labelFr: 'Lieux' },
+  'Merchants':             { label: 'Merchants',     labelFr: 'Marchands' },
+  'Recruitable Followers': { label: 'Followers',     labelFr: 'Compagnons' },
+  'Achievements':          { label: 'Achievements',  labelFr: 'Succès' },
 };
 
 /** Liste ordonnée des catégories (dérivée de CATEGORY_META). */
@@ -606,7 +609,7 @@ function renderTabs() {
   const container = document.getElementById('tabs');
   const tabs = CATEGORIES.map(cat => {
     const meta   = CATEGORY_META[cat] || {};
-    const label  = meta.label || cat;
+    const label  = (getLang() === 'fr' ? meta.labelFr : meta.label) || cat;
     const active = cat === currentCat ? ' active' : '';
     return `<button class="tab-btn${active}" data-cat="${escHtml(cat)}" onclick="switchCat('${escJs(cat)}')">${label}</button>`;
   }).join('');
@@ -974,7 +977,9 @@ function renderItemsHtml(items, cat, forceExpand = false) {
     /* ── En-tête du groupe (knotwork ou texte doré) ── */
     const groupPct   = groupItems.length ? Math.round(groupDone / groupItems.length * 100) : 0;
     const img        = isQuests ? QUEST_GROUP_MAP[group] : null;
-    const groupLabel = QUEST_GROUP_LABEL_MAP[group] || group;
+    const groupLabel = getLang() === 'fr'
+      ? (QUEST_GROUP_FR_MAP[group] || group)
+      : (QUEST_GROUP_LABEL_MAP[group] || group);
 
     const knotwork = isQuests
       ? img
@@ -1065,7 +1070,7 @@ function renderSearchResults(items, cat) {
       </li>`;
     }).join('');
     return `<div class="search-group">
-      <div class="search-group-label">${escHtml(group)}</div>
+      <div class="search-group-label">${escHtml(getLang() === 'fr' ? (QUEST_GROUP_FR_MAP[group] || group) : group)}</div>
       <ul class="group-items">${itemsHtml}</ul>
     </div>`;
   }).join('');
@@ -1088,7 +1093,7 @@ function renderList() {
       if (filtered.length === 0) return;
       totalFound += filtered.length;
       const meta = CATEGORY_META[cat] || {};
-      html += `<div class="search-cat-label">${escHtml(meta.label || cat)}</div>`;
+      html += `<div class="search-cat-label">${escHtml((getLang() === 'fr' ? meta.labelFr : meta.label) || cat)}</div>`;
       html += renderSearchResults(filtered, cat);
     });
     container.innerHTML = totalFound === 0

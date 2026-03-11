@@ -1065,7 +1065,237 @@ body::before {
 
 
 /* ══════════════════════════════════════════════════════════════
-   17. ÉTAT VIDE
+   17. PROFILS — Bouton topbar (skyrim.html) + Page d'accueil (index.html)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Bouton "personnage actif" dans la topbar de skyrim.html ── */
+.character-btn {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  color: var(--gold-2);
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  margin-left: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+.character-btn:hover {
+  background: var(--surface2);
+  border-color: var(--gold-3);
+}
+
+/* ── Page d'accueil — layout plein viewport ── */
+.welcome-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+}
+
+/* Boîte centrale */
+.welcome-inner {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Logo */
+.welcome-logo {
+  height: 52px;
+  width: auto;
+  margin-bottom: 20px;
+}
+
+/* Titre "Choisir un personnage" */
+.welcome-title {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 24px;
+  font-weight: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* Ligne décorative dorée */
+.welcome-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--gold-line);
+  margin-bottom: 20px;
+}
+
+/* Liste des profils */
+.welcome-profile-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+.welcome-empty {
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Carte de profil */
+.welcome-profile-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: border-color 0.15s;
+}
+.welcome-profile-card:hover { border-color: var(--border2); }
+
+.welcome-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.welcome-card-name {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.welcome-card-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted2);
+}
+
+.welcome-card-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.welcome-btn-play {
+  background: transparent;
+  border: 1px solid var(--gold-3);
+  border-radius: 7px;
+  color: var(--gold-2);
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.welcome-btn-play:hover { background: rgba(201, 165, 90, 0.12); }
+.welcome-btn-delete {
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.welcome-btn-delete:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Section nouveau personnage */
+.welcome-new-wrap {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.welcome-new-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.welcome-new-form {
+  display: flex;
+  gap: 8px;
+}
+.welcome-name-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 0;
+}
+.welcome-name-input::placeholder { color: var(--muted); }
+.welcome-name-input:focus { border-color: var(--gold-3); }
+.welcome-btn-create {
+  background: transparent;
+  border: 1px solid var(--gold-3);
+  border-radius: 8px;
+  color: var(--gold-2);
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.welcome-btn-create:hover { background: rgba(201, 165, 90, 0.12); }
+
+/* ── Responsive (mobile-first) ── */
+@media (min-width: 600px) {
+  .welcome-logo          { height: 64px; margin-bottom: 24px; }
+  .welcome-title         { font-size: 30px; }
+  .welcome-card-name     { font-size: 22px; }
+  .character-btn         { font-size: 15px; max-width: 150px; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   18. ÉTAT VIDE
    ══════════════════════════════════════════════════════════════ */
 
 /* Affiché quand une catégorie est vide ou aucun résultat de recherche */
@@ -1085,7 +1315,7 @@ body::before {
 
 
 /* ══════════════════════════════════════════════════════════════
-   18. RESPONSIVE — mobile first (min-width)
+   19. RESPONSIVE — mobile first (min-width)
    Base = mobile. Overrides progressifs : 600px tablette, 900px desktop.
    ══════════════════════════════════════════════════════════════ */
 

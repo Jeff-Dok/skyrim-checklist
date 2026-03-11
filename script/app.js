@@ -9,7 +9,8 @@
  *   data.js expose CHECKLIST_DATA = { [catégorie: string]: Item[] }
  *
  * Stockage localStorage :
- *   Clé    : STORAGE_KEY ('skyrim_checklist_v1')
+ *   Clés   : PROFILES_KEY ('skyrim_profiles_v1') — liste des profils
+ *            getStorageKey(id) → 'skyrim_checklist_{id}' — progression par profil
  *   Format : JSON.stringify(checked)  →  { [id: number]: true }
  *
  * DOM ciblé (id) :
@@ -22,8 +23,10 @@
    CONFIGURATION — Constantes & métadonnées
    ════════════════════════════════════════════════════════════════ */
 
-/** Clé utilisée pour lire/écrire la progression dans le localStorage. */
-const STORAGE_KEY = 'skyrim_checklist_v1';
+/*
+ * PROFILES_KEY, ACTIVE_PROFILE_KEY et getStorageKey() sont définis dans
+ * script/profiles.js, chargé avant ce fichier dans skyrim.html.
+ */
 
 /**
  * Définition de chaque groupe de quêtes :
@@ -278,10 +281,11 @@ const CATEGORY_META = {
 const CATEGORIES = Object.keys(CATEGORY_META);
 
 /* ── État applicatif mutable ── */
-let currentCat   = CATEGORIES[0]; // catégorie affichée dans le contenu principal
-let searchQuery  = '';             // requête de recherche globale courante
-let checked      = {};             // { [id]: true } — items cochés (persisté)
-let collapsedGroups = {};          // { [catKey]: true } — groupes repliés (session)
+let currentCat      = CATEGORIES[0]; // catégorie affichée dans le contenu principal
+let searchQuery     = '';             // requête de recherche globale courante
+let checked         = {};             // { [id]: true } — items cochés (persisté)
+let collapsedGroups = {};             // { [catKey]: true } — groupes repliés (session)
+let activeProfileId = null;           // id du profil actif (défini au démarrage)
 
 /** Icône d'école de magie (assets/images/schools/) pour le header de groupe Spells. */
 /** Icône de section potions (assets/images/potions/) par header. */
@@ -351,7 +355,7 @@ const DRAGON_SCRIPT_ENC = {
  * En cas d'erreur (JSON invalide, accès refusé), initialise checked à {}.
  */
 function load() {
-  try { checked = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  try { checked = JSON.parse(localStorage.getItem(getStorageKey(activeProfileId))) || {}; }
   catch { checked = {}; }
 }
 
@@ -367,7 +371,7 @@ function save() {
   clearTimeout(_saveTimer);
   _saveTimer = setTimeout(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+      localStorage.setItem(getStorageKey(activeProfileId), JSON.stringify(checked));
       setBadge('saved');
     } catch {
       setBadge('error');
@@ -387,6 +391,20 @@ function setBadge(state) {
   if (state === 'saving') label.textContent = 'saving…';
   else if (state === 'error') label.textContent = 'save failed';
   else label.textContent = 'saved';
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   PROFIL ACTIF — Lecture + bouton topbar
+   ════════════════════════════════════════════════════════════════ */
+
+/** Met à jour le bouton de personnage dans la topbar avec le nom du profil actif. */
+function updateCharacterBtn() {
+  const btn = document.getElementById('characterBtn');
+  if (!btn) return;
+  const profiles = getProfiles();
+  const active = profiles.find(p => p.id === activeProfileId);
+  btn.textContent = active ? active.name : '—';
 }
 
 
@@ -1209,17 +1227,11 @@ function onSearch(val) {
    ════════════════════════════════════════════════════════════════ */
 
 /**
- * Point d'entrée de l'application.
- * Appelé une seule fois au chargement (fin de ce fichier, scripts defer).
- *   1. Charge la progression depuis le localStorage.
- *   2. Replie tous les groupes par défaut.
- *   3. Construit le DOM initial (tabs, stats, liste).
- *   4. Branche les événements (search input, touche Échap).
+ * Initialise collapsedGroups avec tous les groupes repliés par défaut.
+ * Appelé au démarrage et à chaque changement de profil.
  */
-function init() {
-  load();
-
-  /* Replier tous les groupes de toutes les catégories par défaut */
+function initCollapsedGroups() {
+  collapsedGroups = {};
   CATEGORIES.forEach(cat => {
     const items = CHECKLIST_DATA[cat] || [];
     [...new Set(items.map(i => i.group || 'Autres'))].forEach(g => {
@@ -1237,19 +1249,41 @@ function init() {
   POISON_SECTIONS.forEach(grp => {
     collapsedGroups[groupKey('Alchemy Ingredients', 'Poisons::' + grp)] = true;
   });
-  /* Replier dynamiquement tous les sous-sous-groupes de type (Potions/Poisons) */
   (CHECKLIST_DATA['Alchemy Ingredients'] || []).forEach(i => {
     if ((i.section === 'Potions' || i.section === 'Poisons') && i.type && i.group) {
       collapsedGroups[groupKey('Alchemy Ingredients', i.section + '::' + i.group + '::' + i.type)] = true;
     }
   });
+}
 
+/**
+ * Point d'entrée de l'application.
+ * Appelé une seule fois au chargement (fin de ce fichier, scripts defer).
+ *   1. Lit le profil actif depuis localStorage (défini par index.html).
+ *      Si aucun profil → redirige vers index.html.
+ *   2. Charge la progression du profil actif.
+ *   3. Construit le DOM (tabs, stats, liste).
+ *   4. Branche les événements (search, Échap).
+ */
+function init() {
+  /* Lire le profil actif défini par la page d'accueil */
+  activeProfileId = localStorage.getItem(ACTIVE_PROFILE_KEY);
+
+  /* Aucun profil actif → rediriger vers l'accueil */
+  if (!activeProfileId || !getProfiles().find(p => p.id === activeProfileId)) {
+    window.location.replace('index.html');
+    return;
+  }
+
+  initCollapsedGroups();
+  load();
   renderTabs();
   renderStats();
   renderList();
   setBadge('saved');
+  updateCharacterBtn();
 
-  /* Recherche : écoute les frappes en temps réel */
+  /* Recherche globale */
   document.getElementById('searchInput').addEventListener('input', e => onSearch(e.target.value));
 
   /* Touche Échap : ferme le modal d'information si ouvert */

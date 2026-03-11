@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d0d0f" />
+    <title>Skyrim Checklist</title>
+    <meta
+      name="description"
+      content="Checklist complète pour Skyrim : quêtes, cris de dragon, sorts, enchantements, succès et plus. Progression sauvegardée localement."
+    />
+
+    <link rel="preload" href="assets/images/logos/logo_title.webp" as="image" fetchpriority="high" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="app">
+
+      <!--
+        ══════════════════════════════════════════════════════
+        HEADER — Logo · Titre · Pourcentage global · Progress
+        ══════════════════════════════════════════════════════
+      -->
+      <header class="topbar" role="banner">
+
+        <!-- Ligne 1 : logo + bouton personnage | titre centré | % completion + badge stockage -->
+        <div class="topbar-head">
+          <div class="topbar-left">
+            <img
+              class="logo-title"
+              src="assets/images/logos/logo_title.webp"
+              alt="Skyrim"
+              width="512"
+              height="224"
+              fetchpriority="high"
+            />
+            <!--
+              Bouton personnage actif — clique pour revenir à la page d'accueil / changer de profil.
+              Le nom est injecté par updateCharacterBtn() dans app.js.
+            -->
+            <a
+              class="character-btn"
+              id="characterBtn"
+              href="index.html"
+              title="Changer de personnage"
+            >—</a>
+          </div>
+
+          <div class="topbar-center">
+            <h1 class="checklist-title">Checklist</h1>
+          </div>
+
+          <div class="topbar-right">
+            <div class="topbar-right-pct">
+              <span class="complete-label">Complete @</span>
+              <span
+                class="complete-pct"
+                id="globalPct"
+                aria-live="polite"
+                aria-atomic="true"
+              >0%</span>
+            </div>
+
+            <div
+              class="storage-badge"
+              id="storageBadge"
+              role="status"
+              aria-live="polite"
+            >
+              <span class="dot" aria-hidden="true"></span>
+              <span class="storage-label">localStorage</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="global-progress"
+          id="globalProgress"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-label="Progression globale"
+        >
+          <div class="global-progress-fill" id="globalFill"></div>
+        </div>
+
+        <div class="tabs-row">
+          <input
+            class="search-input"
+            id="searchInput"
+            type="search"
+            placeholder="Search…"
+            autocomplete="off"
+            aria-label="Rechercher dans toutes les catégories"
+          />
+          <nav
+            class="tabs-wrap"
+            id="tabs"
+            aria-label="Catégories de la checklist"
+          ></nav>
+        </div>
+
+      </header>
+
+      <!--
+        ══════════════════════════════════════════════════════
+        MAIN — Zone de contenu défilable
+        ══════════════════════════════════════════════════════
+        Peuplé entièrement par renderList() dans app.js.
+      -->
+      <main class="content">
+        <div class="list-scroll">
+          <div id="itemList"></div>
+        </div>
+      </main>
+
+    </div><!-- /.app -->
+
+    <!--
+      ══════════════════════════════════════════════════════
+      MODAL — Fiche détaillée d'un item
+      ══════════════════════════════════════════════════════
+    -->
+    <div
+      id="infoModal"
+      class="info-modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Fiche de détail"
+      aria-labelledby="infoModalTitle"
+      onclick="closeInfoModal()"
+    >
+      <div class="info-modal" onclick="event.stopPropagation()">
+        <button
+          class="info-modal-close"
+          onclick="closeInfoModal()"
+          aria-label="Fermer la fiche"
+        >✕</button>
+        <div id="infoModalContent"></div>
+      </div>
+    </div>
+
+    <!--
+      Scripts :
+        - profiles.js → fonctions partagées (getProfiles, getStorageKey, etc.)
+        - data.js     → définit CHECKLIST_DATA
+        - app.js      → logique principale
+      defer garantit l'exécution après parsing HTML, dans l'ordre déclaré.
+    -->
+    <script src="script/profiles.js" defer></script>
+    <script src="script/data.js" defer></script>
+    <script src="script/app.js" defer></script>
+  </body>
+</html>

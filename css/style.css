@@ -1173,7 +1173,7 @@ body::before {
   flex-direction: column;
   gap: 8px;
   margin-bottom: 20px;
-  max-height: 217px;
+  height: 217px;
   overflow-y: auto;
   /* scrollbar discrète */
   scrollbar-width: thin;

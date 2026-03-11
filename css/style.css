@@ -1264,12 +1264,16 @@ body::before {
   padding-top: 20px;
 }
 .welcome-new-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 20px;
+  font-weight: normal;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 10px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
 }
 .welcome-new-form {
   display: flex;
@@ -1277,19 +1281,22 @@ body::before {
 }
 .welcome-name-input {
   flex: 1;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  color: var(--text);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--gold-2);
   font-family: 'DM Mono', monospace;
   font-size: 14px;
   padding: 10px 14px;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color .2s, box-shadow .2s;
   min-width: 0;
 }
-.welcome-name-input::placeholder { color: var(--muted); }
-.welcome-name-input:focus { border-color: var(--gold-3); }
+.welcome-name-input::placeholder { color: #7a5e25; }
+.welcome-name-input:focus {
+  border-color: var(--gold-2);
+  box-shadow: 0 0 0 2px rgba(169,136,90,.35), 0 0 8px rgba(201,165,90,.15);
+}
 .welcome-btn-create {
   background: transparent;
   border: 1px solid var(--gold-3);

@@ -1275,6 +1275,9 @@ function init() {
     return;
   }
 
+  /* Stocker le total pour que index.html puisse calculer les % */
+  localStorage.setItem('skyrim_total_items', String(Object.values(CHECKLIST_DATA).flat().length));
+
   initCollapsedGroups();
   load();
   renderTabs();

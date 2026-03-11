@@ -81,3 +81,15 @@ function getProfileDone(profileId) {
     return Object.keys(data).length;
   } catch { return 0; }
 }
+
+/**
+ * Retourne le pourcentage de complétion d'un profil.
+ * Nécessite que skyrim.html ait été chargé au moins une fois (stocke le total).
+ * @param {string} profileId
+ * @returns {string} ex: "42%" ou "—" si total inconnu
+ */
+function getProfilePct(profileId) {
+  const total = parseInt(localStorage.getItem('skyrim_total_items') || '0', 10);
+  if (!total) return '—';
+  return Math.round((getProfileDone(profileId) / total) * 100) + '%';
+}

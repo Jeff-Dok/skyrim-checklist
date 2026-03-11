@@ -91,5 +91,5 @@ function getProfileDone(profileId) {
 function getProfilePct(profileId) {
   const total = parseInt(localStorage.getItem('skyrim_total_items') || '0', 10);
   if (!total) return '—';
-  return Math.round((getProfileDone(profileId) / total) * 100) + '%';
+  return Math.round((getProfileDone(profileId) / total) * 100) + ' %';
 }

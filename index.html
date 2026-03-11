@@ -32,18 +32,21 @@
 
       <div class="welcome-inner">
 
-        <!-- Logo -->
-        <img
-          class="welcome-logo"
-          src="assets/images/logos/logo_title.webp"
-          alt="Skyrim"
-          width="512"
-          height="224"
-          fetchpriority="high"
-        />
+        <!-- Logo + titre -->
+        <div class="welcome-hero">
+          <img
+            class="welcome-logo"
+            src="assets/images/logos/logo_title.webp"
+            alt="Skyrim"
+            width="512"
+            height="224"
+            fetchpriority="high"
+          />
+          <p class="welcome-checklist-label">Checklist</p>
+        </div>
 
-        <!-- Titre page -->
-        <h1 class="welcome-title">Choisir un personnage</h1>
+        <!-- Titre section -->
+        <h1 class="welcome-title">Select a Character</h1>
 
         <!-- Ligne décorative -->
         <div class="welcome-divider"></div>
@@ -53,18 +56,18 @@
 
         <!-- Formulaire nouveau personnage -->
         <div class="welcome-new-wrap">
-          <p class="welcome-new-label">Nouveau personnage</p>
+          <p class="welcome-new-label">New Character</p>
           <div class="welcome-new-form">
             <input
               type="text"
               id="profileNameInput"
               class="welcome-name-input"
-              placeholder="Nom du personnage…"
+              placeholder="Character name…"
               maxlength="30"
               autocomplete="off"
-              aria-label="Nom du nouveau personnage"
+              aria-label="New character name"
             />
-            <button class="welcome-btn-create" id="btnCreate">Créer</button>
+            <button class="welcome-btn-create" id="btnCreate">Create</button>
           </div>
         </div>
 
@@ -91,7 +94,7 @@
 
       /* ── Suppression d'un profil ── */
       function confirmDeleteProfile(id, name) {
-        if (!confirm(`Supprimer le personnage "${name}" ?\nCette action est irréversible.`)) return;
+        if (!confirm(`Delete character "${name}"?\nThis action cannot be undone.`)) return;
         deleteProfile(id);
         renderProfiles();
       }
@@ -102,22 +105,22 @@
         const list = document.getElementById('profileList');
 
         if (profiles.length === 0) {
-          list.innerHTML = '<p class="welcome-empty">Aucun personnage — créez-en un ci-dessous.</p>';
+          list.innerHTML = '<p class="welcome-empty">No characters yet — create one below.</p>';
           return;
         }
 
         list.innerHTML = profiles.map(p => {
           const done = getProfileDone(p.id);
-          const date = new Date(p.createdAt).toLocaleDateString('fr-CA');
+          const date = new Date(p.createdAt).toLocaleDateString('en-CA');
           return `
 <div class="welcome-profile-card" role="listitem">
   <div class="welcome-card-info">
     <span class="welcome-card-name">${escHtml(p.name)}</span>
-    <span class="welcome-card-meta">${done} items · créé le ${date}</span>
+    <span class="welcome-card-meta">${done} items · created ${date}</span>
   </div>
   <div class="welcome-card-actions">
-    <button class="welcome-btn-play" onclick="playProfile('${p.id}')">&#9654; Jouer</button>
-    <button class="welcome-btn-delete" onclick="confirmDeleteProfile('${p.id}', '${escHtml(p.name).replace(/'/g, '&#39;')}')" aria-label="Supprimer ${escHtml(p.name)}">✕</button>
+    <button class="welcome-btn-play" onclick="playProfile('${p.id}')">&#9654; Play</button>
+    <button class="welcome-btn-delete" onclick="confirmDeleteProfile('${p.id}', '${escHtml(p.name).replace(/'/g, '&#39;')}')" aria-label="Delete ${escHtml(p.name)}">✕</button>
   </div>
 </div>`;
         }).join('');

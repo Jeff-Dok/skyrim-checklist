@@ -1098,9 +1098,9 @@ body::before {
 .welcome-page {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 20px 16px;
+  padding: 32px 16px 24px;
 }
 
 /* Boîte centrale */
@@ -1113,17 +1113,40 @@ body::before {
   gap: 0;
 }
 
-/* Logo */
-.welcome-logo {
-  height: 52px;
-  width: auto;
-  margin-bottom: 20px;
+/* Bloc hero : logo + "CHECKLIST" */
+.welcome-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 28px;
 }
 
-/* Titre "Choisir un personnage" */
+/* Logo — plus grand que sur la topbar */
+.welcome-logo {
+  height: 100px;
+  width: auto;
+  margin-bottom: 6px;
+}
+
+/* "CHECKLIST" sous le logo — même style que dans skyrim.html */
+.welcome-checklist-label {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: clamp(42px, 10vw, 72px);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin: 0;
+}
+
+/* "Select a Character" */
 .welcome-title {
   font-family: 'FuturaCondensed', 'Futura', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: normal;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1286,8 +1309,9 @@ body::before {
 
 /* ── Responsive (mobile-first) ── */
 @media (min-width: 600px) {
-  .welcome-logo          { height: 64px; margin-bottom: 24px; }
-  .welcome-title         { font-size: 30px; }
+  .welcome-page          { padding: 48px 20px 32px; }
+  .welcome-logo          { height: 130px; }
+  .welcome-title         { font-size: 24px; }
   .welcome-card-name     { font-size: 22px; }
   .character-btn         { font-size: 15px; max-width: 150px; }
 }

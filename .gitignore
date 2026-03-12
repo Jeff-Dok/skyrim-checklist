@@ -39,3 +39,6 @@ Not Used/
 Thumbs.db
 desktop.ini
 .vscode/
+
+# ── Dossier playwright MCP ───────────────────────────────────────
+.playwright-mcp/

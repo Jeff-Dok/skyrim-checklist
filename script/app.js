@@ -67,6 +67,46 @@ const QUEST_GROUP_LABEL_MAP = Object.fromEntries(QUEST_GROUPS.filter(g => g.labe
 /** Lookup des labels FR : { [groupName]: labelFr } — tous les groupes. */
 const QUEST_GROUP_FR_MAP = Object.fromEntries(QUEST_GROUPS.filter(g => g.labelFr).map(g => [g.name, g.labelFr]));
 
+/** Traductions FR des écoles de magie (Spells). */
+const SPELL_SCHOOL_FR_MAP = {
+  'Alteration':  'Altération',
+  'Conjuration': 'Conjuration',
+  'Destruction': 'Destruction',
+  'Illusion':    'Illusion',
+  'Restoration': 'Guérison',
+};
+
+/** Traductions FR des groupes de cris (Dragon Shouts). */
+const SHOUT_GROUP_FR_MAP = {
+  'Animal Allegiance':  'Allégeance Animale',
+  'Aura Whisper':       'Aura de Perception',
+  'Battle Fury':        'Furie Combative',
+  'Become Ethereal':    'Corps Éthéré',
+  'Bend Will':          'Asservissement',
+  'Call Dragon':        'Appel du Dragon',
+  'Call of Valor':      'Appel des Valeureux',
+  'Clear Skies':        'Ciel Dégagé',
+  'Cyclone':            'Cyclone',
+  'Disarm':             'Désarmement',
+  'Dismaying Shout':    'Intimidation',
+  'Dragon Aspect':      'Aspect Draconique',
+  'Dragonrend':         'Fendragon',
+  'Drain Vitality':     'Ponction de Vitalité',
+  'Elemental Fury':     'Furie Élémentale',
+  'Fire Breath':        'Souffle Ardent',
+  'Frost Breath':       'Souffle Glacé',
+  'Ice Form':           'Cri de Glace',
+  "Kyne's Peace":       'Paix de Kyne',
+  'Marked for Death':   'Marque Mortelle',
+  'Slow Time':          'Ralenti',
+  'Soul Tear':          "Lacération d'Âme",
+  'Storm Call':         'Tourmente',
+  'Summon Durnehviir':  'Invocation de Durnehviir',
+  'Throw Voice':        'Projection de Voix',
+  'Unrelenting Force':  'Déferlement',
+  'Whirlwind Sprint':   'Impulsion',
+};
+
 /** Ordre de rendu des groupes de quêtes — dérivé de QUEST_GROUPS. */
 const QUEST_GROUP_ORDER = QUEST_GROUPS.map(g => g.name);
 
@@ -814,11 +854,12 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <span class="item-name">${escHtml(itemName(item))}</span>
             <span class="word-dragon">${escHtml(dragon)}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
-            <span class="item-sub"><span class="word-en">${escHtml(item.word_en || '')}</span></span>
+            <span class="item-sub"><span class="word-en">${escHtml(getLang() === 'fr' ? (DATA_FR_WORDS[item.id] || item.word_en || '') : (item.word_en || ''))}</span></span>
           </label>
         </li>`;
       }).join('');
-      return `<div class="act-section-header"><span>${escHtml(group)}</span></div>
+      const groupLabel = getLang() === 'fr' ? (SHOUT_GROUP_FR_MAP[group] || group) : group;
+      return `<div class="act-section-header"><span>${escHtml(groupLabel)}</span></div>
         <ul class="shout-list">${words}</ul>`;
     }).join('');
   }
@@ -993,13 +1034,13 @@ function renderItemsHtml(items, cat, forceExpand = false) {
       : isSpells && SPELL_SCHOOL_IMG[group]
         ? (() => { const si = SPELL_SCHOOL_IMG[group]; return `<div class="spell-school-header spell-school-${escHtml(group.toLowerCase())}">
              <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
-             <span class="spell-school-name">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
+             <span class="spell-school-name">${escHtml(getLang() === 'fr' ? (SPELL_SCHOOL_FR_MAP[group] || group) : group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
              <img class="spell-school-icon" src="assets/images/schools/${si}" alt="" width="36" height="36">
            </div>`; })()
       : isEnchanting && (group === 'Weapon Enchantments' || group === 'Armor Enchantments')
         ? `<div class="spell-school-header">
              <img class="spell-school-icon" src="assets/images/craftings/enchanting.webp" alt="" width="36" height="36">
-             <span class="spell-school-name">${escHtml(group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
+             <span class="spell-school-name">${escHtml(getLang() === 'fr' ? (SPELL_SCHOOL_FR_MAP[group] || group) : group)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${groupPct}%</span></span>
              <img class="spell-school-icon" src="assets/images/craftings/enchanting.webp" alt="" width="36" height="36">
            </div>`
       : isSpells || isEnchanting || isAlchemy

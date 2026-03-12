@@ -134,6 +134,8 @@ Tous dans `C:\Users\jnfra\.claude\agents\` :
 
 - [X] **Multi-profils** — index.html (sélection/création/suppression) + skyrim.html (checklist par profil)
 - [X] **Internationalisation FR/EN** — i18n.js + data_fr.js (1038 traductions IDs 1–1144) + t() partout dans app.js
+- [X] **Traductions Dragon Shouts FR** — headers + mots propres + `DATA_FR_WORDS` (significations FR)
+- [X] **Traductions Spells FR** — ~40 corrections (noms officiels via wiki FR) + `SPELL_SCHOOL_FR_MAP`
 - [ ] **Traductions Potions/Poisons FR** — data_fr.js ne couvre pas encore les IDs 1145–1435
 - [ ] **Export / Import** — sauvegarder/restaurer la progression en JSON
 - [ ] **Reset** — bouton remise à zéro avec confirmation modale

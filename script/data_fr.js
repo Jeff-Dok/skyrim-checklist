@@ -529,27 +529,27 @@ const DATA_FR_NAMES = {
   // ══════════════════════════════════════════════════════
   // QUESTS — Fishing (IDs 552–573)
   // ══════════════════════════════════════════════════════
-  552: "Connaissance des pêcheurs",
-  553: "En cas d'urgence",
-  554: 'L\'esprit clair',
+  552: "Entre pêcheurs",
+  553: "À la rigueur",
+  554: 'Perspicace',
   555: 'Cœur d\'or',
-  556: 'Deux d\'un genre',
+  556: 'Les deux font la paire',
   557: 'Extermination de crustacés',
-  558: 'Terreur à défenses',
+  558: 'Terreur cornue',
   559: 'Cours particuliers',
-  560: 'Chasseur d\'esprits',
-  561: 'Sans contestation',
-  562: 'Le festin ultime',
-  563: 'Sous les eaux de bronze',
+  560: 'Le spiritueux',
+  561: 'Le concours',
+  562: 'Un festin mémorable',
+  563: 'Sous les flots de bronze',
   564: 'Brise-vague',
-  565: 'Fin de la ligne',
+  565: 'Garder la ligne',
   566: 'Prise du jour',
   567: 'Poisson gelé',
-  568: 'Pris sous la pluie',
-  569: 'Abysses ténébreux',
+  568: 'Pêche sous la pluie',
+  569: 'Les plus sombres profondeurs',
   570: 'Légende de la pêche',
   571: 'Faire des réserves',
-  572: 'Pour approfondir',
+  572: 'Étude poussée',
   573: 'Récupération de déchets',
 
   // ══════════════════════════════════════════════════════
@@ -628,8 +628,8 @@ const DATA_FR_NAMES = {
   644: 'Chuchoteur de chevaux',
   645: 'Créature de légende',
   646: 'Les bleus au visage',
-  647: 'Les morts agités',
-  648: 'La vie d\'agriculteur pour moi',
+  647: 'Les morts sans repos',
+  648: 'Une vie à la ferme',
   649: 'Voleur d\'âmes',
   650: 'Rapide comme une flèche',
   651: 'Plus qu\'on ne peut mâcher',
@@ -642,162 +642,28 @@ const DATA_FR_NAMES = {
 
   // ══════════════════════════════════════════════════════
   // DRAGON SHOUTS (IDs 658–738)
-  // Chaque shout a 3 mots — tous reçoivent le nom du cri
+  // Les mots draconiques sont des noms propres — pas de traduction.
+  // Seule la signification (word_en) est traduite via DATA_FR_WORDS.
   // ══════════════════════════════════════════════════════
-
-  // Allégeance Animale (Raan, Mir, Tah)
-  658: 'Allégeance Animale',
-  659: 'Allégeance Animale',
-  660: 'Allégeance Animale',
-
-  // Aura de Perception (Laas, Yah, Nir)  — mais 664=Mid/Vur/Shaan = Furie combative (Dragonborn)
-  661: 'Aura de Perception',
-  662: 'Aura de Perception',
-  663: 'Aura de Perception',
-
-  // Furie combative — Dragonborn (Mid, Vur, Shaan)
-  664: 'Furie combative',
-  665: 'Furie combative',
-  666: 'Furie combative',
-
-  // Corps éthéré (Feim, Zii, Gron)
-  667: 'Corps éthéré',
-  668: 'Corps éthéré',
-  669: 'Corps éthéré',
-
-  // Asservissement — Dragonborn (Gol, Hah, Dov)
-  670: 'Asservissement',
-  671: 'Asservissement',
-  672: 'Asservissement',
-
-  // Allié Draconique (Od, Ah, Viing)
-  673: 'Allié Draconique',
-  674: 'Allié Draconique',
-  675: 'Allié Draconique',
-
-  // Allié Héroïque (Hun, Kaal, Zoor)
-  676: 'Allié Héroïque',
-  677: 'Allié Héroïque',
-  678: 'Allié Héroïque',
-
-  // Ciel Dégagé (Lok, Vah, Koor)
-  679: 'Ciel Dégagé',
-  680: 'Ciel Dégagé',
-  681: 'Ciel Dégagé',
-
-  // Cyclone — Dragonborn (Ven, Gaar, Nos)
-  682: 'Cyclone',
-  683: 'Cyclone',
-  684: 'Cyclone',
-
-  // Désarmement (Zun, Haal, Viik)
-  685: 'Désarmement',
-  686: 'Désarmement',
-  687: 'Désarmement',
-
-  // Intimidation (Faas, Ru, Maar)
-  688: 'Intimidation',
-  689: 'Intimidation',
-  690: 'Intimidation',
-
-  // Aspect draconique — Dragonborn (Mul, Qah, Diiv)
-  691: 'Aspect draconique',
-  692: 'Aspect draconique',
-  693: 'Aspect draconique',
-
-  // Fendragon (Joor, Zah, Frul)
-  694: 'Fendragon',
-  695: 'Fendragon',
-  696: 'Fendragon',
-
-  // Ponction de Vitalité — Dawnguard (Gaan, Lah, Haas)
-  697: 'Ponction de Vitalité',
-  698: 'Ponction de Vitalité',
-  699: 'Ponction de Vitalité',
-
-  // Furie Élémentale (Su, Grah, Dun)
-  700: 'Furie Élémentale',
-  701: 'Furie Élémentale',
-  702: 'Furie Élémentale',
-
-  // Souffle Ardent (Yol, Toor, Shul)
-  703: 'Souffle Ardent',
-  704: 'Souffle Ardent',
-  705: 'Souffle Ardent',
-
-  // Souffle Glacé (Fo, Krah, Diin)
-  706: 'Souffle Glacé',
-  707: 'Souffle Glacé',
-  708: 'Souffle Glacé',
-
-  // Cri de Glace (Iiz, Slen, Nus)
-  709: 'Cri de Glace',
-  710: 'Cri de Glace',
-  711: 'Cri de Glace',
-
-  // Paix de Kyne (Kaan, Drem, Ov)
-  712: 'Paix de Kyne',
-  713: 'Paix de Kyne',
-  714: 'Paix de Kyne',
-
-  // Marque Mortelle (Krii, Lun, Aus)
-  715: 'Marque Mortelle',
-  716: 'Marque Mortelle',
-  717: 'Marque Mortelle',
-
-  // Ralenti (Tiid, Klo, Ul)
-  718: 'Ralenti',
-  719: 'Ralenti',
-  720: 'Ralenti',
-
-  // Lacération d'âme — Dawnguard (Rii, Vaaz, Zol)
-  721: "Lacération d'âme",
-  722: "Lacération d'âme",
-  723: "Lacération d'âme",
-
-  // Tourmente (Strun, Bah, Qo)
-  724: 'Tourmente',
-  725: 'Tourmente',
-  726: 'Tourmente',
-
-  // Invocation de Durnehviir — Dawnguard (Dur, Neh, Viir)
-  727: 'Invocation de Durnehviir',
-  728: 'Invocation de Durnehviir',
-  729: 'Invocation de Durnehviir',
-
-  // Télékinésie (Zul, Mey, Gut)
-  730: 'Télékinésie',
-  731: 'Télékinésie',
-  732: 'Télékinésie',
-
-  // Déferlement (Fus, Ro, Dah)
-  733: 'Déferlement',
-  734: 'Déferlement',
-  735: 'Déferlement',
-
-  // Impulsion (Wuld, Nah, Kest)
-  736: 'Impulsion',
-  737: 'Impulsion',
-  738: 'Impulsion',
 
   // ══════════════════════════════════════════════════════
   // SPELLS — Alteration (IDs 739–755)
   // ══════════════════════════════════════════════════════
-  739: 'Lueur de bougie',
-  740: 'Chair de chêne',
-  741: 'Lumière de mage',
-  742: 'Chair de pierre',
+  739: 'Illumination',
+  740: 'Corps de chêne',
+  741: 'Rayonnement',
+  742: 'Corps de pierre',
   743: 'Coquille de cendres',
-  744: 'Détection de la vie',
-  745: 'Chair de fer',
+  744: 'Détection des vivants',
+  745: 'Corps de fer',
   746: 'Télékinésie',
   747: 'Respiration aquatique',
   748: 'Rune de cendres',
   749: 'Détection des morts',
-  750: 'Chair d\'ébonite',
-  751: 'Paralyse',
-  752: 'Chair de dragon',
-  753: 'Paralysie de masse',
+  750: "Corps d'ébonite",
+  751: 'Paralysie',
+  752: 'Cuirasse draconique',
+  753: 'Paralysie générale',
   754: 'Équilibre',
   755: 'Transmutation',
 
@@ -806,67 +672,67 @@ const DATA_FR_NAMES = {
   // ══════════════════════════════════════════════════════
   756: 'Dague liée',
   757: 'Épée liée',
-  758: 'Invoquer un familier',
-  759: 'Réveiller un zombie',
-  760: 'Hache de guerre liée',
+  758: 'Conjuration de familier',
+  759: "Allié d'outre-tombe",
+  760: "Hache d'armes liée",
   761: 'Invoquer un homme-os',
-  762: 'Invoquer un atronach de feu',
-  763: 'Réanimer un cadavre',
-  764: 'Capture d\'âme',
+  762: "Conjuration d'Atronach de feu",
+  763: 'Réanimation',
+  764: "Capture d'âme",
   765: 'Invoquer Arvak',
-  766: 'Bannir un daedra',
+  766: 'Bannissement de Daedra',
   767: 'Arc lié',
   768: 'Invoquer un enfant des cendres',
-  769: 'Invoquer un atronach de givre',
+  769: "Conjuration d'Atronach de glace",
   770: 'Invoquer un homme-brume',
   771: 'Invoquer un chercheur',
   772: 'Revenant',
-  773: 'Commander les daedras',
-  774: 'Invoquer un gardien des cendres',
-  775: 'Invoquer un seigneur drémora',
-  776: 'Invoquer un atronach de tempête',
+  773: 'Manipulation de Daedra',
+  774: 'Conjuration de Gardien des cendres',
+  775: 'Conjuration de Seigneur Drémora',
+  776: "Conjuration d'Atronach de foudre",
   777: 'Invoquer un homme-courroux',
-  778: 'Zombie redoutable',
-  779: 'Expulser les daedras',
-  780: 'Serviteur cadavérique',
-  781: 'Serviteur de flamme',
-  782: 'Serviteur de givre',
-  783: 'Serviteur de tempête',
-  784: 'Familier enflammé',
-  785: "Invoquer l'ombre d'Arniel",
+  778: 'Surzombie',
+  779: 'Expulsion de Daedra',
+  780: 'Golem zombie',
+  781: 'Golem de feu',
+  782: 'Golem de glace',
+  783: 'Golem de foudre',
+  784: 'Familier de feu',
+  785: "Invocation de l'ombre d'Arniel",
   786: 'Invoquer un drémora non lié',
 
   // ══════════════════════════════════════════════════════
   // SPELLS — Destruction (IDs 787–815)
   // ══════════════════════════════════════════════════════
   787: 'Flammes',
-  788: 'Morsure du givre',
+  788: 'Froid mordant',
   789: 'Étincelles',
   790: 'Rune de feu',
-  791: 'Boule de feu mineure',
+  791: 'Éclair enflammé',
   792: 'Gel',
-  793: 'Rune de givre',
-  794: 'Pointe de glace',
+  793: 'Rune de glace',
+  794: 'Stalactite',
   795: 'Ignition',
-  796: 'Éclair',
-  797: 'Rune d\'éclair',
-  798: 'Chaîne d\'éclairs',
+  796: 'Éclair foudroyant',
+  797: "Rune de foudre",
+  798: 'Éclairs multiples',
   799: 'Boule de feu',
-  800: 'Manteau de feu',
-  801: 'Manteau de givre',
+  800: 'Aura enflammée',
+  801: 'Aura glaciale',
   802: 'Tempête de glace',
-  803: 'Manteau de foudre',
+  803: 'Aura foudroyante',
   804: 'Manteau de tourbillon',
-  805: 'Lance de glace',
-  806: 'Incandescence',
-  807: 'Coup de tonnerre',
+  805: 'Lance gelée',
+  806: 'Incinération',
+  807: 'Trait de foudre',
   808: 'Mur de flammes',
-  809: 'Mur de givre',
-  810: 'Mur d\'orages',
+  809: 'Mur de glace',
+  810: 'Mur de foudre',
   811: 'Blizzard',
   812: 'Tempête de feu',
   813: 'Tempête de foudre',
-  814: 'La Convection d\'Arniel',
+  814: "Convection d'Arniel",
   815: 'Drain vampirique',
 
   // ══════════════════════════════════════════════════════
@@ -874,47 +740,47 @@ const DATA_FR_NAMES = {
   // ══════════════════════════════════════════════════════
   816: 'Courage',
   817: 'Clairvoyance',
-  818: 'Fureur',
-  819: 'Apaisement',
+  818: 'Furie',
+  819: 'Calme',
   820: 'Peur',
   821: 'Silence',
   822: 'Frénésie',
   823: 'Rune de frénésie',
-  824: 'Ralliement',
+  824: 'Inspiration',
   825: 'Invisibilité',
   826: 'Pacification',
   827: 'Déroute',
-  828: "Appel aux armes",
+  828: 'Appel aux armes',
   829: 'Harmonie',
   830: 'Hystérie',
-  831: 'Chaos',
+  831: 'Pagaille',
   832: 'Vision du Dixième Œil',
 
   // ══════════════════════════════════════════════════════
   // SPELLS — Restoration (IDs 833–855)
   // ══════════════════════════════════════════════════════
-  833: 'Guérison',
-  834: 'Bouclier mineur',
-  835: 'Guérison rapide',
-  836: 'Guérison du prochain',
+  833: 'Soin',
+  834: 'Moindre barrière',
+  835: 'Soin rapide',
+  836: 'Toucher apaisant',
   837: 'Guérison nécromantique',
-  838: 'Bouclier solide',
+  838: 'Moyenne barrière',
   839: 'Feu solaire',
-  840: 'Repousser les morts-vivants mineurs',
-  841: 'Fermer les plaies',
-  842: 'Bouclier supérieur',
-  843: 'Guérir autrui',
+  840: 'Moindre péril des morts',
+  841: 'Cicatrisation',
+  842: 'Grande barrière',
+  843: 'Soulagement',
   844: 'Soigner les morts-vivants',
   845: 'Rune de poison',
-  846: 'Repousser les morts-vivants mineurs',
+  846: 'Moindre fléau des morts',
   847: 'Aura de Stendarr',
-  848: 'Repousser les morts-vivants',
+  848: 'Péril des morts',
   849: 'Fléau des vampires',
   850: 'Cercle de protection',
-  851: 'Grande guérison',
-  852: 'Repousser les morts-vivants',
-  853: 'Repousser les grands morts-vivants',
-  854: 'Fléau des morts-vivants',
+  851: 'Soin magistral',
+  852: 'Fléau des morts',
+  853: 'Grand péril des morts',
+  854: 'Calamité des morts-vivants',
   855: 'Cercle gardien',
 
   // ══════════════════════════════════════════════════════
@@ -1226,4 +1092,66 @@ const DATA_FR_NAMES = {
   1143: 'Chapeau de Ver',
   1144: 'Lys des cimes jaune',
 
+};
+
+/**
+ * Traductions françaises des significations des mots de cri (word_en).
+ * Format : { [itemId]: 'traduction FR' }
+ * Utilisé dans le rendu Dragon Shouts à la place de item.word_en en mode FR.
+ */
+const DATA_FR_WORDS = {
+  // Animal Allegiance
+  658: 'Animale', 659: 'Allégeance', 660: 'Meute',
+  // Aura Whisper
+  661: 'Vie', 662: 'Chercher', 663: 'Chasse',
+  // Battle Fury
+  664: 'Loyal', 665: 'Valeur', 666: 'Inspirer',
+  // Become Ethereal
+  667: 'Effacement', 668: 'Esprit', 669: 'Lien',
+  // Bend Will
+  670: 'Pierre/Terre', 671: 'Esprit', 672: 'Dragon',
+  // Call Dragon
+  673: 'Neige', 674: 'Chasseur', 675: 'Aile',
+  // Call of Valor
+  676: 'Héros', 677: 'Champion', 678: 'Légende',
+  // Clear Skies
+  679: 'Ciel', 680: 'Printemps', 681: 'Été',
+  // Cyclone
+  682: 'Vent', 683: 'Libérer', 684: 'Frappe',
+  // Disarm
+  685: 'Arme', 686: 'Main', 687: 'Défaite',
+  // Dismaying Shout
+  688: 'Peur', 689: 'Fuite', 690: 'Terreur',
+  // Dragon Aspect
+  691: 'Force', 692: 'Armure', 693: 'Dragon',
+  // Dragonrend
+  694: 'Mortel', 695: 'Fini', 696: 'Temporaire',
+  // Drain Vitality
+  697: 'Endurance', 698: 'Magicka', 699: 'Santé',
+  // Elemental Fury
+  700: 'Air', 701: 'Bataille', 702: 'Grâce',
+  // Fire Breath
+  703: 'Feu', 704: 'Brasier', 705: 'Soleil',
+  // Frost Breath
+  706: 'Givre', 707: 'Froid', 708: 'Gel',
+  // Ice Form
+  709: 'Glace', 710: 'Chair', 711: 'Statue',
+  // Kyne's Peace
+  712: 'Kyné', 713: 'Paix', 714: 'Confiance',
+  // Marked for Death
+  715: 'Tuer', 716: 'Drain', 717: 'Souffrir',
+  // Slow Time
+  718: 'Temps', 719: 'Sable', 720: 'Éternité',
+  // Soul Tear
+  721: 'Essence', 722: 'Déchirer', 723: 'Zombie',
+  // Storm Call
+  724: 'Tempête', 725: 'Colère', 726: 'Éclair',
+  // Summon Durnehviir
+  727: 'Malédiction', 728: 'Jamais', 729: 'Mourant',
+  // Throw Voice
+  730: 'Voix', 731: 'Tromper', 732: 'Loin',
+  // Unrelenting Force
+  733: 'Force', 734: 'Équilibre', 735: 'Pousser',
+  // Whirlwind Sprint
+  736: 'Tourbillon', 737: 'Fureur', 738: 'Tempête',
 };

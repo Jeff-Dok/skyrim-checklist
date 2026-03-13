@@ -47,7 +47,7 @@ const QUEST_GROUPS = [
   { name: 'Bards College',            img: 'bard_quest.webp',                labelFr: 'Acad. des Bardes' },
   { name: 'Divine Quests',            img: 'divine_quests.webp',             labelFr: 'Quêtes Divines' },
   { name: 'The Greybeards',           img: 'greybeards_quest.webp',          labelFr: 'Les Grises-Barbes' },
-  { name: 'The Blades',               img: 'creationclub_quest.webp',        labelFr: 'Les Lames' },
+  { name: 'The Blades',               img: 'blades_quests.webp',             labelFr: 'Les Lames' },
   { name: 'Side Quests',              img: 'side_quest.webp',                labelFr: 'Quêtes Secondaires' },
   { name: 'Dungeon Quests',           img: 'dungeon_quests.webp',            labelFr: 'Quêtes de Donjon' },
   { name: 'Miscellaneous Objectives', img: 'miscellaneous_objectives.webp', label: 'Miscellaneous Obj.', labelFr: 'Objectifs Divers' },

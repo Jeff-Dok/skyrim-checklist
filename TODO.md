@@ -35,13 +35,11 @@
 
 ## Knotworks manquants (img: null dans QUEST_GROUPS)
 
-Ces 4 groupes n'ont pas encore de banner WebP (1030×74px) :
-- [ ] **Divine Quests** → `divine_quest.webp`
-- [X] **The Greybeards** → `greybeards_quest.webp` ✅ ajouté et optimisé (PNG→WebP, 83Ko→5.8Ko)
-- [ ] **The Blades** → `blades_quest.webp`
-- [ ] **Dungeon Quests** → `dungeon_quest.webp`
-
-Pistes : Midjourney / DALL-E avec prompt "Nordic knotwork banner 1030x74" ou recadrage d'un existant.
+Tous les knotworks sont maintenant référencés ✅
+- [X] **Divine Quests** → `divine_quests.webp` (59Ko PNG → 12Ko WebP)
+- [X] **The Greybeards** → `greybeards_quest.webp` (83Ko PNG → 5.8Ko WebP)
+- [X] **The Blades** → `blades_quests.webp` (54Ko PNG → 9Ko WebP)
+- [X] **Dungeon Quests** → `dungeon_quests.webp` (37Ko PNG → 8Ko WebP)
 
 ---
 

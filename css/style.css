@@ -1009,8 +1009,8 @@ body::before {
 .potion-grid .item-name { font-size: 17px; }
 
 /* Sous-header Health / Magicka / Stamina / Skill */
-.potion-subgroup { margin-bottom: 2px; }
-.potion-subgroup:first-child { margin-top: 8px; }
+.potion-subgroup { margin-bottom: 4px; }
+.group-header + .potion-subgroup { margin-top: 4px; }
 .potion-subgroup-header {
   background: #000;
   border-radius: 10px;

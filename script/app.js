@@ -45,11 +45,11 @@ const QUEST_GROUPS = [
   { name: 'Civil War',                img: 'civilwar_quest.webp',            labelFr: 'Guerre Civile' },
   { name: 'Daedric',                  img: 'daedric_quest.webp',             labelFr: 'Daedrique' },
   { name: 'Bards College',            img: 'bard_quest.webp',                labelFr: 'Acad. des Bardes' },
-  { name: 'Divine Quests',            img: 'creationclub_quest.webp',        labelFr: 'Quêtes Divines' },
-  { name: 'The Greybeards',           img: 'creationclub_quest.webp',        labelFr: 'Les Grises-Barbes' },
+  { name: 'Divine Quests',            img: 'divine_quests.webp',             labelFr: 'Quêtes Divines' },
+  { name: 'The Greybeards',           img: 'greybeards_quest.webp',          labelFr: 'Les Grises-Barbes' },
   { name: 'The Blades',               img: 'creationclub_quest.webp',        labelFr: 'Les Lames' },
   { name: 'Side Quests',              img: 'side_quest.webp',                labelFr: 'Quêtes Secondaires' },
-  { name: 'Dungeon Quests',           img: 'creationclub_quest.webp',        labelFr: 'Quêtes de Donjon' },
+  { name: 'Dungeon Quests',           img: 'dungeon_quests.webp',            labelFr: 'Quêtes de Donjon' },
   { name: 'Miscellaneous Objectives', img: 'miscellaneous_objectives.webp', label: 'Miscellaneous Obj.', labelFr: 'Objectifs Divers' },
   { name: 'Favors',                   img: 'favor_objectives.webp',          labelFr: 'Faveurs' },
   { name: 'Dawnguard',                img: 'dawnguard_quest.webp',           labelFr: 'Dawnguard' },
@@ -698,11 +698,71 @@ function renderItemsHtml(items, cat, forceExpand = false) {
   const isSpells     = cat === 'Spells';
   const isEnchanting = cat === 'Enchanting Effects';
   const isAlchemy    = cat === 'Alchemy Ingredients';
+  const isBooks      = cat === 'Books';
+  const isPerks      = cat === 'Perks';
+
+  /* ── Perks : 6 groupes, sous-groupes pour Combat/Magic/Stealth ── */
+  if (isPerks) {
+    const PERK_GROUPS = {
+      'Combat Skills':       ['One-Handed', 'Two-Handed', 'Archery', 'Block', 'Heavy Armor', 'Smithing'],
+      'Magic Skills':        ['Alteration', 'Conjuration', 'Destruction', 'Illusion', 'Restoration', 'Enchanting'],
+      'Stealth Skills':      ['Light Armor', 'Sneak', 'Lockpicking', 'Pickpocket', 'Speech', 'Alchemy'],
+      'Vampire Lord Skills': null,
+      'Werewolf Skills':     null,
+      'Special Skills':      null,
+    };
+    return Object.entries(PERK_GROUPS).map(([grp, subgroups]) => {
+      const grpCollapsed = !!collapsedGroups[groupKey(cat, grp)];
+      let content = '';
+      if (!grpCollapsed) {
+        if (subgroups) {
+          content = subgroups.map(sub => {
+            const subCollapsed = !!collapsedGroups[groupKey(cat, grp + '::' + sub)];
+            return `<div class="potion-subgroup${subCollapsed ? ' collapsed' : ''}">
+              <div class="potion-subgroup-header" onclick="toggleGroup('${escJs(cat)}','${escJs(grp + '::' + sub)}')">
+                <span class="potion-sub-name">${escHtml(sub)}</span>
+              </div>
+              ${subCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
+            </div>`;
+          }).join('');
+        } else {
+          content = '<p class="alchemy-coming-soon">Data coming soon</p>';
+        }
+      }
+      return `
+        <div class="group${grpCollapsed ? ' collapsed' : ''}">
+          <div class="group-header" onclick="toggleGroup('${escJs(cat)}','${escJs(grp)}')">
+            <div class="spell-school-header">
+              <span class="spell-school-name">${escHtml(grp)}</span>
+            </div>
+          </div>
+          ${content}
+        </div>`;
+    }).join('');
+  }
+
+  /* ── Books : 3 groupes placeholder ── */
+  if (isBooks) {
+    const bookGroups = ['Skills', 'Quests', 'Lores'];
+    return bookGroups.map(grp => {
+      const grpCollapsed = !!collapsedGroups[cat + '::' + grp];
+      return `
+        <div class="group${grpCollapsed ? ' collapsed' : ''}">
+          <div class="group-header" onclick="toggleGroup('${escJs(cat)}','${escJs(grp)}')">
+            <div class="spell-school-header">
+              <span class="spell-school-name">${escHtml(grp)}</span>
+            </div>
+          </div>
+          ${grpCollapsed ? '' : '<p class="alchemy-coming-soon">Data coming soon</p>'}
+        </div>`;
+    }).join('');
+  }
 
   /* ── Alchemy : rendu spécial deux sections (Ingredients + Potions) ── */
   if (isAlchemy) {
     const ingredients = items.filter(i => i.section === 'Ingredients');
     const potions     = items.filter(i => i.section === 'Potions');
+    const poisons     = items.filter(i => i.section === 'Poisons');
 
     const ingDone = ingredients.filter(i => isChecked(i.id)).length;
     const ingPct  = ingredients.length ? Math.round(100 * ingDone / ingredients.length) : 0;
@@ -1143,7 +1203,7 @@ function renderList() {
   } else {
     /* Affichage normal : catégorie active uniquement */
     const items = CHECKLIST_DATA[currentCat] || [];
-    container.innerHTML = items.length === 0
+    container.innerHTML = (items.length === 0 && currentCat !== 'Books' && currentCat !== 'Perks')
       ? `<div class="empty"><span class="empty-icon">✦</span>${escHtml(t('emptyCategory'))}</div>`
       : renderItemsHtml(items, currentCat);
   }
@@ -1298,6 +1358,26 @@ function initCollapsedGroups() {
       collapsedGroups[groupKey(cat, g)] = true;
     });
   });
+  /* Groupes Books repliés par défaut */
+  ['Skills', 'Quests', 'Lores'].forEach(grp => {
+    collapsedGroups[groupKey('Books', grp)] = true;
+  });
+  /* Groupes Perks repliés par défaut */
+  const PERK_INIT = {
+    'Combat Skills':       ['One-Handed', 'Two-Handed', 'Archery', 'Block', 'Heavy Armor', 'Smithing'],
+    'Magic Skills':        ['Alteration', 'Conjuration', 'Destruction', 'Illusion', 'Restoration', 'Enchanting'],
+    'Stealth Skills':      ['Light Armor', 'Sneak', 'Lockpicking', 'Pickpocket', 'Speech', 'Alchemy'],
+    'Vampire Lord Skills': null,
+    'Werewolf Skills':     null,
+    'Special Skills':      null,
+  };
+  Object.entries(PERK_INIT).forEach(([grp, subs]) => {
+    collapsedGroups[groupKey('Perks', grp)] = true;
+    if (subs) subs.forEach(sub => {
+      collapsedGroups[groupKey('Perks', grp + '::' + sub)] = true;
+    });
+  });
+
   /* Sections Alchemy repliées par défaut (utilisent section au lieu de group) */
   collapsedGroups[groupKey('Alchemy Ingredients', 'Ingredients')] = true;
   collapsedGroups[groupKey('Alchemy Ingredients', 'Potions')]     = true;

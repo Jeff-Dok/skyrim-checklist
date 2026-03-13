@@ -37,7 +37,7 @@
 
 Ces 4 groupes n'ont pas encore de banner WebP (1030×74px) :
 - [ ] **Divine Quests** → `divine_quest.webp`
-- [ ] **The Greybeards** → `greybeards_quest.webp`
+- [X] **The Greybeards** → `greybeards_quest.webp` ✅ ajouté et optimisé (PNG→WebP, 83Ko→5.8Ko)
 - [ ] **The Blades** → `blades_quest.webp`
 - [ ] **Dungeon Quests** → `dungeon_quest.webp`
 
@@ -112,10 +112,11 @@ Tous dans `C:\Users\jnfra\.claude\agents\` :
 - [X] **Alchemy Potions** — 212 items codés (IDs 1145–1356) : Health/Magicka/Stamina/Skill (tous Fortify, Regen, Resist, Invisibility, Waterbreathing, Thieves Guild, DLC, Special)
 - [X] **Alchemy Poisons** — 79 items codés (IDs 1357–1435) : Damage/Crowd Control/Weakness/Lingering/Special
 - [ ] **Alchemy Recipes** — scope à définir
-- [ ] **Books** — Skill Books (~90 livres, 1 par compétence par niveau)
+- [~] **Books** — Structure placeholder : 3 groupes (Skills, Quests, Lores) — "Data coming soon"
   - Données à récupérer (UESP : Skyrim:Skill Books)
   - Rendu : liste par compétence, avec nom du livre + skill boosté
-- [ ] **Perks** — perks notables ou rares (scope à définir)
+- [~] **Perks** — Structure placeholder : 6 groupes, sous-groupes Combat/Magic/Stealth — "Data coming soon"
+  - Données à coder pour chacun des 18 skill trees
 - [ ] **Collectible** — scope à définir (cartes au trésor ? Stones of Barenziah ? Flûtes de barde ?)
 - [ ] **Unique Gear** — armes/armures uniques
   - Données partiellement préparées (URLs UESP téléchargées cette session)
@@ -137,6 +138,7 @@ Tous dans `C:\Users\jnfra\.claude\agents\` :
 - [X] **Traductions Dragon Shouts FR** — headers + mots propres + `DATA_FR_WORDS` (significations FR)
 - [X] **Traductions Spells FR** — ~40 corrections (noms officiels via wiki FR) + `SPELL_SCHOOL_FR_MAP`
 - [ ] **Traductions Potions/Poisons FR** — data_fr.js ne couvre pas encore les IDs 1145–1435
+- [ ] **Images Potions/Poisons** — 13 items mis à jour cette session (HealingExtreme, MagickaExtreme, StaminaExtreme, Ale), vérifier les autres null restants
 - [ ] **Export / Import** — sauvegarder/restaurer la progression en JSON
 - [ ] **Reset** — bouton remise à zéro avec confirmation modale
 - [ ] **Rendu Achievements** — grille icône + nom + description
@@ -147,7 +149,7 @@ Tous dans `C:\Users\jnfra\.claude\agents\` :
 
 ## Qualité & polish
 
-- [ ] **Favicon** — absent des assets, à créer (logo_title ou icône Skyrim)
+- [X] **Favicon** — `assets/images/logos/favicon.ico` ajouté + référencé dans index.html et skyrim.html
 - [ ] **Responsive mobile** — tester sur mobile réel / DevTools 375px
 - [ ] **Vérifier `extract.py`** — couvre-t-il toutes les catégories du `.xlsx` ?
 - [ ] **Compléter le `.xlsx`** avec les données des nouvelles catégories

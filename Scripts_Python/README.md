@@ -51,8 +51,8 @@ Fonctionne avec **n'importe quelle source** :
 - URLs directes vers des fichiers
 
 ### Destination
-`downloads/` à la racine du projet, organisé par domaine.
-Ex : `downloads/en.uesp.net/wiki/Skyrim:Alchemy/index.html`
+Dossier **Téléchargements** du système (`C:\Users\{toi}\Downloads`), organisé par domaine.
+Ex : `Downloads/en.uesp.net/wiki/Skyrim:Alchemy/index.html`
 
 ### Usage
 
@@ -87,7 +87,7 @@ python download_url.py https://site.com --delay 0.1
 |---|---|---|
 | `url` | *(requis)* | URL à télécharger |
 | `--depth` | `2` | Profondeur de récursion (0 = page seule) |
-| `--dest` | `downloads/` | Dossier de destination |
+| `--dest` | `~/Downloads/` | Dossier de destination |
 | `--no-html` | (sauvegarde HTML) | Ne télécharge que les assets (images, pdf…) |
 | `--any-domain` | (même domaine) | Suit aussi les liens vers d'autres domaines |
 | `--delay` | `0.3` | Délai en secondes entre chaque requête |

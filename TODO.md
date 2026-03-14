@@ -80,24 +80,17 @@ La catégorie Alchemy Ingredients est rendue (1 colonne, 4 sections collapsibles
 
 ---
 
-## Scripts utilitaires (agents Python — mis à jour cette session)
+## Scripts utilitaires Python — `Scripts_Python/` (MAJ 2026-03-14)
 
-Tous dans `C:\Users\jnfra\.claude\agents\` :
+Tous dans `skyrim_project/Scripts_Python/`. Dépendances : `pip install requests beautifulsoup4 Pillow anthropic`
 
-- [X] `analyze_image.py` — analyse 1 image via Claude API → `.txt`
-- [X] `batch_analyze.py` — analyse tous PNG/JPG/WEBP d'un dossier
-- [X] `download_uesp_images.py` — télécharge icônes UESP depuis URL(s)
-  - Patterns : `SR-icon-*.png/jpg` et `SR-item-*.png/jpg`
-  - Routing auto : `UESP/icon/` ou `UESP/item/` selon le nom
-  - Multi-URL supporté : `python script.py url1 url2 url3`
-  - Dest par défaut : `C:\Users\jnfra\OneDrive\Pictures\UESP`
-- [X] `process_ingredient_images.py` — convertit PNG/JPG → WebP 64px
-  - Retire tout ce qui est avant le dernier `-` du nom
-  - Retire les apostrophes du nom
-  - Reproduit la structure source dans `UESP/webp/icon/` ou `UESP/webp/item/`
-- [X] `build_sections.py` — fusionne pages PDF du guide Prima
-  - Usage : `python build_sections.py "Nom" page_debut [page_fin]`
-  - Output : `skyrim_project/Sections/Nom.pdf`
+- [X] `download_url.py` — téléchargeur universel (pages, images, fichiers). GitHub API auto, directory listing auto. `--depth 2` par défaut. Dest : `~/Downloads/`
+- [X] `download_uesp_images.py` — télécharge icônes UESP (`SR-icon-*` / `SR-item-*`), dest `UESP/Pictures/`
+- [X] `process_ingredient_images.py` — convertit PNG/JPG → WebP 64px, renomme (après dernier `-`), dest `UESP/webp/`
+- [X] `analyze_image.py` — analyse 1 image via Claude Vision API → `.txt`
+- [X] `batch_analyze.py` — analyse tous PNG/JPG/WEBP d'un dossier. `--skip-existing` pour reprendre
+- [X] `build_sections.py` — fusionne pages PDF Prima. Usage : `python build_sections.py "Nom" debut [fin]`
+- [X] `README.md` — documentation complète avec options, exemples, workflows, dépannage
 
 ---
 
@@ -142,6 +135,19 @@ Tous dans `C:\Users\jnfra\.claude\agents\` :
 - [ ] **Rendu Achievements** — grille icône + nom + description
 - [ ] **Rendu Collectible** — mise en page à définir selon scope
 - [ ] **Rendu Unique Gear** — grille avec image WebP de l'objet
+
+---
+
+## Documentation offline — `docs/` (MAJ 2026-03-14)
+
+- [X] `docs/GUIDE_PRINCIPAL.md` — Vue d'ensemble, architecture, localStorage, palette, IDs, catégories
+- [X] `docs/app-js.md` — Toutes les constantes, états, fonctions de app.js documentés
+- [X] `docs/profiles-js.md` — CRUD profils, clés localStorage, migration v1, getProfilePct
+- [X] `docs/i18n-js.md` — Structure I18N, t(), getLang(), toggleLang(), guide ajout clés
+- [X] `docs/data-js.md` — Format item par catégorie, règles IDs, structure data_fr.js
+- [X] `docs/style-css.md` — 19 sections CSS documentées (variables, layout, topbar, modal, responsive…)
+- [X] `docs/html.md` — Structure DOM index.html + skyrim.html, ordre chargement scripts, IDs ciblés
+- [X] `docs/comment-ajouter.md` — 10 recettes pratiques (ajouter quête, sort, ingrédient, potion…)
 
 ---
 

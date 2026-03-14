@@ -29,6 +29,7 @@ set ANTHROPIC_API_KEY=sk-ant-...
 
 | Script | Rôle | Dépendances |
 |---|---|---|
+| `download_url.py` | Télécharge le contenu complet d'une URL (profondeur configurable) | `requests`, `beautifulsoup4` |
 | `download_uesp_images.py` | Télécharge des icônes depuis le wiki UESP | `requests`, `beautifulsoup4` |
 | `process_ingredient_images.py` | Convertit PNG/JPG → WebP 64px optimisé | `Pillow` |
 | `analyze_image.py` | Analyse une image via Claude Vision | `anthropic` + API key |
@@ -37,7 +38,100 @@ set ANTHROPIC_API_KEY=sk-ant-...
 
 ---
 
-## 1. `download_uesp_images.py`
+## 1. `download_url.py`
+
+### Rôle
+Télécharge le contenu complet d'une URL : pages HTML, images, fichiers liés.
+Suit les liens jusqu'à une profondeur configurable (défaut : 2 niveaux).
+
+Fonctionne avec **n'importe quelle source** :
+- Pages web normales (UESP wiki, sites de documentation, etc.)
+- Index de répertoires (Apache/Nginx style)
+- Repos GitHub (utilise l'API GitHub automatiquement)
+- URLs directes vers des fichiers
+
+### Destination
+`downloads/` à la racine du projet, organisé par domaine.
+Ex : `downloads/en.uesp.net/wiki/Skyrim:Alchemy/index.html`
+
+### Usage
+
+```bash
+# Télécharger une page UESP et tout ce qui est lié (profondeur 2 par défaut)
+python download_url.py https://en.uesp.net/wiki/Skyrim:Alchemy
+
+# Télécharger un repo GitHub
+python download_url.py https://github.com/user/repo
+
+# Profondeur 0 = juste cette page, rien d'autre
+python download_url.py https://site.com/page --depth 0
+
+# Profondeur 1 = page + liens directs seulement
+python download_url.py https://site.com/page --depth 1
+
+# Sauvegarder dans un dossier personnalisé
+python download_url.py https://site.com --dest MonDossier/Skyrim
+
+# Sans sauvegarder les pages HTML (seulement les images, PDF, etc.)
+python download_url.py https://site.com --no-html
+
+# Suivre les liens vers d'autres domaines (attention : peut télécharger beaucoup)
+python download_url.py https://site.com --any-domain
+
+# Réduire le délai entre requêtes (plus rapide, moins poli)
+python download_url.py https://site.com --delay 0.1
+```
+
+### Options
+| Option | Défaut | Description |
+|---|---|---|
+| `url` | *(requis)* | URL à télécharger |
+| `--depth` | `2` | Profondeur de récursion (0 = page seule) |
+| `--dest` | `downloads/` | Dossier de destination |
+| `--no-html` | (sauvegarde HTML) | Ne télécharge que les assets (images, pdf…) |
+| `--any-domain` | (même domaine) | Suit aussi les liens vers d'autres domaines |
+| `--delay` | `0.3` | Délai en secondes entre chaque requête |
+
+### Comprendre la profondeur
+
+```
+Profondeur 0 : juste l'URL donnée
+Profondeur 1 : URL + tous les liens trouvés sur cette page
+Profondeur 2 : URL + liens de la page + liens des pages liées  ← défaut
+```
+
+### Cas spécial : GitHub
+Quand tu donnes une URL GitHub, le script utilise automatiquement
+l'**API GitHub** (pas de scraping HTML) pour lister et télécharger les fichiers.
+
+```bash
+# Repo entier
+python download_url.py https://github.com/user/mon-repo
+
+# Sous-dossier spécifique
+python download_url.py https://github.com/user/repo/tree/main/src/components
+```
+
+### Cas spécial : Index de répertoire
+Si l'URL pointe vers un listing de fichiers (ex: serveur Apache), le script
+le détecte automatiquement et télécharge tous les fichiers listés.
+
+```bash
+python download_url.py https://site.com/files/
+```
+
+### Reprendre un téléchargement interrompu
+Si le script est interrompu (Ctrl+C, erreur réseau...), relance simplement
+la même commande. Les fichiers déjà présents seront ignorés (`[skip]`).
+
+```bash
+# Même commande → reprend là où ça s'est arrêté
+python download_url.py https://en.uesp.net/wiki/Skyrim:Alchemy
+```
+
+---
+
+## 3. `download_uesp_images.py`
 
 ### Rôle
 Télécharge en masse les images du wiki UESP (uesp.net).
@@ -74,7 +168,7 @@ Utilise `process_ingredient_images.py` ensuite pour les renommer et convertir.
 
 ---
 
-## 2. `process_ingredient_images.py`
+## 4. `process_ingredient_images.py`
 
 ### Rôle
 Convertit des images PNG/JPG/WEBP en **WebP 64×64 px** optimisé.
@@ -129,7 +223,7 @@ python process_ingredient_images.py --src lookAt --dest assets/images/ingredient
 
 ---
 
-## 3. `analyze_image.py`
+## 5. `analyze_image.py`
 
 ### Rôle
 Envoie **une seule image** à Claude Vision (API Anthropic) et sauvegarde la réponse
@@ -187,7 +281,7 @@ It is an alchemy ingredient used to brew potions.
 
 ---
 
-## 4. `batch_analyze.py`
+## 6. `batch_analyze.py`
 
 ### Rôle
 Lance l'analyse Claude Vision sur **TOUS** les PNG/JPG/WEBP d'un dossier.
@@ -248,7 +342,7 @@ python batch_analyze.py --skip-existing
 
 ---
 
-## 5. `build_sections.py`
+## 7. `build_sections.py`
 
 ### Rôle
 Fusionne des pages individuelles du **Skyrim_Guide.pdf** en un PDF thématique.

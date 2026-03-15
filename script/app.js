@@ -1218,7 +1218,8 @@ function renderList() {
 function buildSub(item) {
   const parts = [];
   if (item.level)                          parts.push(item.level);
-  if (item.desc)                           parts.push(item.desc);
+  const _desc = (getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id]) || item.desc;
+  if (_desc)                               parts.push(_desc);
   if (item.giver)                          parts.push('→ ' + item.giver);
   if (item.category)                       parts.push(item.category);
   if (item.author)                         parts.push(item.author);
@@ -1304,7 +1305,8 @@ function openInfoModal(id) {
     if (item.city)    rows.push(makeInfoRow(t('modalCity'),         item.city));
     if (item.prince)  rows.push(makeInfoRow(t('modalPrince'),       item.prince));
     if (!isSpellItem && item.level) rows.push(makeInfoRow(t('modalLevel'), String(item.level)));
-    if (item.desc)    rows.push(makeInfoRow(t('modalDesc'),         item.desc));
+    const descFr = getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id];
+    if (descFr || item.desc) rows.push(makeInfoRow(t('modalDesc'), descFr || item.desc));
     if (item.location) rows.push(makeInfoRow(t('modalLocation'),    item.location));
     if (item.giver)   rows.push(makeInfoRow(t('modalGiver'),        item.giver));
     if (item.reward)  rows.push(makeInfoRow(t('modalRewards'),      item.reward));

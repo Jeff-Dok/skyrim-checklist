@@ -118,12 +118,24 @@
       function renderProfiles() {
         const profiles = getProfiles();
         const list = document.getElementById('profileList');
+        const inner = document.querySelector('.welcome-inner');
+        const titleEl = document.getElementById('welcomeTitle');
         const locale = getLang() === 'fr' ? 'fr-CA' : 'en-CA';
 
         if (profiles.length === 0) {
-          list.innerHTML = `<p class="welcome-empty">${t('emptyProfiles')}</p>`;
+          inner.classList.add('welcome-inner--first-run');
+          titleEl.textContent = t('firstRunTitle');
+          const sub = document.createElement('p');
+          sub.className = 'welcome-first-run-sub';
+          sub.textContent = t('firstRunSub');
+          list.innerHTML = '';
+          list.appendChild(sub);
+          document.getElementById('profileNameInput').focus();
           return;
         }
+
+        inner.classList.remove('welcome-inner--first-run');
+        titleEl.textContent = t('selectTitle');
 
         list.innerHTML = profiles.map(p => {
           const pct  = getProfilePct(p.id);

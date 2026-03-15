@@ -28,17 +28,19 @@ function saveProfiles(profiles) {
 
 /**
  * Migration v1 → système de profils.
- * Au premier lancement, si aucun profil n'existe, crée "Dok"
- * avec les données de l'ancienne clé skyrim_checklist_v1.
+ * Si des données de l'ancienne clé skyrim_checklist_v1 existent,
+ * crée un profil "Dokiin" pour les récupérer.
+ * Si aucune donnée ancienne et aucun profil : ne crée rien (l'utilisateur est invité à créer son premier personnage).
  * @returns {{ id: string, name: string, createdAt: number }[]}
  */
 function migrateV1IfNeeded() {
   const profiles = getProfiles();
   if (profiles.length > 0) return profiles;
-  const id = 'profile_' + Date.now();
-  const profile = { id, name: 'Dok', createdAt: Date.now() };
   const oldData = localStorage.getItem('skyrim_checklist_v1');
-  if (oldData) localStorage.setItem(getStorageKey(id), oldData);
+  if (!oldData) return [];
+  const id = 'profile_' + Date.now();
+  const profile = { id, name: 'Dokiin', createdAt: Date.now() };
+  localStorage.setItem(getStorageKey(id), oldData);
   saveProfiles([profile]);
   return [profile];
 }

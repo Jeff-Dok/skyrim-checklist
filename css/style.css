@@ -1218,6 +1218,36 @@ body > .lang-btn {
   padding: 20px 0;
 }
 
+/* Premier lancement — aucun profil existant */
+.welcome-inner--first-run .welcome-title {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+.welcome-inner--first-run .welcome-profile-list {
+  height: auto;
+  min-height: 0;
+  margin-bottom: 12px;
+}
+.welcome-first-run-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--muted2);
+  text-align: center;
+  padding: 8px 0 16px;
+  margin: 0;
+}
+.welcome-inner--first-run .welcome-new-wrap {
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface);
+}
+.welcome-inner--first-run .welcome-new-label {
+  font-size: 16px;
+}
+
 /* Carte de profil */
 .welcome-profile-card {
   background: var(--surface);

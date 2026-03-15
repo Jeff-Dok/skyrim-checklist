@@ -43,5 +43,5 @@ desktop.ini
 # ── Dossier playwright MCP ───────────────────────────────────────
 .playwright-mcp/
 
-# ── Dossier Script_Python ────────────────────────────────────────
-Script_Python/README.md
+# ── Dossier Scripts_Python (outils de dev locaux uniquement) ─────
+Scripts_Python/

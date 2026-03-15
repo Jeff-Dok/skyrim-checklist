@@ -331,15 +331,6 @@ let checked         = {};             // { [id]: true } — items cochés (persi
 let collapsedGroups = {};             // { [catKey]: true } — groupes repliés (session)
 let activeProfileId = null;           // id du profil actif (défini au démarrage)
 
-/** Icône d'école de magie (assets/images/schools/) pour le header de groupe Spells. */
-/** Icône de section potions (assets/images/potions/) par header. */
-const POTION_SECTION_IMG = {
-  'Health':  'HealingMinor.webp',
-  'Magicka': 'MagickaMinor.webp',
-  'Stamina': 'StaminaMinor.webp',
-  'Skill':   'Skill.webp',
-};
-
 /** Ordre d'affichage des sous-groupes de la section Potions. */
 const POTION_SECTIONS = ['Health', 'Magicka', 'Stamina', 'Skill'];
 /** Ordre d'affichage des sous-groupes de la section Poisons. */

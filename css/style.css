@@ -68,10 +68,6 @@
   --border:    #2a2a30;  /* bordures subtiles */
   --border2:   #3a3a44;  /* bordures actives */
 
-  /* ── Accents violets (non-utilisés visuellement pour l'instant) ── */
-  --accent:    #7c6aff;
-  --accent2:   #e06aff;
-
   /* ── Typographie ── */
   --text:      #e8e6f0;  /* texte principal */
   --muted:     #5a5870;  /* texte secondaire, labels discrets */

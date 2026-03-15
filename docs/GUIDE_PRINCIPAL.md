@@ -30,8 +30,14 @@ skyrim_project/
 ├── script/
 │   ├── i18n.js         ← Traductions FR/EN (chargé en premier)
 │   ├── profiles.js     ← CRUD profils + localStorage (chargé en 2e)
-│   ├── data.js         ← Données brutes CHECKLIST_DATA (chargé en 3e)
-│   ├── data_fr.js      ← Noms FR + mots dragon FR (chargé en 4e)
+│   ├── data/           ← Données par catégorie (chargé en 3e–9e)
+│   │   ├── quests.js       ← Quêtes (IDs 1–657)
+│   │   ├── shouts.js       ← Cris (IDs 658–738)
+│   │   ├── spells.js       ← Sorts (IDs 739–908)
+│   │   ├── enchanting.js   ← Enchantements (IDs 909–961)
+│   │   ├── alchemy.js      ← Ingrédients + Potions + Poisons (IDs 962–1435)
+│   │   ├── achievements.js ← Succès (IDs 1436–1511)
+│   │   └── index.js        ← Expose CHECKLIST_DATA (chargé en dernier des data)
 │   └── app.js          ← Logique complète (chargé en dernier)
 ├── assets/
 │   ├── fonts/          ← FuturaCondensed.ttf + Dragon_script.ttf

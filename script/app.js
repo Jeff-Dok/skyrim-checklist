@@ -296,9 +296,6 @@ const QUEST_ACTS_META = {
   'Fishing':                  { preLabel: "Viriya's Quests" },
 };
 
-/* Initialisation des catégories vides non définies dans data.js */
-CHECKLIST_DATA['Achievements'] = CHECKLIST_DATA['Achievements'] || [];
-CHECKLIST_DATA['Collectible']  = CHECKLIST_DATA['Collectible']  || [];
 
 /**
  * Métadonnées de chaque catégorie : label d'onglet affiché.

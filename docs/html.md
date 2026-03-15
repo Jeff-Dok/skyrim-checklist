@@ -157,11 +157,16 @@ Se redirige vers `index.html` si aucun profil actif.
 ### Chargement des scripts
 
 ```html
-<script src="script/i18n.js" defer></script>      <!-- 1er -->
-<script src="script/profiles.js" defer></script>   <!-- 2e -->
-<script src="script/data.js" defer></script>       <!-- 3e -->
-<script src="script/data_fr.js" defer></script>    <!-- 4e -->
-<script src="script/app.js" defer></script>        <!-- 5e — appelle init() -->
+<script src="script/i18n.js" defer></script>                    <!-- 1er -->
+<script src="script/profiles.js" defer></script>               <!-- 2e -->
+<script src="script/data/quests.js" defer></script>            <!-- 3e -->
+<script src="script/data/shouts.js" defer></script>            <!-- 4e -->
+<script src="script/data/spells.js" defer></script>            <!-- 5e -->
+<script src="script/data/enchanting.js" defer></script>        <!-- 6e -->
+<script src="script/data/alchemy.js" defer></script>           <!-- 7e -->
+<script src="script/data/achievements.js" defer></script>      <!-- 8e -->
+<script src="script/data/index.js" defer></script>             <!-- 9e — expose CHECKLIST_DATA -->
+<script src="script/app.js" defer></script>                    <!-- 10e — appelle init() -->
 ```
 
 `defer` garantit que chaque script s'exécute **après le parsing du HTML complet**

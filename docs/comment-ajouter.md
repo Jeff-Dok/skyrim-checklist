@@ -8,35 +8,26 @@
 
 ### Dans une catégorie standard (Spells, Enchanting, etc.)
 
-1. Ouvrir `script/data.js`
-2. Trouver le tableau de la catégorie (ex: `CHECKLIST_DATA['Spells']`)
-3. Ajouter l'item à la fin avec **l'ID suivant** (dernier ID + 1)
+1. Ouvrir le fichier `script/data/` correspondant (ex: `spells.js` pour les sorts)
+2. Ajouter l'item à la fin du tableau avec **l'ID suivant** (dernier ID + 1)
 
 ```js
 // Dernier sort existant id: 908
-{ id: 909, name: 'Mon Sort', group: 'Alteration', level: 'Novice', img: 'MonSort', dlc: null, desc: '...' },
+{ id: 909, name: 'My Spell', name_fr: 'Mon Sort', group: 'Alteration', level: 'Novice', img: 'MonSort', dlc: null, desc: '...', desc_fr: '...' },
 ```
 
-4. Si langue FR : ajouter dans `script/data_fr.js` :
-```js
-const DATA_FR_NAMES = {
-  ...
-  909: 'Mon Sort en Français',
-};
-```
-
-5. Mettre à jour le commentaire **Dernier ID utilisé** dans `CLAUDE.md` et `memory/MEMORY.md`.
+3. Les traductions FR (`name_fr`, `desc_fr`) sont directement dans l'item — pas de fichier séparé.
+4. Mettre à jour le commentaire **Dernier ID utilisé** dans `CLAUDE.md` et `memory/MEMORY.md`.
 
 ---
 
 ## 2. Ajouter un nouveau groupe de quêtes
 
-### Étape 1 — Données dans `data.js`
+### Étape 1 — Données dans `script/data/quests.js`
 ```js
-CHECKLIST_DATA['Quests'].push(
-  { id: 1436, name: 'Quest 1', group: 'Mon Groupe', desc: '...', giver: '...' },
-  { id: 1437, name: 'Quest 2', group: 'Mon Groupe', desc: '...', giver: '...' },
-);
+// Ajouter à la fin du tableau QUESTS_DATA
+{ id: 1512, name: 'Quest 1', name_fr: 'Quête 1', group: 'Mon Groupe', desc: '...', desc_fr: '...', giver: '...' },
+{ id: 1513, name: 'Quest 2', name_fr: 'Quête 2', group: 'Mon Groupe', desc: '...', desc_fr: '...', giver: '...' },
 ```
 
 ### Étape 2 — Déclarer le groupe dans `QUEST_GROUPS` (app.js)
@@ -75,15 +66,15 @@ const QUEST_ACTS_META = {
 - Si pas d'image disponible : mettre `img: null` dans `QUEST_GROUPS`
 
 ### Étape 6 — Traductions FR
-Dans `data_fr.js` : ajouter les noms FR des nouvelles quêtes.
+Les traductions (`name_fr`, `desc_fr`) sont directement dans chaque item de `quests.js` — pas de fichier séparé.
 
 ---
 
 ## 3. Ajouter un sort (Spell)
 
 ```js
-// data.js — dans CHECKLIST_DATA['Spells']
-{ id: 910, name: 'Fire Storm', group: 'Destruction', level: 'Master', img: 'FireStorm', dlc: null, desc: 'Instant area of fire.' },
+// script/data/spells.js — dans SPELLS_DATA
+{ id: 910, name: 'Fire Storm', name_fr: 'Tempête de feu', group: 'Destruction', level: 'Master', img: 'FireStorm', dlc: null, desc: 'Instant area of fire.', desc_fr: 'Zone de feu instantané.' },
 ```
 
 - `group` → doit être une clé de `SPELL_SCHOOL_IMG` (Alteration, Conjuration, Destruction, Illusion, Restoration) — sinon l'icône d'école ne s'affiche pas
@@ -95,7 +86,7 @@ Dans `data_fr.js` : ajouter les noms FR des nouvelles quêtes.
 ## 4. Ajouter un ingrédient d'alchimie
 
 ```js
-// data.js — dans CHECKLIST_DATA['Alchemy Ingredients']
+// script/data/alchemy.js — dans ALCHEMY_DATA
 {
   id: 1145, name: 'Abecean Longfin',
   group: 'A',           // lettre alphabétique
@@ -113,7 +104,7 @@ Dans `data_fr.js` : ajouter les noms FR des nouvelles quêtes.
 ## 5. Ajouter une potion ou un poison
 
 ```js
-// data.js — dans CHECKLIST_DATA['Alchemy Ingredients'] (même tableau)
+// script/data/alchemy.js — dans ALCHEMY_DATA (même tableau)
 
 // Potion
 {
@@ -157,10 +148,11 @@ Dans `data_fr.js` : ajouter les noms FR des nouvelles quêtes.
 
 Pour activer **Books** ou **Perks** avec de vraies données :
 
-1. Remplir `CHECKLIST_DATA['Books']` dans `data.js` avec les items
-2. Dans `app.js`, supprimer le bloc `if (isBooks)` dans `renderItemsHtml()` (ou adapter)
-3. Dans `initCollapsedGroups()`, supprimer la ligne Books placeholder
-4. Ajouter les traductions FR dans `data_fr.js`
+1. Créer `script/data/books.js` avec `const BOOKS_DATA = [...]` et ajouter les items avec `name_fr`, `desc_fr`
+2. Référencer dans `script/data/index.js` : `"Books": BOOKS_DATA`
+3. Charger dans `skyrim.html` avant `index.js`
+4. Dans `app.js`, supprimer le bloc `if (isBooks)` dans `renderItemsHtml()` (ou adapter)
+5. Dans `initCollapsedGroups()`, supprimer la ligne Books placeholder
 
 ---
 

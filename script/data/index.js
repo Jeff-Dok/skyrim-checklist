@@ -1,0 +1,11 @@
+const CHECKLIST_DATA = {
+  "Quests": QUESTS_DATA,
+  "Dragon Shouts": SHOUTS_DATA,
+  "Spells": SPELLS_DATA,
+  "Enchanting Effects": ENCHANTING_DATA,
+  "Alchemy Ingredients": ALCHEMY_DATA,
+  "Achievements": ACHIEVEMENTS_DATA,
+  "Books":      [],
+  "Perks":      [],
+  "Collectible":[],
+};

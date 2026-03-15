@@ -5,8 +5,9 @@
  *   le rendu DOM complet (tabs, liste, stats, modal d'info), et la persistance
  *   des données dans le localStorage du navigateur.
  *
- * Dépendance : script/data.js — doit être chargé avant ce fichier.
- *   data.js expose CHECKLIST_DATA = { [catégorie: string]: Item[] }
+ * Dépendances : script/data/*.js — doivent être chargés avant ce fichier.
+ *   data/index.js expose CHECKLIST_DATA = { [catégorie: string]: Item[] }
+ *   Chaque item contient name_fr, desc_fr (et word_fr pour les shouts).
  *
  * Stockage localStorage :
  *   Clés   : PROFILES_KEY ('skyrim_profiles_v1') — liste des profils

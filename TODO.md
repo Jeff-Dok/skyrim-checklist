@@ -1,5 +1,21 @@
 # TODO — Skyrim Checklist
 
+## Tâches pour Claude Code (à faire de façons autonome)
+
+- [X] Séparer les données de "data.js" + "data_fr.js" par sections → `script/data/*.js`
+- [X] Organiser les nouveaux fichiers par catégorie (quests.js, shouts.js, spells.js, enchanting.js, alchemy.js, achievements.js)
+- [X] Regrouper les données EN/FR sous le même ID (name_fr, desc_fr, word_fr dans chaque item) — app.js migré, data.js/data_fr.js obsolètes
+
+"Quests": [
+
+    {"id":1,"name":"Unbound","name_FR":'Libération',"group":"Main Quest","group_FR":"Quêtes Principale","desc":"Escape Imperial execution and a surprise dragon attack in Helgen, following either Hadvar the Imperial soldier or Ralof the Stormcloak rebel to safety.","desc_FR":"Échappez à l'exécution impériale et à une attaque de dragon surprise à Helgen, en suivant soit Hadvar le soldat impérial, soit Ralof le rebelle Stormcloak vers la sécurité","giver":"Hadvar or Ralof"},
+
+{"id":2,"name".....
+
+- [ ] Optimiser le code (HTML, CSS, JS) — supprimer data.js / data_fr.js devenus obsolètes
+- [ ] Faire un commit & push sur Github
+- [ ] Faire un back-up en format ZIP dans le dossier parent
+
 ## Groupes de quêtes manquants (données à ajouter dans data.js)
 
 - [X] **Bards College** — quêtes de la guilde des bardes
@@ -8,7 +24,9 @@
 - [X] **Favors** — faveurs diverses (110 items, IDs 327–436 : Activity Favors + Favors for Citizens + Thane Tasks)
 - [X] **Dawnguard** — DLC Dawnguard (quêtes principales + secondaires) — 49 items, IDs 437–485
 - [X] **Dragonborn** — DLC Dragonborn (quêtes principales + secondaires) — 56 items, IDs 486–541
+
 - [~] **Fishing** — DLC Fishing (22 quêtes, IDs 552–573) — données ajoutées, 9 quêtes CC restantes à classer
+
 - [X] **Creation Club** — 84 quêtes (IDs 574–657, 22 sections reclassées)
 
 ---
@@ -36,6 +54,7 @@
 ## Knotworks manquants (img: null dans QUEST_GROUPS)
 
 Tous les knotworks sont maintenant référencés ✅
+
 - [X] **Divine Quests** → `divine_quests.webp` (59Ko PNG → 12Ko WebP)
 - [X] **The Greybeards** → `greybeards_quest.webp` (83Ko PNG → 5.8Ko WebP)
 - [X] **The Blades** → `blades_quests.webp` (54Ko PNG → 9Ko WebP)
@@ -48,16 +67,19 @@ Tous les knotworks sont maintenant référencés ✅
 La catégorie Alchemy Ingredients est rendue (1 colonne, 4 sections collapsibles).
 
 ### Potions ✅ COMPLÉTÉ
+
 - [X] 212 items codés (IDs 1145–1356), groupes Health/Magicka/Stamina/Skill
 - [X] Types dans Skill : 19 Fortify + Invisibility + Regen + Resist + Waterbreathing + Thieves Guild + DLC/Special
 - [ ] **Vérifier les images** — certains `img` peuvent ne pas avoir de fichier correspondant (`onerror` fallback actif)
 
 ### Poisons ✅ COMPLÉTÉ
+
 - [X] 79 items codés (IDs 1357–1435), groupes Damage/Crowd Control/Weakness/Lingering/Special
 - [X] Types collapsibles comme Potions
 - [ ] **Vérifier les images** — SlowMagicka*/SlowStamina* au lieu de LingeringMagicka*/LingeringStamina*
 
 ### Recipes
+
 - [ ] Scope à définir — recettes d'alchimie ? combinaisons ingrédients → effet ?
 
 ---
@@ -103,11 +125,13 @@ Tous dans `skyrim_project/Scripts_Python/`. Dépendances : `pip install requests
 - [X] **Alchemy Potions** — 212 items codés (IDs 1145–1356) : Health/Magicka/Stamina/Skill (tous Fortify, Regen, Resist, Invisibility, Waterbreathing, Thieves Guild, DLC, Special)
 - [X] **Alchemy Poisons** — 79 items codés (IDs 1357–1435) : Damage/Crowd Control/Weakness/Lingering/Special
 - [ ] **Alchemy Recipes** — scope à définir
+
 - [~] **Books** — Structure placeholder : 3 groupes (Skills, Quests, Lores) — "Data coming soon"
   - Données à récupérer (UESP : Skyrim:Skill Books)
   - Rendu : liste par compétence, avec nom du livre + skill boosté
 - [~] **Perks** — Structure placeholder : 6 groupes, sous-groupes Combat/Magic/Stealth — "Data coming soon"
   - Données à coder pour chacun des 18 skill trees
+
 - [ ] **Collectible** — scope à définir (cartes au trésor ? Stones of Barenziah ? Flûtes de barde ?)
 - [ ] **Unique Gear** — armes/armures uniques
   - Données partiellement préparées (URLs UESP téléchargées cette session)

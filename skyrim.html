@@ -164,9 +164,9 @@
 
     <!--
       Scripts :
-        - profiles.js → fonctions partagées (getProfiles, getStorageKey, etc.)
-        - data.js     → définit CHECKLIST_DATA
-        - app.js      → logique principale
+        - profiles.js     → fonctions partagées (getProfiles, getStorageKey, etc.)
+        - data/*.js       → données par catégorie (EN+FR fusionnés), index.js expose CHECKLIST_DATA
+        - app.js          → logique principale
       defer garantit l'exécution après parsing HTML, dans l'ordre déclaré.
     -->
     <script src="script/i18n.js" defer></script>

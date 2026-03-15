@@ -1,0 +1,599 @@
+❯ Session 2026-03-09 (suite de la session Dragon Shouts + Spells)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Ce qui a été fait cette session
+
+### 1. Affichage Spells — passage en colonnes par niveau (comme les quests)
+- L'affichage plat (flat list) a été remplacé par des colonnes `act-col-header` par niveau
+  (Novice / Apprentice / Adept / Expert / Master / Special)
+- Même visuel que les groupes de quêtes : colonnes avec header doré, items en liste
+- Badge DLC supprimé du nom affiché (reste visible dans le modal ⓘ)
+- Fichiers modifiés : `script/app.js` (bloc isSpells), `css/style.css` (suppression .spells-grid)
+
+### 2. Sorts Creation Club ajoutés — 53 sorts (IDs 856–908)
+- Source : https://en.uesp.net/wiki/Skyrim:Spells (WebFetch par école)
+- Répartition par école :
+  - Alteration  : 13 sorts CC (IDs 856–868) — 10× Teleport Pet, Master Transmute, Paralysis Rune, Telekinesis Arrows
+  - Conjuration : 26 sorts CC (IDs 869–894) — Necromantic Grimoire, Plague of the Dead, Saints & Seducers, The Cause, Arcane Archer Pack, Arcane Accessories
+  - Destruction : 12 sorts CC (IDs 895–906) — tous Arcane Accessories (Elemental Flare/Bolt/Burst/Blast, Choking Grasp, Strangulation, Hangman's Noose, Touch of Death, Mara's Wrath, Unbounded ×3)
+  - Illusion    :  2 sorts CC (IDs 907–908) — Orum's Aquatic Escape, Fenrik's Welcome (Arcane Accessories)
+  - Restoration :  0 sort CC
+- Fichier modifié : `script/data.js` (fin du tableau "Spells")
+
+### Total Spells : 170 sorts (IDs 739–908)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## État actuel des IDs
+- Dernier ID utilisé : 908 (Spells CC)
+- Prochains IDs libres : 909+
+
+## Prochaines catégories à faire (TODO)
+- Enchanting Effects, Alchemy Ingredients, Books, Perks
+- Collectible, Unique Gear, Locations, Merchants, Recruitable Followers
+- Achievements (icônes déjà présentes dans assets/icons/achievements/)
+- Knotworks manquants : divine_quest.png, greybeards_quest.png, blades_quest.png, dungeon_quest.png
+- Fonctionnalités UI : Export/Import, Reset, Achievements grid
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-09 (suite — Alchemy Ingredients)
+
+## Ce qui a été fait cette session
+
+### 1. Outils agents (scripts Python)
+- `analyze_image.py` : chargement clé API depuis `.env` (stdlib, pas de dépendances)
+- `batch_analyze.py` (NOUVEAU) : analyse tous les PNG/JPG/WEBP d'un dossier
+  - Default folder : `skyrim_project/lookAt/`
+  - Saute les images déjà analysées (fichier .txt existant)
+- `download_uesp_images.py` (NOUVEAU) : scrape les `<img src>` UESP depuis une URL HTML
+  - Pattern : `//images.uesp.net/[thumb/]#/#/SR-icon-*.png`
+  - Décode les URL-encoded filenames (`%27` → `'`)
+- `process_ingredient_images.py` (NOUVEAU) : traitement des icônes ingrédients
+  - Retire le préfixe `SR-icon-ingredient-`, extension → `.webp`
+  - Pillow : RGBA, thumbnail 64×64, WebP quality 85
+  - Src : `lookAt/`, Dest : `assets/images/ingredients/`
+- Fichier `.env.example` créé dans `agents/`
+
+### 2. Fichier Alchemy.pdf
+- Créé par fusion pages 148–151 du guide Prima via `pdfunite`
+- Placé dans `skyrim_project/Sections/Alchemy.pdf`
+
+### 3. Rapport alchimie
+- `lookAt/alchemy_report.md` généré à partir de Alchemy.pdf + fichiers `ing*.txt`
+- Couvre 183 ingrédients + 6 ingrédients de quête (exclus du jeu)
+- Organisé par origine : Base Game / Dawnguard / Dragonborn / Hearthfire / CC (Fishing, S&S, The Cause, Divers, Rare Curios)
+
+### 4. Catégorie Alchemy Ingredients — implémentation complète
+- **app.js** : bloc `isAlchemy` (early-return), rendu sections Ingredients/Potions
+  - Sections collapsibles via `group-header` + `group-knotwork-wrap no-img`
+  - Ajout explicite dans `init()` (items ont `section` et non `group`)
+  - Modal : `Array.isArray(item.effects)` → Group / Origin / Effects (4) / How to Obtain / Garden
+- **css/style.css** : `.alchemy-grid` (5 colonnes, gap 4px/12px), `.alchemy-img` (56px), `.alchemy-coming-soon`
+- **data.js** : 183 ingrédients en ordre alphabétique, IDs 962–1144
+  - Base game (Abecean Longfin → Wisp Wrappings), DLC (DG/DB/HF), CC Fishing, CC S&S, CC The Cause, CC Other, CC Rare Curios
+  - Champs : `id`, `section`, `name`, `effects[4]`, `img`, `origin`, `source`, `garden`
+
+### Fichiers modifiés
+- `script/app.js` — rendu alchemy, modal alchemy, init() collapse
+- `script/data.js` — 183 items (IDs 962–1144), remplacement des 6 items placeholder
+- `css/style.css` — classes alchemy
+- `C:\Users\jnfra\.claude\agents\analyze_image.py` — load_env()
+- `C:\Users\jnfra\.claude\agents\batch_analyze.py` — nouveau script
+- `C:\Users\jnfra\.claude\agents\download_uesp_images.py` — nouveau script
+- `C:\Users\jnfra\.claude\agents\process_ingredient_images.py` — nouveau script
+- `C:\Users\jnfra\.claude\agents\.env.example` — nouveau fichier
+
+### À faire prochaine session
+- Télécharger + traiter les icônes UESP (`download_uesp_images.py` puis `process_ingredient_images.py`)
+- Section Potions : données à définir et coder
+- 4 knotworks manquants (Divine, Greybeards, Blades, Dungeon)
+- Catégories vides restantes : Books, Perks, Collectible, Unique Gear, Locations, Merchants, Followers, Achievements
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-09 (suite — Optimisation performance & sémantique)
+
+## Ce qui a été fait cette session
+
+### 1. Optimisation HTML (index.html) — réécriture sémantique complète
+- `<header role="banner">`, `<h1 class="checklist-title">`, `<nav aria-label="...">`, `<main>`
+- `<link rel="preload" href="assets/logos/logo_title.webp" as="image" fetchpriority="high">`
+- Google Fonts async : `rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"` + `<noscript>`
+- `role="progressbar"` avec `aria-valuenow`, `aria-valuemin`, `aria-valuemax`
+- Modal : `aria-label="Fiche de détail"` (fallback statique) + `aria-labelledby="infoModalTitle"` (dynamique)
+- `fetchpriority="high"` sur logo img, `width="512" height="224"`, `defer` sur scripts
+
+### 2. Optimisation CSS (style.css)
+- Variables ajoutées : `--gold-1/2/3/4`, `--gold-gradient`, `--gold-line`, `--gold-line-short`
+- Bug corrigé : `--gold2` (undefined) → `--gold-2`
+- Sélecteurs fusionnés : `.act-col-header, .act-section-header, .daedric-prince, .search-group-label`
+- Contraste WCAG AA corrigé : `#5a5870` → `#9090a8` (ratio ~5.7:1)
+- `font-display: swap` sur @font-face locaux
+- `.search-results-wrap { width: 25vw; min-width: 260px; margin: 0 auto; }`
+- `.tab-badge` retiré (plus affiché)
+- 18 sections documentées avec commentaires bloc
+
+### 3. Refactoring JS (app.js) — documentation complète
+- Header JSDoc `@file` + 9 sections `/* ════ ... ════ */`
+- 42 annotations JSDoc (`@param`, `@returns`, `@type`)
+- `makeInfoRow(label, val, raw=false)` — helper extrait de `openInfoModal()`
+- `renderTabs()` — badges supprimés (boutons simples)
+- `renderSearchResults(items, cat)` — nouveau : rendu plat sans knotworks/grilles
+- `renderList()` — utilise `renderSearchResults` pour recherche, wrap `.search-results-wrap`
+- `renderStats()` — met à jour `aria-valuenow` sur `#globalProgress`
+- Escape key dans `init()` : `document.addEventListener('keydown', ...)`
+- QUEST_GROUPS : `.png` → `.webp` pour les 15 knotworks
+- Knotwork `<img>` : `width="1030" height="74"` (fix CLS = 0)
+
+### 4. Optimisation assets
+- `assets/logos/logo_title.webp` — converti PNG→WebP (128KB → 34KB, -73%)
+- `assets/knotworks/*.webp` — 15 fichiers : PNG→WebP puis resize 1600×115→1030×74 (715KB→84KB, -88%)
+
+### 5. Résultats Lighthouse finaux
+- Performance : **99** | Accessibility : **100** | Best Practices : **100** | SEO : **100**
+
+### Fichiers modifiés
+- `index.html` — réécriture sémantique complète
+- `css/style.css` — variables, sélecteurs fusionnés, contraste, font-display, search layout
+- `script/app.js` — documentation JSDoc, renderSearchResults, renderTabs sans badges, CLS fix
+- `assets/logos/logo_title.webp` — PNG→WebP
+- `assets/knotworks/*.webp` — 15 fichiers PNG→WebP+resize
+- `README.md` — créé (documentation complète du projet)
+
+### À faire prochaine session
+- 4 knotworks manquants (Divine, Greybeards, Blades, Dungeon)
+- Catégories vides : Books, Perks, Collectible, Unique Gear, Locations, Merchants, Followers, Achievements
+- Icônes ingrédients alchimie (download_uesp_images.py + process_ingredient_images.py)
+- Section Potions dans Alchemy
+- Export/Import JSON, Reset avec confirmation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Session 2026-03-10 — Spells icônes + Enchanting/Alchemy layout
+
+Fichiers modifiés :
+- assets/images/schools/ : ajout de *_2.webp (PNG recadrés au motif → WebP)
+- script/app.js : SPELL_SCHOOL_IMG → _2.webp ; classe spell-school-{name} sur le header
+- css/style.css :
+  - gap par école : alteration 15px, illusion 27px
+  - couleurs icônes école via filter CSS (hue-rotate par école)
+  - enchant-grid : 6 colonnes → 1 colonne (liste verticale)
+  - alchemy-grid : 5 colonnes → 1 colonne (liste verticale)
+  - alchemy-img : margin: 0 5px (espacement gauche/droite)
+
+À retenir :
+- Les .png et .webp originaux des schools sont encore présents (non supprimés)
+- Les icônes de sorts (assets/images/spells/) sont référencées dynamiquement via item.img
+- assets/icons/achievements/ et assets/icons/cities/ = prêts mais pas encore implémentés
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Session 2026-03-10 (suite) — Scripts utilitaires + données Potions/Poisons/Scrolls
+
+## Ce qui a été fait
+
+### 1. Scripts utilitaires mis à jour (`~/.claude/agents/`)
+- `download_uesp_images.py` :
+  - Pattern étendu : `SR-icon-*` + `SR-item-*` (PNG et JPG)
+  - Routing auto : `UESP/icon/` ou `UESP/item/` selon le nom
+  - Multi-URL : plusieurs URLs en arguments, dédup global
+  - Option `--dest` pour dossier custom
+  - Dest défaut : `C:\Users\jnfra\OneDrive\Pictures\UESP`
+- `process_ingredient_images.py` :
+  - Nom conservé = partie après le dernier `-` uniquement
+  - Retire les apostrophes du nom
+  - Traite PNG et JPG (pas seulement PNG)
+  - Reproduit structure source (icon/ item/) dans `UESP/webp/`
+  - Src/Dest défaut mis à jour vers `UESP/`
+- `build_sections.py` :
+  - Refactorisé pour usage CLI sans `classement.txt`
+  - Usage : `python build_sections.py "Nom" debut [fin]`
+
+### 2. Données Potions / Poisons / Scrolls / Spiders
+- `Sections/potions_poisons_beverages.txt` créé — fichier de référence complet :
+  - ~200 potions (standard leveled + DLC Dragonborn + Thieves Guild + Dawnguard + CC)
+  - 13 boissons + potions quête (Vaermina's Torpor, White Phial, Falmer Blood Elixir, etc.)
+  - ~70 poisons (leveled Damage H/M/S, Fear, Frenzy, Paralysis, Weakness, Lingering, Regen)
+  - 56 scrolls complets avec IDs et locations UESP (organisés par école)
+  - 15 spiders CC avec descriptions
+- Sources : UESP via WebFetch + Prima guide via pdftoppm → analyze_image.py (4 pages)
+- Statut : en attente de validation utilisateur avant implémentation
+
+### Fichiers modifiés
+- `~/.claude/agents/download_uesp_images.py`
+- `~/.claude/agents/process_ingredient_images.py`
+- `Guide/build_sections.py`
+- `Sections/potions_poisons_beverages.txt` (nouveau)
+- `TODO.md`, `MEMORY.md`, `RESUME.txt`
+
+### À faire prochaine session
+- Valider `potions_poisons_beverages.txt` (triage + choix des sections)
+- Implémenter Potions dans data.js (IDs 1145+)
+- Implémenter Poisons dans data.js
+- Décider du scope Scrolls/Spiders (catégorie séparée ou intégration Alchemy ?)
+- 4 knotworks manquants (Divine, Greybeards, Blades, Dungeon)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Session 2026-03-10 (suite) — Reorganisation assets + polish UI
+
+Fichiers modifies :
+- script/app.js
+- css/style.css
+- .gitignore
+- CLAUDE.md
+- memory/MEMORY.md
+
+Reorganisation assets :
+- assets/icons/craftings/ -> assets/images/craftings/
+- assets/knotworks/       -> assets/images/knotworks/
+- assets/logos/           -> assets/images/logos/
+- 120 fichiers inutilises -> Not Used/ (ignore par git)
+- Spell images : prefixe SR-icon-spell- retire (Fire.webp, Heal.webp, etc.)
+- Schools : versions *_2.webp utilisees (recadrees au motif)
+
+UI — Enchanting Effects :
+- Icone enchanting.webp de chaque cote de Weapon/Armor Enchantments
+- Affichage 1 colonne
+
+UI — Alchemy Ingredients :
+- Icone alchemy.webp de chaque cote de Ingredients, Potions, Poisons, Recipes
+- Sections Poisons et Recipes ajoutees (Data coming soon)
+- Affichage 1 colonne, margin 5px icones
+- Collapsed par defaut dans init()
+
+UI — Spells (debut de session) :
+- Images schools *_2.webp (recadrees)
+- Classe spell-school-{name} sur chaque header
+- Gap par ecole : alteration 15px, illusion 27px
+- Couleurs icones par ecole via hue-rotate CSS
+
+Push GitHub : commit c8aee2c
+
+A retenir :
+- checklist_data.json n'est pas utilise par l'app (intermediaire extract.py)
+- build_sections.py n'est plus necessaire
+- Not Used/ contient les archives locales (non tracked)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-10 (suite — Potions & Poisons)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Ce qui a été fait cette session
+
+### 1. Fixes UI Potions (3 corrections)
+- Espacement : `.potion-subgroup:first-child { margin-top: 8px }` — aligne avec l'espacement Ingredients/Potions
+- Collapsible types : les sous-sous-groupes Fortify X / Damage X etc. sont maintenant collapsibles avec chevron ▶/▼
+- Espacement types : `.potion-type-block { margin-top: 6px }` — espace entre chaque bloc de type
+
+### 2. Refactoring renderPotionSubsections → renderAlchemySubsections
+- Fonction généralisée `renderAlchemySubsections(items, sections, parentKey)` — fonctionne pour Potions ET Poisons
+- Clés collapsedGroups : `'Potions::Skill::Fortify Alteration'` etc.
+- `POISON_SECTIONS = ['Damage', 'Crowd Control', 'Weakness', 'Lingering', 'Special']`
+- `init()` : collapse dynamique par scan de tous les items avec section+group+type
+
+### 3. Modal Potions/Poisons
+- Détection `isPotionItem = item.section === 'Potions' || 'Poisons'`
+- Affiche : Category / Group / Type / Level Required / Effect / Source
+- Champs quêtes/sorts/shouts exclus via bloc `if (!isPotionItem)`
+
+### 4. Données complètes — 291 items (IDs 1153–1435)
+**Potions (212 items au total, IDs 1145–1356) :**
+- Health : Restore Health (6) + Cure (2) + Fortify Health (5) + DB Well-being (6) + Dawnguard/Special (3) = 22
+- Magicka : Restore (6) + Fortify (5) + Special (1) = 12
+- Stamina : Restore (6) + Fortify (5) + Special (1) + Beverages (12) = 24
+- Skill (154) : 19 Fortify types × 4 + Carry Weight/Regen ×5 + Invisibility/Resist/Waterbreathing × 4 + Thieves Guild (30) + DLC/Spéciaux (8)
+
+**Poisons (79 items, IDs 1357–1435) :**
+- Damage : Damage Health/Magicka/Stamina (5 chacun) = 15
+- Crowd Control : Fear/Frenzy/Paralysis (5 chacun) = 15
+- Weakness : Fire/Frost/Magic/Shock (5 chacun) = 20
+- Lingering : Damage Magicka/Stamina Regen (5/4) + Lingering H/M/S (5 chacun) = 24
+- Special : 5 (Frostbite Venom, Ice Wraith Bane, Lotus Extract, Mystic Venom, Nightshade Extract)
+
+## Fichiers modifiés
+- `script/app.js` — renderAlchemySubsections, POISON_SECTIONS, init(), openInfoModal
+- `script/data.js` — 291 items ajoutés (IDs 1153–1435)
+- `css/style.css` — spacing + potion-type-block + potion-type-header collapsible
+- `CLAUDE.md`, `TODO.md`, `memory/MEMORY.md` — MAJ
+
+## État IDs
+- Dernier ID utilisé : **1435**
+- Prochain ID libre : **1436**
+
+## À faire prochainement
+- Vérifier les images potions/poisons manquantes (onerror active)
+- Alchemy Recipes — scope à définir
+- Knotworks manquants (4 groupes)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-11 — Multi-profils & Internationalisation FR/EN
+
+## Ce qui a été fait cette session
+
+### 1. Architecture deux pages
+- `index.html` retravaillé en page d'accueil de gestion des profils
+- `skyrim.html` = ancienne index.html renommée (checklist principale)
+- Redirection automatique : skyrim.html → index.html si aucun profil actif
+
+### 2. Système multi-profils (profiles.js)
+- `PROFILES_KEY = 'skyrim_profiles_v1'` — tableau [{id, name, createdAt}]
+- `ACTIVE_PROFILE_KEY = 'skyrim_active_profile'` — profil actif
+- `getStorageKey(id)` → `'skyrim_checklist_{id}'` — isolation par profil
+- `getProfilePct(id)` — lit `skyrim_total_items` stocké par skyrim.html
+- `migrateV1IfNeeded()` — migration automatique données "Dok" existantes
+- Bouton personnage dans topbar-right (lien <a> vers index.html)
+
+### 3. Internationalisation (i18n.js)
+- `getLang()`, `t(key)`, `toggleLang()`, `setLang(lang)`
+- `I18N = { en, fr }` — couvre index.html et skyrim.html (25+ clés modal)
+- Bouton FR/EN dans topbar de index.html et skyrim.html
+- Persistance langue : localStorage `skyrim_lang`
+
+### 4. Traductions items (data_fr.js)
+- `DATA_FR_NAMES = { [id]: 'Nom FR' }` — 1038 entrées IDs 1–1144
+- Couvre : Quests (tous groupes + DLC) / Dragon Shouts / Spells / Enchanting / Ingredients
+- `itemName(item)` dans app.js — retourne FR si dispo, sinon EN
+- Remplacement de tous les `escHtml(item.name)` par `escHtml(itemName(item))`
+
+### 5. Câblage i18n dans app.js
+- `setBadge()` — t('saving') / t('saveFailed') / t('saved')
+- `renderList()` — t('emptySearch')(q) / t('emptyCategory')
+- `openInfoModal()` — t('modal*') pour tous les labels (Group, City, Prince, Level, etc.)
+- `init()` — placeholder search, "Complete @" label, texte bouton langue
+
+### Fichiers modifiés
+- `index.html` — page profils complète (nouveau)
+- `skyrim.html` — renommé + intégration i18n + bouton langue
+- `script/profiles.js` — nouveau fichier
+- `script/i18n.js` — nouveau fichier
+- `script/data_fr.js` — nouveau fichier (1038 traductions)
+- `script/app.js` — itemName(), t() partout, init profil, redirection
+- `css/style.css` — styles welcome-*, lang-btn, character-btn (lien)
+
+## À faire prochainement
+- Traductions Potions/Poisons (IDs 1145–1435) — data_fr.js incomplet
+- Knotworks manquants (4 groupes)
+- Books, Perks, Unique Gear, Achievements
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-11 — Playwright headed mode
+
+## Ce qui a été fait
+
+### 1. Démonstration Playwright MCP
+- Lancé un serveur HTTP local (`python -m http.server 8080`)
+- Navigué vers index.html + skyrim.html via Playwright (headless)
+- Screenshots fonctionnels (index + checklist Quests)
+- Constaté que le mode headless ne montre pas le navigateur à l'écran
+
+### 2. Activation du mode headed (Brave visible)
+- Ajout de `--headed` dans les args du MCP Playwright :
+  `C:\Users\jnfra\.claude\plugins\cache\claude-plugins-official\playwright\bd041495bd2a\.mcp.json`
+- **Nécessite un redémarrage de Claude Code** pour prendre effet
+- ⚠️ Ce fichier peut être réécrasé par une mise à jour du plugin → refaire la modif si besoin
+
+## À faire prochaine session (après redémarrage)
+- Tester Playwright en mode headed : Brave doit s'ouvrir visuellement
+- Vérifier les images cassées Potions/Poisons via console Playwright
+- Tester le responsive mobile (375px)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-11 — Dragon Shouts FR + Spells FR + Playwright
+
+## Ce qui a été fait cette session
+
+### 1. Démo Playwright MCP
+- Serveur HTTP Python lancé (`python -m http.server`) pour contourner la restriction `file://`
+- Screenshots pris de index.html et skyrim.html via Playwright + Brave
+- Problème identifié : cache Playwright persistant → résolu en changeant de port (8181, 8282) à chaque test
+- Problème dialog bloquant les clics → résolu via `browser_evaluate` pour fermer le modal + appeler `switchCat()`
+
+### 2. Dragon Shouts — traductions FR corrigées
+**Problème** : section "mélangée" — headers en anglais, les 3 mots d'un cri affichaient le nom du cri (identique × 3)
+
+**Causes** :
+1. Headers : `group` brut (EN) au lieu d'une traduction FR
+2. `DATA_FR_NAMES` remplaçait les mots draconiques (noms propres) par le nom du cri
+
+**Solution** :
+- `SHOUT_GROUP_FR_MAP` ajouté dans app.js (27 entrées) pour les headers
+- IDs 658–738 retirés de `DATA_FR_NAMES` — mots draconiques = noms propres, inchangés EN/FR
+- `DATA_FR_WORDS` ajouté dans data_fr.js (81 entrées) — traduction FR du sens du mot draconique (`word_en`)
+- Rendu `word-en` modifié : affiche `DATA_FR_WORDS[id]` en mode FR
+
+### 3. Spells — traductions FR corrigées (~40 corrections)
+- Référence : `lookAt/Skyrim_Spells_French.txt` (wiki FR officiel)
+- `SPELL_SCHOOL_FR_MAP` ajouté dans app.js (5 entrées) — headers d'école en FR
+- Corrections par école dans data_fr.js :
+  - **Alteration** (739–755) : Corps de chêne/pierre/fer/ébonite/dragon, Détection des vivants, Rayonnement, Paralysie, Paralysie générale, etc.
+  - **Conjuration** (756–786) : Conjuration de familier/Atronach×3/Gardien des cendres/Seigneur Drémora, Réanimation, Bannissement, Manipulation/Expulsion de Daedra, Surzombie, Golem×3, Familier de feu, Invocation de l'ombre d'Arniel
+  - **Destruction** (787–815) : Froid mordant, Éclair enflammé, Stalactite, Éclairs multiples, Aura enflammée/glaciale/foudroyante, Lance gelée, Incinération, Trait de foudre, Mur de glace/foudre, Rune de glace/foudre, Convection d'Arniel
+  - **Illusion** (816–832) : Furie, Calme, Pagaille, Inspiration
+  - **Restoration** (833–855) : Soin, Moindre barrière, Soin rapide, Toucher apaisant, Moyenne/Grande barrière, Moindre péril/fléau des morts, Cicatrisation, Soulagement, Péril des morts, Soin magistral, Fléau/Grand péril des morts, Calamité des morts-vivants
+
+## Fichiers modifiés
+- `script/app.js` : SHOUT_GROUP_FR_MAP + SPELL_SCHOOL_FR_MAP + rendu word_en FR + rendu école FR
+- `script/data_fr.js` : DATA_FR_WORDS (81 entrées) + corrections Spells ~40 noms
+- `CLAUDE.md`, `TODO.md`, `RESUME.txt`, `memory/MEMORY.md` : MAJ documentation
+
+## À faire prochaine session
+- Traductions Potions/Poisons FR (IDs 1145–1435) toujours manquantes
+- Tester Playwright sur les corrections (Dragon Shouts + Spells en mode FR)
+- Knotworks manquants : divine_quest.webp, greybeards_quest.webp, blades_quest.webp, dungeon_quest.webp
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-11 (suite — fin de session, très courte)
+
+- Complétion du MAJ de la session précédente (MEMORY.md + RESUME.txt)
+- Info /headbump : commande Claude Code pour démarrer une session propre quand la mémoire est haute
+- Aucune modification de code cette session
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-12 — Knotworks, Favicon, Potions fixes, Books & Perks placeholders
+
+## Ce qui a été fait
+
+### 1. Knotwork Greybeards
+- `greybeards_quest.png` ajouté par l'utilisateur → converti en WebP (83Ko→5.8Ko, 1030×74px)
+- QUEST_GROUPS mis à jour : `greybeards_quest.webp`
+
+### 2. Favicon
+- `favicon.jpg` → renommé `favicon.ico` par l'utilisateur
+- `<link rel="icon">` ajouté dans index.html et skyrim.html
+
+### 3. Fixes Potions/Poisons
+- Bug `poisons` undefined → `const poisons = items.filter(i => i.section === 'Poisons')` ajouté
+- CSS `.potion-subgroup:first-child` → `.group-header + .potion-subgroup` (le sélecteur :first-child ne matchait jamais)
+- Espacement `.potion-subgroup { margin-bottom: 4px }` aligné sur `.group { margin-bottom: 4px }`
+- 13 images assignées dans data.js :
+  - HealingExtreme : Vigorous + Ultimate Healing
+  - MagickaExtreme : Vigorous + Ultimate Magicka
+  - StaminaExtreme : Vigorous + Ultimate Stamina
+  - Ale : Esbern's Potion, Argonian Ale, Cliff Racer, Cyrodilic Brandy, Holy Water, Velvet LeChance, White-Gold Tower
+
+### 4. Catégorie Books — placeholder
+- Rendu `isBooks` dans renderItemsHtml : 3 groupes collapsibles (Skills, Quests, Lores)
+- "Data coming soon" dans chaque groupe
+- Bypass `items.length === 0` dans renderList()
+- Groupes initialisés collapsed dans init()
+
+### 5. Catégorie Perks — placeholder
+- Rendu `isPerks` dans renderItemsHtml : 6 groupes
+  - Combat Skills → One-Handed, Two-Handed, Archery, Block, Heavy Armor, Smithing
+  - Magic Skills → Alteration, Conjuration, Destruction, Illusion, Restoration, Enchanting
+  - Stealth Skills → Light Armor, Sneak, Lockpicking, Pickpocket, Speech, Alchemy
+  - Vampire Lord / Werewolf / Special → "Data coming soon"
+- `PERK_INIT` dans init() pour collapse par défaut
+- Bypass `items.length === 0` ajouté pour Perks
+
+## Fichiers modifiés
+- `script/app.js` — isBooks, isPerks, fix poisons déclaration, PERK_INIT, bypass renderList
+- `script/data.js` — 13 items img mis à jour (Potions)
+- `css/style.css` — .group-header + .potion-subgroup margin-top, margin-bottom 4px
+- `index.html` / `skyrim.html` — favicon.ico
+- `assets/images/knotworks/greybeards_quest.webp` — nouveau fichier
+- `CLAUDE.md`, `TODO.md`, `RESUME.txt`, `memory/MEMORY.md` — MAJ
+
+## À faire prochainement
+- Données réelles pour Books (Skill Books UESP) et Perks (18 skill trees)
+- Knotworks manquants : divine_quest.webp, blades_quest.webp, dungeon_quest.webp
+- Traductions Potions/Poisons FR (IDs 1145–1435)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-13 — Knotworks complets
+
+## Fichiers modifiés
+- `assets/images/knotworks/` : divine_quests.png/webp, dungeon_quests.png/webp, blades_quests.png/webp ajoutés
+- `script/app.js` : QUEST_GROUPS mis à jour pour Divine Quests, Dungeon Quests, The Blades
+- `TODO.md` : section knotworks marquée complète
+
+## Ce qui a été fait
+- Optimisation PNG → WebP (−78% à −84%) pour les 3 derniers knotworks manquants
+- Plus aucun groupe n'utilise creationclub_quest.webp comme fallback
+- Tous les knotworks sont maintenant uniques et référencés
+
+## À retenir
+- Tous les QUEST_GROUPS ont leur propre knotwork WebP ✅
+- Les PNG sources sont conservés dans le repo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-14 — Documentation offline + Scripts_Python/
+
+## Ce qui a été fait
+
+### 1. Documentation offline — dossier `docs/` (8 fichiers Markdown)
+- `docs/GUIDE_PRINCIPAL.md` — vue d'ensemble, architecture, flux de données, palette, IDs
+- `docs/app-js.md` — toutes les constantes (QUEST_GROUPS, QUEST_ACTS, CATEGORY_META…), fonctions, état
+- `docs/profiles-js.md` — CRUD profils, clés localStorage, migration v1, getProfilePct
+- `docs/i18n-js.md` — structure I18N, t(), getLang(), toggleLang(), guide ajout clés
+- `docs/data-js.md` — format item par catégorie, règles IDs, structure data_fr.js
+- `docs/style-css.md` — 19 sections CSS (variables, layout, topbar, tabs, modal, responsive…)
+- `docs/html.md` — structure DOM index.html + skyrim.html, ordre scripts, IDs ciblés
+- `docs/comment-ajouter.md` — 10 recettes : ajouter quête, sort, ingrédient, potion, enchantement…
+
+### 2. Dossier `Scripts_Python/` — tous les scripts Python du projet
+Recréés / déplacés dans `skyrim_project/Scripts_Python/` :
+- `download_url.py` (NOUVEAU) — téléchargeur universel (pages, images, fichiers)
+  - GitHub API auto (repos entiers ou sous-dossiers)
+  - Détection directory listing Apache/Nginx
+  - `--depth 2` par défaut, dest par défaut : `~/Downloads/`
+  - Reprise sur interruption (skip fichiers existants)
+- `analyze_image.py` — Claude Vision API → .txt
+- `batch_analyze.py` — analyse lot de PNG/JPG/WEBP, rapport Markdown
+- `download_uesp_images.py` — scrape SR-icon-* / SR-item-* depuis UESP
+- `process_ingredient_images.py` — PNG/JPG → WebP 64px (renomme après dernier -)
+- `build_sections.py` — fusionner pages PDF Prima (Poppler/pdfunite)
+- `README.md` — documentation complète (options, exemples, workflows, dépannage)
+
+### 3. Fix pip PATH (Windows)
+- Python 3.14.3 installé mais Scripts/ absent du PATH
+- Fix : ajout de `C:\Users\jnfra\AppData\Local\Programs\Python\Python314\Scripts\` dans les variables d'env utilisateur
+- Installé : `pip install requests beautifulsoup4` → `download_url.py` fonctionnel confirmé
+
+## Fichiers créés/modifiés
+- `docs/` (8 fichiers Markdown — nouveaux)
+- `Scripts_Python/` (7 fichiers Python + README — nouveaux)
+- `memory/MEMORY.md`, `TODO.md`, `RESUME.txt` — MAJ fin de session
+
+## À faire prochaine session
+- Traductions Potions/Poisons FR (IDs 1145–1435)
+- Vérifier images manquantes Potions/Poisons
+- Données réelles Books (Skill Books) et Perks (18 skill trees)
+- Responsive mobile (375px)
+- Export/Import JSON + Reset modal
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Session 2026-03-14 (après-midi/soir)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Fichiers modifiés
+- script/data.js — ajout catégorie Achievements (76 items, IDs 1436–1511)
+- script/data_fr.js — noms FR achievements (DATA_FR_NAMES) + descriptions FR toutes catégories (DATA_FR_DESC via script)
+- script/app.js — renderAchievementRow(), isAchievements renderer, collapsedGroups achievements
+- script/profiles.js — migrateV1IfNeeded() ne crée plus "Dok" automatiquement
+- script/i18n.js — clés firstRunTitle / firstRunSub (EN+FR)
+- index.html — état premier lancement (welcome-inner--first-run) avec invitation
+- css/style.css — styles achievements (grid 4col desktop, collapsible mobile) + welcome first-run
+- Scripts_Python/translate_quests.py — nouveau script, traduit toutes les desc via Claude Haiku
+- .gitignore — Scripts_Python/ entièrement exclu
+
+## Features ajoutées
+1. **Onboarding premier profil** — si aucun profil en localStorage, page d'accueil invite à créer un personnage (titre "Débutez votre aventure", formulaire mis en valeur, focus auto)
+2. **Traductions FR descriptions** — DATA_FR_DESC couvre 1247 items (Quests, Shouts, Spells, Enchanting, Alchemy, Potions, Poisons, Achievements) via translate_quests.py (Claude Haiku, ~$0.15)
+3. **Catégorie Achievements** — 76 succès en 4 sections (Skyrim/Dawnguard/Hearthfire/Dragonborn), layout table [CB|img|nom|desc], 4 colonnes desktop / collapsible knotwork mobile, noms FR complets
+
+## À retenir
+- Dernier ID : 1511
+- clé API Anthropic : ~/.claude/agents/.env (chargé auto par les scripts Python)
+- translate_quests.py : utiliser --resume si interrompu, --batch-size 25 par défaut
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❯ Session 2026-03-15 — Migration données + Audit + Fixes UX
+
+## Fichiers modifiés
+- `skyrim.html` — charge script/data/*.js au lieu de data.js/data_fr.js + nettoyage sessionStorage au retour index.html
+- `script/app.js` — migration DATA_FR_* → item.name_fr/desc_fr/word_fr, suppression POTION_SECTION_IMG, fallback CHECKLIST_DATA, fix collapsedGroups sessionStorage
+- `script/data/index.js` — ajout catégories manquantes (Unique Gear, Locations, Merchants, Followers)
+- `script/data.js` + `script/data_fr.js` — **SUPPRIMÉS**
+- `css/style.css` — suppression --accent/--accent2 inutilisées
+- `index.html` — suppression placeholder="" vide
+- `CLAUDE.md` — file structure mise à jour
+- `docs/GUIDE_PRINCIPAL.md`, `docs/html.md`, `docs/comment-ajouter.md` — références data.js mises à jour
+- `TODO.md`, `RESUME.txt`, `memory/MEMORY.md` — MAJ fin de session
+- `assets/images/cities/` (10 SVG) + `craftings/smithing.webp` + `ingredients/Jarrin_Root.webp` + `spells/Absorb_violet.webp` — assets organisés par l'utilisateur
+
+## Features / Fixes
+1. **Migration complète data/** — app.js utilise name_fr/desc_fr/word_fr directement dans les items
+2. **Audit code** — suppression POTION_SECTION_IMG, --accent/--accent2, placeholder vide
+3. **Fix TypeError** — catégories manquantes dans data/index.js causaient crash au démarrage
+4. **Fix changement langue** — onglet actif conservé via sessionStorage (skyrim_last_cat)
+5. **Fix changement langue** — sections ouvertes conservées via sessionStorage (skyrim_collapsed_groups)
+6. **Fix retour index.html** — sessionStorage nettoyé au clic sur le bouton personnage
+7. **Git push** — branche main à jour sur GitHub
+8. **Backup ZIP** — `skyrim_project_2026-03-15.zip` (133.8 Mo) dans Web_Projet/
+
+## À faire prochaine session
+- Vérifier images null restantes (Potions/Poisons)
+- Export/Import JSON (sauvegarde progression)
+- Reset modal (remise à zéro avec confirmation)
+- Responsive mobile 375px

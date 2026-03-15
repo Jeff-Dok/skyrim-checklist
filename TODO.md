@@ -4,17 +4,10 @@
 
 - [X] Séparer les données de "data.js" + "data_fr.js" par sections → `script/data/*.js`
 - [X] Organiser les nouveaux fichiers par catégorie (quests.js, shouts.js, spells.js, enchanting.js, alchemy.js, achievements.js)
-- [X] Regrouper les données EN/FR sous le même ID (name_fr, desc_fr, word_fr dans chaque item) — app.js migré, data.js/data_fr.js obsolètes
-
-"Quests": [
-
-    {"id":1,"name":"Unbound","name_FR":'Libération',"group":"Main Quest","group_FR":"Quêtes Principale","desc":"Escape Imperial execution and a surprise dragon attack in Helgen, following either Hadvar the Imperial soldier or Ralof the Stormcloak rebel to safety.","desc_FR":"Échappez à l'exécution impériale et à une attaque de dragon surprise à Helgen, en suivant soit Hadvar le soldat impérial, soit Ralof le rebelle Stormcloak vers la sécurité","giver":"Hadvar or Ralof"},
-
-{"id":2,"name".....
-
-- [ ] Optimiser le code (HTML, CSS, JS) — supprimer data.js / data_fr.js devenus obsolètes
-- [ ] Faire un commit & push sur Github
-- [ ] Faire un back-up en format ZIP dans le dossier parent
+- [X] Regrouper les données EN/FR sous le même ID (name_fr, desc_fr, word_fr dans chaque item) — app.js migré
+- [X] Optimiser le code — audit HTML/CSS/JS, suppression code mort, data.js/data_fr.js supprimés
+- [X] Faire un commit & push sur Github
+- [X] Faire un back-up en format ZIP dans le dossier parent (`skyrim_project_2026-03-15.zip` — 133.8 Mo)
 
 ## Groupes de quêtes manquants (données à ajouter dans data.js)
 
@@ -151,7 +144,7 @@ Tous dans `skyrim_project/Scripts_Python/`. Dépendances : `pip install requests
 - [X] **Traductions Dragon Shouts FR** — headers + mots propres + `DATA_FR_WORDS` (significations FR)
 - [X] **Traductions Spells FR** — ~40 corrections (noms officiels via wiki FR) + `SPELL_SCHOOL_FR_MAP`
 - [X] **Traductions descriptions FR** — DATA_FR_DESC couvre Quests + Shouts + Spells + Enchanting + Alchemy/Potions/Poisons + Achievements (translate_quests.py)
-- [ ] **Images Potions/Poisons** — 13 items mis à jour cette session (HealingExtreme, MagickaExtreme, StaminaExtreme, Ale), vérifier les autres null restants
+- [ ] **Images Potions/Poisons** — vérifier les `img` null restants (onerror fallback actif)
 - [ ] **Export / Import** — sauvegarder/restaurer la progression en JSON
 - [ ] **Reset** — bouton remise à zéro avec confirmation modale
 - [X] **Rendu Achievements** — table [CB|img|nom|desc], 4 colonnes desktop, collapsible mobile

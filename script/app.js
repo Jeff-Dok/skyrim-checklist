@@ -509,6 +509,7 @@ function toggleGroup(cat, group) {
   const k = groupKey(cat, group);
   if (collapsedGroups[k]) delete collapsedGroups[k];
   else collapsedGroups[k] = true;
+  sessionStorage.setItem('skyrim_collapsed_groups', JSON.stringify(collapsedGroups));
   renderList();
 }
 
@@ -654,7 +655,7 @@ function renderTabs() {
  */
 function switchCat(cat) {
   currentCat = cat;
-  localStorage.setItem('skyrim_last_cat', cat);
+  sessionStorage.setItem('skyrim_last_cat', cat);
   searchQuery = '';
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.tab-btn').forEach(b => {
@@ -1478,10 +1479,16 @@ function init() {
   localStorage.setItem('skyrim_total_items', String(Object.values(CHECKLIST_DATA).flat().length));
 
   /* Restaurer l'onglet actif après un rechargement (ex. changement de langue) */
-  const savedCat = localStorage.getItem('skyrim_last_cat');
+  const savedCat = sessionStorage.getItem('skyrim_last_cat');
   if (savedCat && CATEGORIES.includes(savedCat)) currentCat = savedCat;
 
   initCollapsedGroups();
+
+  /* Restaurer l'état plié/déplié des groupes après un rechargement */
+  const savedCollapsed = sessionStorage.getItem('skyrim_collapsed_groups');
+  if (savedCollapsed) {
+    try { collapsedGroups = JSON.parse(savedCollapsed); } catch (_) { /* état corrompu → ignorer */ }
+  }
   load();
   renderTabs();
   renderStats();

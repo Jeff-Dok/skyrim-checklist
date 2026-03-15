@@ -1498,4 +1498,112 @@ body > .lang-btn {
   .alchemy-grid { grid-template-columns: 1fr; }
   .alchemy-img  { width: 56px; height: 56px; }
 
+  /* Achievements mobile : description sous le nom */
+  .achievement-label { grid-template-columns: 28px 36px 1fr; grid-template-rows: auto auto; }
+  .achievement-img   { width: 32px; height: 32px; }
+  .achievement-desc  { grid-column: 3; grid-row: 2; padding-top: 2px; font-size: 10px; }
+  .achievement-name  { font-size: 13px; }
+
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ACHIEVEMENTS
+   ════════════════════════════════════════════════════════════════ */
+
+/* Mobile : 1 colonne, sections collapsibles normales */
+.achievement-grid {
+  display: block;
+}
+/* % toujours visible dans les achievements (toutes tailles) */
+.achievement-grid .knotwork-pct-value { display: inline; }
+
+/* Desktop ≥ 900px : 4 colonnes, sections toujours ouvertes */
+@media (min-width: 900px) {
+  .achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  /* Force les sections ouvertes sur desktop */
+  .achievement-grid .group.collapsed .group-items { display: block; }
+  .achievement-grid .group-header { cursor: default; pointer-events: none; }
+  /* Retire l'indicateur collapsed du header */
+  .achievement-grid .group.collapsed .group-header { opacity: 1; }
+}
+.achievement-section {
+  background: var(--bg);
+  min-width: 0;
+}
+
+/* Sur desktop, background blanc pour chaque colonne */
+@media (min-width: 900px) {
+  .achievement-grid .group { background: var(--bg); }
+}
+
+/* Header de sous-groupe dans Skyrim */
+.achievement-subgroup { margin-bottom: 4px; }
+.achievement-subgroup-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  padding: 10px 8px 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+/* Liste et ligne */
+.achievement-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.achievement-row { border-bottom: 1px solid var(--border); }
+.achievement-row:last-child { border-bottom: none; }
+.achievement-row.done .achievement-name { opacity: 0.45; }
+.achievement-row.done .achievement-desc { opacity: 0.35; }
+
+/* Label — grille 4 colonnes : CB | img | name | desc */
+.achievement-label {
+  display: grid;
+  grid-template-columns: 28px 54px 1fr 2fr;
+  align-items: center;
+  gap: 0 10px;
+  padding: 8px 6px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+.achievement-label:hover { background: var(--hover); }
+
+.achievement-img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  border-radius: 4px;
+  opacity: 0.9;
+}
+.achievement-row.done .achievement-img { opacity: 0.35; }
+
+.achievement-name {
+  font-family: 'FuturaCondensed', 'Futura', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+.achievement-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted2);
+  line-height: 1.4;
 }

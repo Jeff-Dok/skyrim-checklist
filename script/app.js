@@ -683,6 +683,29 @@ function switchCat(cat) {
  *   développés, indépendamment de collapsedGroups (utilisé pendant la recherche).
  * @returns {string} HTML string à injecter dans le container.
  */
+
+/**
+ * Rendu d'une ligne de tableau pour un achievement.
+ * Colonnes : [CB] | [img 46px] | [name] | [desc]
+ */
+function renderAchievementRow(item) {
+  const done    = isChecked(item.id);
+  const imgSrc  = `assets/images/achievements/${escHtml(item.img)}.webp`;
+  const nameFr  = getLang() === 'fr' && typeof DATA_FR_NAMES !== 'undefined' && DATA_FR_NAMES[item.id];
+  const dispName = nameFr || item.name;
+  const descFr  = getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id];
+  const dispDesc = descFr || item.desc || '';
+  return `
+<li class="item achievement-row${done ? ' done' : ''}">
+  <label class="achievement-label">
+    <span class="cb-wrap"><input type="checkbox" ${done ? 'checked' : ''} onchange="toggle(${item.id})"><span class="cb-box"></span></span>
+    <img class="achievement-img" src="${imgSrc}" alt="${escHtml(item.name)}" width="46" height="46" loading="lazy">
+    <span class="achievement-name">${escHtml(dispName)}</span>
+    <span class="achievement-desc">${escHtml(dispDesc)}</span>
+  </label>
+</li>`;
+}
+
 function renderItemsHtml(items, cat, forceExpand = false) {
   const groups    = {};
   const dataOrder = [];
@@ -693,13 +716,51 @@ function renderItemsHtml(items, cat, forceExpand = false) {
   });
 
   /* Flags de rendu spécial — déterminés une seule fois pour la catégorie */
-  const isQuests     = cat === 'Quests';
-  const isShouts     = cat === 'Dragon Shouts';
-  const isSpells     = cat === 'Spells';
-  const isEnchanting = cat === 'Enchanting Effects';
-  const isAlchemy    = cat === 'Alchemy Ingredients';
-  const isBooks      = cat === 'Books';
-  const isPerks      = cat === 'Perks';
+  const isQuests       = cat === 'Quests';
+  const isShouts       = cat === 'Dragon Shouts';
+  const isSpells       = cat === 'Spells';
+  const isEnchanting   = cat === 'Enchanting Effects';
+  const isAlchemy      = cat === 'Alchemy Ingredients';
+  const isBooks        = cat === 'Books';
+  const isPerks        = cat === 'Perks';
+  const isAchievements = cat === 'Achievements';
+
+  /* ── Achievements : 4 sections — collapsibles (mobile) / côte à côte (desktop) ── */
+  if (isAchievements) {
+    const ACHIEVEMENT_GROUPS = ['Skyrim', 'Dawnguard', 'Hearthfire', 'Dragonborn'];
+    const sections = ACHIEVEMENT_GROUPS.map(grp => {
+      const grpItems    = items.filter(i => i.group === grp);
+      const grpDone     = grpItems.filter(i => isChecked(i.id)).length;
+      const grpPct      = grpItems.length ? Math.round(100 * grpDone / grpItems.length) : 0;
+      const grpCollapsed = !!collapsedGroups[groupKey(cat, grp)];
+
+      let bodyHtml;
+      if (grp === 'Skyrim') {
+        const subgroups = [...new Set(grpItems.map(i => i.subgroup).filter(Boolean))];
+        bodyHtml = subgroups.map(sub => {
+          const rows = grpItems.filter(i => i.subgroup === sub).map(item => renderAchievementRow(item)).join('');
+          return `<div class="achievement-subgroup">
+            <div class="achievement-subgroup-header">${escHtml(sub)}</div>
+            <ul class="achievement-list">${rows}</ul>
+          </div>`;
+        }).join('');
+      } else {
+        bodyHtml = `<ul class="achievement-list">${grpItems.map(item => renderAchievementRow(item)).join('')}</ul>`;
+      }
+
+      return `
+        <div class="group${grpCollapsed ? ' collapsed' : ''}">
+          <div class="group-header" onclick="toggleGroup('${escJs(cat)}','${escJs(grp)}')">
+            <div class="group-knotwork-wrap no-img">
+              <span class="group-knotwork-pct">${escHtml(grp)}<span class="knotwork-pct-value">&nbsp;&nbsp;—&nbsp;&nbsp;${grpPct}%</span></span>
+            </div>
+          </div>
+          <div class="group-items">${bodyHtml}</div>
+        </div>`;
+    }).join('');
+
+    return `<div class="achievement-grid">${sections}</div>`;
+  }
 
   /* ── Perks : 6 groupes, sous-groupes pour Combat/Magic/Stealth ── */
   if (isPerks) {
@@ -1379,6 +1440,11 @@ function initCollapsedGroups() {
     if (subs) subs.forEach(sub => {
       collapsedGroups[groupKey('Perks', grp + '::' + sub)] = true;
     });
+  });
+
+  /* Achievements : 4 groupes repliés par défaut (desktop force-expand via CSS) */
+  ['Skyrim', 'Dawnguard', 'Hearthfire', 'Dragonborn'].forEach(grp => {
+    collapsedGroups[groupKey('Achievements', grp)] = true;
   });
 
   /* Sections Alchemy repliées par défaut (utilisent section au lieu de group) */

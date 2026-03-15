@@ -654,6 +654,7 @@ function renderTabs() {
  */
 function switchCat(cat) {
   currentCat = cat;
+  localStorage.setItem('skyrim_last_cat', cat);
   searchQuery = '';
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.tab-btn').forEach(b => {
@@ -1475,6 +1476,10 @@ function init() {
 
   /* Stocker le total pour que index.html puisse calculer les % */
   localStorage.setItem('skyrim_total_items', String(Object.values(CHECKLIST_DATA).flat().length));
+
+  /* Restaurer l'onglet actif après un rechargement (ex. changement de langue) */
+  const savedCat = localStorage.getItem('skyrim_last_cat');
+  if (savedCat && CATEGORIES.includes(savedCat)) currentCat = savedCat;
 
   initCollapsedGroups();
   load();

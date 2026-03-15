@@ -116,9 +116,7 @@ Tous dans `skyrim_project/Scripts_Python/`. Dépendances : `pip install requests
 - [ ] **Locations** — lieux à découvrir (Donjons, Villes, Camps, etc.)
 - [ ] **Merchants** — marchands spécialisés avec inventaire notable
 - [ ] **Recruitable Followers** — compagnons recrutables avec conditions
-- [ ] **Achievements** — succès Steam/PlayStation
-  - Icônes déjà présentes : `assets/icons/achievements/` (non trackées)
-  - Rendu : grille avec icône par succès
+- [X] **Achievements** — 76 succès (IDs 1436–1511), 4 groupes, noms FR complets, layout responsive
 
 ---
 
@@ -128,11 +126,11 @@ Tous dans `skyrim_project/Scripts_Python/`. Dépendances : `pip install requests
 - [X] **Internationalisation FR/EN** — i18n.js + data_fr.js (1038 traductions IDs 1–1144) + t() partout dans app.js
 - [X] **Traductions Dragon Shouts FR** — headers + mots propres + `DATA_FR_WORDS` (significations FR)
 - [X] **Traductions Spells FR** — ~40 corrections (noms officiels via wiki FR) + `SPELL_SCHOOL_FR_MAP`
-- [ ] **Traductions Potions/Poisons FR** — data_fr.js ne couvre pas encore les IDs 1145–1435
+- [X] **Traductions descriptions FR** — DATA_FR_DESC couvre Quests + Shouts + Spells + Enchanting + Alchemy/Potions/Poisons + Achievements (translate_quests.py)
 - [ ] **Images Potions/Poisons** — 13 items mis à jour cette session (HealingExtreme, MagickaExtreme, StaminaExtreme, Ale), vérifier les autres null restants
 - [ ] **Export / Import** — sauvegarder/restaurer la progression en JSON
 - [ ] **Reset** — bouton remise à zéro avec confirmation modale
-- [ ] **Rendu Achievements** — grille icône + nom + description
+- [X] **Rendu Achievements** — table [CB|img|nom|desc], 4 colonnes desktop, collapsible mobile
 - [ ] **Rendu Collectible** — mise en page à définir selon scope
 - [ ] **Rendu Unique Gear** — grille avec image WebP de l'objet
 

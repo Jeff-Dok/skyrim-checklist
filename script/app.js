@@ -1284,7 +1284,8 @@ function openInfoModal(id) {
     if (item.group)  rows.push(makeInfoRow(t('modalGroup'),  item.group));
     if (item.type)   rows.push(makeInfoRow(t('modalType'),   item.type));
     if (item.level != null) rows.push(makeInfoRow(t('modalLevel'), String(item.level)));
-    if (item.desc)   rows.push(makeInfoRow(t('modalEffect'), item.desc));
+    const _potionDesc = (getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id]) || item.desc;
+    if (_potionDesc) rows.push(makeInfoRow(t('modalEffect'), _potionDesc));
     if (item.source) rows.push(makeInfoRow(t('modalSource'), item.source));
   }
 

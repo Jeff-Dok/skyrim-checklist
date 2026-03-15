@@ -443,14 +443,13 @@ function setBadge(state) {
 
 /**
  * Retourne le nom d'un item dans la langue active.
- * Utilise DATA_FR_NAMES (data_fr.js) si la langue est FR et qu'une traduction existe.
- * @param {{ id: number, name: string }} item
+ * Utilise item.name_fr si la langue est FR et que la traduction existe.
+ * @param {{ id: number, name: string, name_fr?: string }} item
  * @returns {string}
  */
 function itemName(item) {
-  if (typeof getLang === 'function' && getLang() === 'fr') {
-    const fr = typeof DATA_FR_NAMES !== 'undefined' && DATA_FR_NAMES[item.id];
-    if (fr) return fr;
+  if (typeof getLang === 'function' && getLang() === 'fr' && item.name_fr) {
+    return item.name_fr;
   }
   return item.name;
 }
@@ -691,10 +690,8 @@ function switchCat(cat) {
 function renderAchievementRow(item) {
   const done    = isChecked(item.id);
   const imgSrc  = `assets/images/achievements/${escHtml(item.img)}.webp`;
-  const nameFr  = getLang() === 'fr' && typeof DATA_FR_NAMES !== 'undefined' && DATA_FR_NAMES[item.id];
-  const dispName = nameFr || item.name;
-  const descFr  = getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id];
-  const dispDesc = descFr || item.desc || '';
+  const dispName = (getLang() === 'fr' && item.name_fr) ? item.name_fr : item.name;
+  const dispDesc = (getLang() === 'fr' && item.desc_fr) ? item.desc_fr : (item.desc || '');
   return `
 <li class="item achievement-row${done ? ' done' : ''}">
   <label class="achievement-label">
@@ -975,7 +972,7 @@ function renderItemsHtml(items, cat, forceExpand = false) {
             <span class="item-name">${escHtml(itemName(item))}</span>
             <span class="word-dragon">${escHtml(dragon)}</span>
             <button class="info-btn" onclick="event.stopPropagation();event.preventDefault();openInfoModal(${item.id})" title="Informations">ⓘ</button>
-            <span class="item-sub"><span class="word-en">${escHtml(getLang() === 'fr' ? (DATA_FR_WORDS[item.id] || item.word_en || '') : (item.word_en || ''))}</span></span>
+            <span class="item-sub"><span class="word-en">${escHtml(getLang() === 'fr' ? (item.word_fr || item.word_en || '') : (item.word_en || ''))}</span></span>
           </label>
         </li>`;
       }).join('');
@@ -1279,7 +1276,7 @@ function renderList() {
 function buildSub(item) {
   const parts = [];
   if (item.level)                          parts.push(item.level);
-  const _desc = (getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id]) || item.desc;
+  const _desc = (getLang() === 'fr' && item.desc_fr) ? item.desc_fr : item.desc;
   if (_desc)                               parts.push(_desc);
   if (item.giver)                          parts.push('→ ' + item.giver);
   if (item.category)                       parts.push(item.category);
@@ -1345,7 +1342,7 @@ function openInfoModal(id) {
     if (item.group)  rows.push(makeInfoRow(t('modalGroup'),  item.group));
     if (item.type)   rows.push(makeInfoRow(t('modalType'),   item.type));
     if (item.level != null) rows.push(makeInfoRow(t('modalLevel'), String(item.level)));
-    const _potionDesc = (getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id]) || item.desc;
+    const _potionDesc = (getLang() === 'fr' && item.desc_fr) ? item.desc_fr : item.desc;
     if (_potionDesc) rows.push(makeInfoRow(t('modalEffect'), _potionDesc));
     if (item.source) rows.push(makeInfoRow(t('modalSource'), item.source));
   }
@@ -1361,13 +1358,13 @@ function openInfoModal(id) {
   if (!isPotionItem) {
     if (item.school)  rows.push(makeInfoRow(t('modalSchool'),       item.school));
     if (item.slots)   rows.push(makeInfoRow(t('modalSlots'),        item.slots));
-    if (item.word_en) rows.push(makeInfoRow(t('modalTranslation'),  item.word_en));
+    if (item.word_en) rows.push(makeInfoRow(t('modalTranslation'), (getLang() === 'fr' && item.word_fr) ? item.word_fr : item.word_en));
     if (isSpellItem && item.level) rows.push(makeInfoRow(t('modalSpellLevel'), item.level));
     if (item.dlc)     rows.push(makeInfoRow(t('modalDLC'),          item.dlc));
     if (item.city)    rows.push(makeInfoRow(t('modalCity'),         item.city));
     if (item.prince)  rows.push(makeInfoRow(t('modalPrince'),       item.prince));
     if (!isSpellItem && item.level) rows.push(makeInfoRow(t('modalLevel'), String(item.level)));
-    const descFr = getLang() === 'fr' && typeof DATA_FR_DESC !== 'undefined' && DATA_FR_DESC[item.id];
+    const descFr = getLang() === 'fr' && item.desc_fr;
     if (descFr || item.desc) rows.push(makeInfoRow(t('modalDesc'), descFr || item.desc));
     if (item.location) rows.push(makeInfoRow(t('modalLocation'),    item.location));
     if (item.giver)   rows.push(makeInfoRow(t('modalGiver'),        item.giver));
